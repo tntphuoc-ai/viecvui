@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViecVui — Global Talent Platform · Strategy & Architecture</title>
+<style>
+  :root{
+    --navy:#0E2545; --navy2:#16345C; --navy3:#243F63;
+    --teal:#0FB5A6; --tealdk:#0A7E76; --gold:#FFC629;
+    --ice:#DCE7F2; --cloud:#F4F7FB; --slate:#5A6B82; --ink:#13233B; --white:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Segoe UI",Calibri,system-ui,sans-serif;
+    background:#0a1626;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+  }
+  .stage{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
+  .deck{
+    position:relative;
+    width:min(96vw, calc(96vh * 16 / 9));
+    height:min(96vh, calc(96vw * 9 / 16));
+    border-radius:14px;overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,0,0,.55);
+    background:var(--cloud);
+  }
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;
+    padding:0; font-size:1.05vw; /* scales with deck width approx */}
+  .slide.active{display:flex}
+  /* container query-ish scaling: use cqw */
+  .deck{container-type:inline-size}
+  .slide{font-size:1.55cqw}
+  .light{background:var(--cloud);color:var(--ink)}
+  .dark{background:var(--navy);color:var(--ice)}
+
+  /* Header band */
+  .hdr{background:var(--navy);padding:1.4em 2.2em 1.1em;position:relative;flex:0 0 auto}
+  .hdr::after{content:"";position:absolute;left:0;right:0;bottom:0;height:.28em;background:var(--gold)}
+  .kicker{color:var(--gold);font-weight:700;letter-spacing:.22em;font-size:.8em;text-transform:uppercase}
+  .htitle{color:#fff;font-family:Georgia,serif;font-weight:700;font-size:2.1em;margin-top:.25em;line-height:1.08}
+  .body{flex:1 1 auto;padding:1.8em 2.2em;display:flex;flex-direction:column;min-height:0}
+  .foot{position:absolute;bottom:.8em;left:2.2em;right:2.2em;display:flex;justify-content:space-between;
+    color:var(--slate);font-size:.78em}
+
+  h2,h3{font-family:Georgia,serif}
+  .muted{color:var(--slate)}
+  .accent{color:var(--teal)}
+
+  /* Title slide */
+  .titlewrap{padding:3.4em 3em;height:100%;position:relative;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+  .goldbar{position:absolute;left:0;top:0;bottom:0;width:.55em;background:var(--gold)}
+  .blob{position:absolute;border-radius:50%;}
+  .blob1{width:42%;aspect-ratio:1;background:var(--navy2);right:-8%;top:-30%}
+  .blob2{width:30%;aspect-ratio:1;background:rgba(10,126,118,.5);right:2%;bottom:-18%}
+  .t-kicker{color:var(--gold);font-weight:700;letter-spacing:.18em;font-size:1em;position:relative;z-index:2}
+  .t-title{color:#fff;font-family:Georgia,serif;font-weight:700;font-size:3.4em;line-height:1.05;margin:.4em 0;position:relative;z-index:2}
+  .t-sub{color:var(--ice);font-size:1.25em;max-width:72%;line-height:1.45;position:relative;z-index:2}
+  .t-tag{color:var(--teal);font-style:italic;font-size:1em;margin-top:1.6em;position:relative;z-index:2}
+
+  /* stat cards */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1em;margin-bottom:1.2em}
+  .stat{background:#fff;border-radius:.6em;padding:1em 1em .9em;box-shadow:0 8px 22px rgba(14,37,69,.12);border-top:.32em solid var(--navy)}
+  .stat .num{font-family:Georgia,serif;font-weight:700;font-size:2.4em;line-height:1}
+  .stat .lbl{font-size:.92em;margin-top:.5em;color:var(--ink)}
+
+  .cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2em;flex:1}
+  .cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1em;flex:1}
+  .cols2{display:grid;grid-template-columns:1fr 1fr;gap:1.4em;flex:1}
+  .card{background:#fff;border-radius:.7em;box-shadow:0 8px 22px rgba(14,37,69,.12);overflow:hidden;display:flex;flex-direction:column}
+  .card .bar{height:.55em}
+  .card .pad{padding:1.1em 1.15em;flex:1;display:flex;flex-direction:column}
+  .card h3{font-size:1.25em;margin-bottom:.4em}
+  .card p{font-size:.96em;line-height:1.4;color:var(--ink)}
+  .chip{display:inline-block;color:#fff;font-weight:700;letter-spacing:.05em;padding:.45em .9em;border-radius:.4em;font-size:.95em}
+
+  ul.clean{list-style:none}
+  ul.clean li{position:relative;padding-left:1.3em;margin-bottom:.7em;font-size:1em;line-height:1.4}
+  ul.clean li::before{content:"";position:absolute;left:0;top:.5em;width:.55em;height:.55em;border-radius:50%;background:var(--teal)}
+
+  /* pipeline */
+  .pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:1.3em;margin-top:1.4em}
+  .pstep{background:var(--navy2);border-radius:.7em;padding:1.2em 1.1em;box-shadow:0 8px 22px rgba(0,0,0,.3);position:relative}
+  .pnum{width:2.1em;height:2.1em;border-radius:50%;background:var(--teal);color:var(--navy);
+    font-family:Georgia,serif;font-weight:700;font-size:1.2em;display:flex;align-items:center;justify-content:center;margin-bottom:.7em}
+  .pstep h3{color:var(--gold);font-size:1.2em;font-family:'Trebuchet MS',sans-serif;margin-bottom:.4em}
+  .pstep p{color:var(--ice);font-size:.92em;line-height:1.35}
+
+  /* architecture */
+  .arch{display:flex;flex-direction:column;gap:.55em;margin-top:.4em}
+  .arow{display:grid;grid-template-columns:6.5em 1fr;gap:.55em;align-items:stretch}
+  .alabel{border-radius:.4em;color:#fff;font-weight:700;font-size:.82em;display:flex;align-items:center;justify-content:center;text-align:center;padding:.3em}
+  .acells{display:grid;gap:.55em}
+  .acell{background:var(--navy2);color:#fff;border-radius:.4em;display:flex;align-items:center;justify-content:center;text-align:center;
+    font-size:.82em;font-weight:600;padding:.6em .3em;line-height:1.1}
+  .acell.alt{background:var(--navy3);color:var(--ice)}
+
+  /* mini dashboard */
+  .dash{background:var(--navy);border-radius:.7em;padding:1.1em;display:flex;flex-direction:column;gap:.7em}
+  .dtiles{display:grid;grid-template-columns:1fr 1fr;gap:.6em}
+  .dtile{background:var(--navy2);border-radius:.45em;padding:.55em .7em;display:flex;align-items:center;gap:.6em}
+  .dtile .dn{font-family:Georgia,serif;color:var(--teal);font-weight:700;font-size:1.7em;line-height:1}
+  .dtile .dl{color:var(--ice);font-size:.82em}
+  .orderbar{background:var(--navy2);border-radius:.45em;padding:.6em .8em;display:flex;align-items:center;justify-content:space-between;color:var(--ice);font-size:.85em}
+  .obtn{background:var(--gold);color:var(--navy);font-weight:700;padding:.4em .9em;border-radius:.35em;font-size:.85em}
+
+  /* econ table */
+  .erow{display:flex;justify-content:space-between;align-items:center;padding:.7em .9em;border:1px solid #D6E0EC;font-size:1em}
+  .erow.total{background:var(--navy);color:#fff;font-weight:700;border-color:var(--navy)}
+  .erow .val{font-family:'Trebuchet MS',sans-serif;font-weight:700;color:var(--tealdk)}
+  .erow.total .val{color:var(--gold)}
+
+  /* roadmap */
+  .phase .bar{height:1.5em;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.85em;padding:0 .9em;white-space:pre-line;line-height:1.05}
+  .phase h3{font-size:1.25em;margin:.6em 0 .4em;padding:0 .15em}
+  .phase p{font-size:.9em;line-height:1.35;padding:0 .15em}
+
+  /* ---- App mockup ---- */
+  .appwin{background:#0c1d35;border-radius:.6em;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.3);flex:1;display:flex;flex-direction:column}
+  .appbar{background:#0a1830;display:flex;align-items:center;justify-content:space-between;padding:.6em 1em;color:#cdd8e6;font-size:.78em;border-bottom:1px solid rgba(255,255,255,.08)}
+  .appbrand{color:var(--gold);font-weight:700}
+  .appnav{color:#9fb0c6}
+  .appuser{color:#cdd8e6}
+  .appcanvas{flex:1;display:grid;grid-template-columns:.85fr 2.4fr;gap:.8em;padding:.9em;background:#0e2545}
+  .profilecol{background:#16345C;border-radius:.5em;padding:1em;text-align:center;color:#dce7f2}
+  .avatar{width:4.2em;height:4.2em;border-radius:50%;margin:0 auto .6em;background:linear-gradient(135deg,#0FB5A6,#0A7E76)}
+  .pname{font-weight:700;font-size:1.05em;color:#fff}
+  .prole{color:var(--teal);font-size:.85em;margin:.2em 0 .6em}
+  .pmeta{font-size:.78em;line-height:1.6;color:#aebfd4}
+  .analytcol{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8em}
+  .acard{background:#16345C;border-radius:.5em;padding:.8em;color:#dce7f2;display:flex;flex-direction:column}
+  .ach{color:#fff;font-weight:700;font-size:.82em;margin-bottom:.5em}
+  .acsub{color:#9fb0c6;font-size:.72em;margin-top:.5em;line-height:1.3}
+  .ring{width:5em;height:5em;border-radius:50%;margin:.2em auto;display:flex;align-items:center;justify-content:center;
+    background:conic-gradient(var(--teal) 0 88%, #243F63 88% 100%)}
+  .ring span{width:3.6em;height:3.6em;border-radius:50%;background:#16345C;display:flex;align-items:center;justify-content:center;font-family:Georgia;font-weight:700;font-size:1.3em;color:#fff}
+  .bars{display:flex;align-items:flex-end;gap:.4em;height:4.5em;margin-top:.3em}
+  .bars i{flex:1;background:linear-gradient(var(--teal),var(--tealdk));border-radius:.15em .15em 0 0}
+  .stagepill{background:var(--gold);color:var(--navy);font-weight:700;font-size:.78em;padding:.35em .6em;border-radius:.3em;text-align:center}
+  .progress{background:#243F63;border-radius:1em;height:.7em;overflow:hidden;margin-top:.2em}
+  .progress span{display:block;height:100%;background:var(--teal);border-radius:1em}
+  .pipehead{display:grid;grid-template-columns:repeat(3,1fr);gap:.8em}
+  .pipebig{background:#16345C;border-radius:.5em;padding:.9em 1em;display:flex;align-items:center;gap:.7em}
+  .pb-n{font-family:Georgia;font-weight:700;font-size:2.2em;color:var(--teal);line-height:1}
+  .pb-l{color:#dce7f2;font-size:.85em}
+  .readwrap{display:grid;grid-template-columns:1.4fr 1fr;gap:.8em;margin-top:.8em;flex:1}
+  .rrow{display:grid;grid-template-columns:8em 1fr 1.4em;align-items:center;gap:.6em;margin-bottom:.55em;color:#cdd8e6;font-size:.8em}
+  .rrow b{color:#fff;text-align:right}
+  .ordercard{background:#0a7e76}
+  .ofield{display:flex;justify-content:space-between;align-items:center;margin-bottom:.45em}
+  .ofield label{color:#d7f3ef;font-size:.8em}
+  .osel{background:#fff;color:#13233b;border-radius:.3em;padding:.25em .6em;font-size:.78em;min-width:9em;text-align:left}
+
+  /* risk table */
+  .risktable{display:flex;flex-direction:column;gap:.5em;flex:1}
+  .rhead,.rrowt{display:grid;grid-template-columns:1.5fr .6fr 2.6fr;gap:.9em;align-items:center}
+  .rhead{color:var(--navy);font-weight:700;font-size:.92em;text-transform:uppercase;letter-spacing:.04em;padding:0 .9em}
+  .rrowt{background:#fff;border-radius:.5em;padding:.7em .9em;box-shadow:0 5px 14px rgba(14,37,69,.09);font-size:.9em;line-height:1.3}
+  .rrowt span:first-child{color:var(--ink)}
+  .rrowt span:last-child{color:var(--ink)}
+  .sev{justify-self:start;color:#fff;font-weight:700;font-size:.78em;padding:.25em .7em;border-radius:1em}
+  .sev.high{background:#C0392B}.sev.med{background:#C8901A}
+
+  .nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:10px;align-items:center;z-index:50}
+  .nav button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);
+    border-radius:8px;padding:7px 13px;font-size:14px;cursor:pointer;backdrop-filter:blur(6px)}
+  .nav button:hover{background:rgba(255,255,255,.22)}
+  .nav .count{color:#cdd8e6;font-size:13px;min-width:48px;text-align:center}
+  .hint{position:fixed;top:14px;right:16px;color:#7e8ca0;font-size:12px;z-index:50}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="deck" id="deck">
+
+  <!-- 1 TITLE -->
+  <section class="slide dark active">
+    <div class="titlewrap">
+      <div class="goldbar"></div><div class="blob blob1"></div><div class="blob blob2"></div>
+      <div class="t-kicker">VIECVUI &nbsp;×&nbsp; 8A ACADEMY &nbsp;×&nbsp; STC</div>
+      <div class="t-title">From Job Board to<br>Global Talent Marketplace</div>
+      <div class="t-sub">A partner portal where Australian healthcare &amp; aged-care employers log in, browse job-ready Vietnamese talent, and “order” nurses and care workers — backed by an education-to-placement pipeline.</div>
+      <div class="t-tag">Market · Business Model · Platform Architecture · Roadmap</div>
+    </div>
+  </section>
+
+  <!-- 2 OPPORTUNITY -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">The Opportunity</div><div class="htitle">Australia faces a structural care-workforce shortage</div></div>
+    <div class="body">
+      <div class="stats">
+        <div class="stat" style="border-top-color:var(--tealdk)"><div class="num" style="color:var(--tealdk)">70,000+</div><div class="lbl">FTE nurse undersupply projected by 2035</div></div>
+        <div class="stat" style="border-top-color:var(--navy)"><div class="num" style="color:var(--navy)">400,000</div><div class="lbl">aged-care workers needed by 2050</div></div>
+        <div class="stat" style="border-top-color:var(--gold)"><div class="num" style="color:#C8901A">17,000/yr</div><div class="lbl">extra direct aged-care workers required this decade</div></div>
+        <div class="stat" style="border-top-color:var(--tealdk)"><div class="num" style="color:var(--tealdk)">43%</div><div class="lbl">of new AHPRA nurse registrations are overseas-trained</div></div>
+      </div>
+      <h3 style="color:var(--navy);font-family:'Trebuchet MS',sans-serif;font-size:1.2em;margin-bottom:.4em">Why it matters for ViecVui</h3>
+      <p style="font-size:1.02em;line-height:1.5">Demand is sustained, government-backed, and unmet by domestic supply. The first baby boomers turned 80 in 2026, accelerating aged-care demand. Australian employers and colleges are actively sourcing trained workers from South-East Asia — 8A is already the preferred Vietnam partner under signed Industry Labour Agreements (ILA).</p>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>2</span></div>
+  </section>
+
+  <!-- 3 PROBLEM -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">The Problem</div><div class="htitle">Hiring Vietnamese care talent is slow, opaque &amp; high-risk today</div></div>
+    <div class="body">
+      <div class="cols3">
+        <div class="card"><div class="chip" style="background:var(--navy);border-radius:0">EMPLOYERS</div><div class="pad"><p>No trusted way to see who is genuinely job-ready. Credentials, English level, visa &amp; AHPRA status are scattered across emails, PDFs and agents.</p><p style="margin-top:auto;color:var(--navy);font-weight:700;font-family:'Trebuchet MS'">→ ViecVui closes this gap</p></div></div>
+        <div class="card"><div class="chip" style="background:var(--tealdk);border-radius:0">CANDIDATES</div><div class="pad"><p>A long, confusing journey across study, English tests, skills assessment, visa and AHPRA — with little visibility and high drop-off.</p><p style="margin-top:auto;color:var(--tealdk);font-weight:700;font-family:'Trebuchet MS'">→ ViecVui closes this gap</p></div></div>
+        <div class="card"><div class="chip" style="background:#C8901A;border-radius:0">THE PIPELINE</div><div class="pad"><p>Education, placement and compliance live in different systems. No single source of truth, no audit trail, no scalable “order” flow.</p><p style="margin-top:auto;color:#C8901A;font-weight:700;font-family:'Trebuchet MS'">→ ViecVui closes this gap</p></div></div>
+      </div>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>3</span></div>
+  </section>
+
+  <!-- 4 PIPELINE -->
+  <section class="slide dark">
+    <div class="body" style="padding:2.4em 2.2em">
+      <div class="kicker">Our Unfair Advantage</div>
+      <h2 style="color:#fff;font-size:2.1em;margin-top:.2em">We own the whole pipeline — not just the listing</h2>
+      <div class="pipe">
+        <div class="pstep"><div class="pnum">1</div><h3>Educate</h3><p>STC + RTO dual qualification (AQF Cert III – Diploma) in aged care &amp; nursing.</p></div>
+        <div class="pstep"><div class="pnum">2</div><h3>Prepare</h3><p>English (IELTS/PTE/OET), industry work experience in Vietnam, skills assessment.</p></div>
+        <div class="pstep"><div class="pnum">3</div><h3>Match</h3><p>Employer browses &amp; orders job-ready candidates on the ViecVui portal.</p></div>
+        <div class="pstep"><div class="pnum">4</div><h3>Place &amp; Migrate</h3><p>Subclass 482 (Skills in Demand) → Subclass 186 permanent residency.</p></div>
+      </div>
+      <p style="font-style:italic;color:var(--ice);font-size:1.05em;line-height:1.5;margin-top:1.6em">Most platforms monetise one step. ViecVui captures value at every step — tuition, placement, and software — and uses each stage as proprietary, verified data the marketplace runs on.</p>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>4</span></div>
+  </section>
+
+  <!-- 5 PRODUCT VISION -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">Product Vision</div><div class="htitle">A self-serve “Staff Ordering” portal for international employers</div></div>
+    <div class="body">
+      <div class="cols2" style="grid-template-columns:1fr 1.3fr">
+        <div class="card" style="border-left:.5em solid var(--teal)"><div class="pad">
+          <h3 style="color:var(--navy);font-family:'Trebuchet MS'">What employers can do</h3>
+          <ul class="clean" style="margin-top:.6em">
+            <li>Search &amp; filter job-ready candidates by specialty, readiness, English level &amp; availability</li>
+            <li>View verified profiles: credentials, AHPRA / skills-assessment status, visa readiness</li>
+            <li>Place a “staff order” — role, quantity, start window — and track it to placement</li>
+            <li>Shortlist, request interviews, message, e-sign offers &amp; contracts</li>
+            <li>Live dashboards: pipeline, readiness stages, compliance &amp; risk alerts</li>
+          </ul>
+        </div></div>
+        <div class="dash">
+          <div class="kicker" style="font-size:.78em">St. Vincent’s Pipeline · Dashboard</div>
+          <div class="dtiles">
+            <div class="dtile"><span class="dn">95</span><span class="dl">Job-ready for AU</span></div>
+            <div class="dtile"><span class="dn">42</span><span class="dl">In pipeline</span></div>
+            <div class="dtile"><span class="dn">38</span><span class="dl">AHPRA review</span></div>
+            <div class="dtile"><span class="dn" style="color:var(--gold)">5</span><span class="dl">Risk alerts</span></div>
+          </div>
+          <div class="orderbar"><span>Aged Care Nurse · Qty 3 · Within 6 months</span><span class="obtn">ORDER</span></div>
+          <div style="color:var(--slate);font-size:.78em;font-style:italic">Illustrative employer dashboard — “Staff Ordering Tool” + suitability analytics</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>5</span></div>
+  </section>
+
+  <!-- 6 PRODUCT SCREENSHOT — CANDIDATE -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">Product · Candidate Suitability</div><div class="htitle">Every candidate, scored and verified at a glance</div></div>
+    <div class="body" style="padding:1.3em 2.2em">
+      <div class="appwin">
+        <div class="appbar"><span class="appbrand">▲ AU-VN HealthRecruit</span><span class="appnav">Dashboard · Candidates · Job Matches · Compliance · Messaging</span><span class="appuser">HR · St Vincent’s ▾</span></div>
+        <div class="appcanvas">
+          <div class="profilecol">
+            <div class="avatar"></div>
+            <div class="pname">Thi Lan Huong Nguyen</div>
+            <div class="prole">Registered Nurse (ICU)</div>
+            <div class="pmeta">Ho Chi Minh City, Vietnam<br>7 years experience · IELTS 7.5<br>AHPRA assessment initiated</div>
+          </div>
+          <div class="analytcol">
+            <div class="acard"><div class="ach">Suitability Score</div><div class="ring"><span>88%</span></div><div class="acsub">High score · strong clinical background</div></div>
+            <div class="acard"><div class="ach">Clinical Experience Match</div><div class="bars"><i style="height:80%"></i><i style="height:62%"></i><i style="height:90%"></i><i style="height:48%"></i></div><div class="acsub">ICU · Emergency · vs AU standards</div></div>
+            <div class="acard"><div class="ach">AHPRA Registration</div><div class="stagepill">Stage 2 · Under Review</div><div class="acsub">Documentation submitted · next: competency review</div><div class="ach" style="margin-top:.7em">Visa Readiness</div><div class="progress"><span style="width:72%"></span></div><div class="acsub">Skills assessment in progress · 72%</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="color:var(--slate);font-size:.8em;font-style:italic;margin-top:.6em">Illustrative recreation of the candidate suitability dashboard concept.</div>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>6</span></div>
+  </section>
+
+  <!-- 7 PRODUCT SCREENSHOT — PIPELINE / ORDERING -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">Product · Pipeline &amp; Staff Ordering</div><div class="htitle">Employers see supply, readiness &amp; risk — then place an order</div></div>
+    <div class="body" style="padding:1.3em 2.2em">
+      <div class="appwin">
+        <div class="appbar"><span class="appbrand">▲ AU-VN HealthRecruit</span><span class="appnav">Dashboard · Candidates · My Team · Job Matches · Reports</span><span class="appuser">HR · St Vincent’s ▾</span></div>
+        <div class="appcanvas" style="grid-template-columns:1fr">
+          <div class="pipehead">
+            <div class="pipebig"><span class="pb-n">95</span><span class="pb-l">Nurses job-ready for AU</span></div>
+            <div class="pipebig"><span class="pb-n" style="color:var(--tealdk)">42</span><span class="pb-l">Nurses in pipeline</span></div>
+            <div class="pipebig"><span class="pb-n" style="color:#C8901A">5</span><span class="pb-l">Files needing HR action</span></div>
+          </div>
+          <div class="readwrap">
+            <div class="acard"><div class="ach">Readiness stages</div>
+              <div class="rrow"><span>AHPRA review</span><div class="progress"><span style="width:84%"></span></div><b>38</b></div>
+              <div class="rrow"><span>English proficiency</span><div class="progress"><span style="width:62%"></span></div><b>25</b></div>
+              <div class="rrow"><span>Visa processing</span><div class="progress"><span style="width:50%"></span></div><b>20</b></div>
+              <div class="rrow"><span>Skills assessment</span><div class="progress"><span style="width:30%"></span></div><b>12</b></div>
+            </div>
+            <div class="acard ordercard"><div class="ach" style="color:#fff">Staff Ordering Tool</div>
+              <div class="ofield"><label>Specialization</label><div class="osel">Aged Care Nurse ▾</div></div>
+              <div class="ofield"><label>Quantity</label><div class="osel">3 ▾</div></div>
+              <div class="ofield"><label>Availability</label><div class="osel">Within 6 months ▾</div></div>
+              <div class="obtn" style="margin-top:.6em;text-align:center">REQUEST NEW STAFF ORDER</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="color:var(--slate);font-size:.8em;font-style:italic;margin-top:.6em">Illustrative recreation of the pipeline overview &amp; staff-ordering concept.</div>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>7</span></div>
+  </section>
+
+  <!-- 8 REVENUE -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">Business Model</div><div class="htitle">Three reinforcing revenue streams</div></div>
+    <div class="body">
+      <div class="cols3">
+        <div class="card"><div class="pad">
+          <div style="font-family:Georgia;font-weight:700;font-size:2.6em;color:var(--navy)">01</div>
+          <h3>Education</h3><div style="color:var(--navy);font-weight:700;letter-spacing:.04em;font-size:.85em;text-transform:uppercase;margin:.2em 0 .5em">Tuition &amp; prep</div>
+          <p>Dual-qualification courses (aged care, nursing), English &amp; exam prep, skills-assessment support. Paid by students / sponsors, often financed against future earnings.</p>
+        </div></div>
+        <div class="card"><div class="pad">
+          <div style="font-family:Georgia;font-weight:700;font-size:2.6em;color:var(--tealdk)">02</div>
+          <h3>Placement</h3><div style="color:var(--tealdk);font-weight:700;letter-spacing:.04em;font-size:.85em;text-transform:uppercase;margin:.2em 0 .5em">Success fees</div>
+          <p>Employer pays a placement fee per successful hire (industry benchmark A$6k–15k; ~A$7k avg). Premium for nurses; volume pricing for aged-care cohorts.</p>
+        </div></div>
+        <div class="card"><div class="pad">
+          <div style="font-family:Georgia;font-weight:700;font-size:2.6em;color:#C8901A">03</div>
+          <h3>Platform</h3><div style="color:#C8901A;font-weight:700;letter-spacing:.04em;font-size:.85em;text-transform:uppercase;margin:.2em 0 .5em">SaaS &amp; services</div>
+          <p>Employer subscriptions (portal access, analytics, compliance vault), featured/priority access, verification &amp; background-check fees, payment processing.</p>
+        </div></div>
+      </div>
+      <p style="text-align:center;font-style:italic;color:var(--slate);font-size:1em;margin-top:1.1em">Each placement feeds the next cohort; verified outcomes raise course demand and employer trust — a compounding flywheel.</p>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>8</span></div>
+  </section>
+
+  <!-- 7 ECONOMICS -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">Illustrative Economics</div><div class="htitle">Revenue per placed candidate — a worked example</div></div>
+    <div class="body">
+      <div class="cols2">
+        <div class="card"><div class="pad">
+          <h3 style="color:var(--navy);font-family:'Trebuchet MS';margin-bottom:.6em">Per aged-care placement</h3>
+          <div class="erow"><span>Education / prep package</span><span class="val">A$3,000–5,000</span></div>
+          <div class="erow"><span>Employer placement fee</span><span class="val">A$7,000–10,000</span></div>
+          <div class="erow"><span>Platform &amp; verification fees</span><span class="val">A$500–1,500</span></div>
+          <div class="erow total"><span>Blended revenue / candidate</span><span class="val">A$10k–16k</span></div>
+        </div></div>
+        <div class="card"><div class="pad">
+          <h3 style="color:var(--navy);font-family:'Trebuchet MS';margin-bottom:.5em">Why the model scales</h3>
+          <ul class="clean">
+            <li><b>Recurring demand.</b> The shortage is structural through 2050 — employers re-order cohort after cohort.</li>
+            <li><b>Multiple shots on goal.</b> If a candidate doesn’t place, education &amp; platform revenue are already earned.</li>
+            <li><b>Low marginal cost.</b> Software automates matching, document handling and status tracking.</li>
+            <li><b>Expandable.</b> Same engine extends to hospitality, construction &amp; agriculture, and to Germany / Japan / Korea / Taiwan.</li>
+          </ul>
+        </div></div>
+      </div>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>9</span></div>
+  </section>
+
+  <!-- 10 ARCHITECTURE -->
+  <section class="slide dark">
+    <div class="body" style="padding:2em 2.2em">
+      <div class="kicker">Platform Architecture</div>
+      <h2 style="color:#fff;font-size:1.9em;margin:.15em 0 .7em">One platform, four experiences, a shared trust layer</h2>
+      <div class="arch">
+        <div class="arow">
+          <div class="alabel" style="background:var(--tealdk)">EXPERIENCE</div>
+          <div class="acells" style="grid-template-columns:repeat(4,1fr)">
+            <div class="acell">Employer Portal</div><div class="acell">Candidate App</div><div class="acell">8A Ops Console</div><div class="acell">Admin / Partner RTO</div>
+          </div>
+        </div>
+        <div class="arow">
+          <div class="alabel" style="background:var(--teal)">CORE SERVICES</div>
+          <div class="acells" style="grid-template-columns:repeat(6,1fr)">
+            <div class="acell alt">Talent &amp; Profiles</div><div class="acell alt">Matching &amp; Ordering</div><div class="acell alt">Readiness &amp; Workflow</div><div class="acell alt">Messaging &amp; E-sign</div><div class="acell alt">Payments &amp; Billing</div><div class="acell alt">Analytics &amp; Dashboards</div>
+          </div>
+        </div>
+        <div class="arow">
+          <div class="alabel" style="background:var(--gold);color:var(--navy)">TRUST LAYER</div>
+          <div class="acells" style="grid-template-columns:repeat(4,1fr)">
+            <div class="acell alt">Identity &amp; RBAC</div><div class="acell alt">Verified Credentials Vault</div><div class="acell alt">Document &amp; Consent Store</div><div class="acell alt">Audit Trail</div>
+          </div>
+        </div>
+        <div class="arow">
+          <div class="alabel" style="background:var(--slate)">INTEGRATIONS</div>
+          <div class="acells" style="grid-template-columns:repeat(5,1fr)">
+            <div class="acell alt">AHPRA / skills assessment</div><div class="acell alt">Visa / Home Affairs status</div><div class="acell alt">Stripe / payments</div><div class="acell alt">KYC &amp; background</div><div class="acell alt">Email / Zalo / WhatsApp</div>
+          </div>
+        </div>
+      </div>
+      <p style="font-style:italic;color:var(--ice);font-size:.95em;margin-top:1.1em">Cloud-native, API-first, event-driven — each layer is independently scalable and auditable.</p>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>10</span></div>
+  </section>
+
+  <!-- 11 TECH STACK -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">Technology</div><div class="htitle">A pragmatic, scalable, compliance-ready stack</div></div>
+    <div class="body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1em;flex:1">
+        <div class="card" style="border-left:.4em solid var(--navy)"><div class="pad"><h3 style="font-family:'Trebuchet MS';color:var(--navy);font-size:1.15em">Frontend</h3><p>Next.js / React, TypeScript, Tailwind. Responsive employer portal + candidate PWA (Zalo-friendly for VN users).</p></div></div>
+        <div class="card" style="border-left:.4em solid var(--tealdk)"><div class="pad"><h3 style="font-family:'Trebuchet MS';color:var(--navy);font-size:1.15em">Backend &amp; API</h3><p>Node.js (NestJS) or Django, REST + GraphQL gateway, event bus (Kafka/SNS) for status changes.</p></div></div>
+        <div class="card" style="border-left:.4em solid var(--navy)"><div class="pad"><h3 style="font-family:'Trebuchet MS';color:var(--navy);font-size:1.15em">Data</h3><p>PostgreSQL (system of record), Redis cache, object storage for documents, search via OpenSearch.</p></div></div>
+        <div class="card" style="border-left:.4em solid var(--tealdk)"><div class="pad"><h3 style="font-family:'Trebuchet MS';color:var(--navy);font-size:1.15em">Cloud &amp; DevOps</h3><p>AWS/GCP, containers (ECS/Kubernetes), IaC (Terraform), CI/CD, staged environments.</p></div></div>
+        <div class="card" style="border-left:.4em solid var(--navy)"><div class="pad"><h3 style="font-family:'Trebuchet MS';color:var(--navy);font-size:1.15em">AI / Matching</h3><p>Suitability scoring &amp; candidate–role matching, document OCR &amp; data extraction, multilingual assistant.</p></div></div>
+        <div class="card" style="border-left:.4em solid var(--tealdk)"><div class="pad"><h3 style="font-family:'Trebuchet MS';color:var(--navy);font-size:1.15em">Security &amp; Compliance</h3><p>SSO/MFA, RBAC, encryption at rest &amp; in transit, audit logging; aligned to Australian Privacy Act &amp; VN PDPD.</p></div></div>
+      </div>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>11</span></div>
+  </section>
+
+  <!-- 12 EXPERIENCE -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">Seamless Experience</div><div class="htitle">Designed for every party on the platform</div></div>
+    <div class="body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.1em;flex:1">
+        <div class="card"><div class="pad" style="flex-direction:row;gap:.9em;align-items:flex-start">
+          <div class="pnum" style="background:var(--navy);color:#fff;flex:0 0 auto">1</div>
+          <div><h3 style="font-family:'Trebuchet MS';font-size:1.2em">Employer</h3><p>Confidence &amp; speed: verified, ready candidates; transparent status; fewer failed hires.</p></div>
+        </div></div>
+        <div class="card"><div class="pad" style="flex-direction:row;gap:.9em;align-items:flex-start">
+          <div class="pnum" style="background:var(--tealdk);color:#fff;flex:0 0 auto">2</div>
+          <div><h3 style="font-family:'Trebuchet MS';font-size:1.2em">Candidate</h3><p>Clarity &amp; momentum: one app showing exactly what to do next — study, English, docs, interview.</p></div>
+        </div></div>
+        <div class="card"><div class="pad" style="flex-direction:row;gap:.9em;align-items:flex-start">
+          <div class="pnum" style="background:#C8901A;color:#fff;flex:0 0 auto">3</div>
+          <div><h3 style="font-family:'Trebuchet MS';font-size:1.2em">8A / STC Ops</h3><p>Control &amp; scale: manage cohorts, automate compliance, see bottlenecks before they bite.</p></div>
+        </div></div>
+        <div class="card"><div class="pad" style="flex-direction:row;gap:.9em;align-items:flex-start">
+          <div class="pnum" style="background:var(--navy);color:#fff;flex:0 0 auto">4</div>
+          <div><h3 style="font-family:'Trebuchet MS';font-size:1.2em">Partner RTO / College</h3><p>Alignment: curriculum mapped to demand; graduate outcomes tracked end-to-end.</p></div>
+        </div></div>
+      </div>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>12</span></div>
+  </section>
+
+  <!-- 13 TRUST -->
+  <section class="slide dark">
+    <div class="body" style="padding:2em 2.2em">
+      <div class="kicker">Trust &amp; Compliance</div>
+      <h2 style="color:#fff;font-size:2em;margin:.15em 0 .8em">Trust is the product — we engineer it in</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.1em;flex:1">
+        <div class="pstep" style="border-top:.32em solid var(--teal)"><h3 style="color:var(--gold);font-size:1.2em;font-family:'Trebuchet MS'">Verified credentials</h3><p style="color:var(--ice)">Every qualification, English result &amp; skills assessment captured at source and locked in a tamper-evident vault.</p></div>
+        <div class="pstep" style="border-top:.32em solid var(--gold)"><h3 style="color:var(--gold);font-size:1.2em;font-family:'Trebuchet MS'">Visa &amp; AHPRA tracking</h3><p style="color:var(--ice)">Live status against Subclass 482/186 and AHPRA registration stages — no surprises late in the process.</p></div>
+        <div class="pstep" style="border-top:.32em solid var(--teal)"><h3 style="color:var(--gold);font-size:1.2em;font-family:'Trebuchet MS'">Consent &amp; data privacy</h3><p style="color:var(--ice)">Explicit candidate consent; data handled under Australian Privacy Act &amp; Vietnam PDPD; full audit trail.</p></div>
+        <div class="pstep" style="border-top:.32em solid var(--gold)"><h3 style="color:var(--gold);font-size:1.2em;font-family:'Trebuchet MS'">Quality guarantees</h3><p style="color:var(--ice)">Replacement / partial-refund terms on placements; ratings &amp; outcome tracking keep standards high.</p></div>
+      </div>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>13</span></div>
+  </section>
+
+  <!-- 14 RISK MANAGEMENT -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">Risk Management</div><div class="htitle">Key risks &amp; how the platform mitigates them</div></div>
+    <div class="body" style="padding:1.4em 2.2em">
+      <div class="risktable">
+        <div class="rhead"><span>Risk</span><span>Impact</span><span>Mitigation</span></div>
+        <div class="rrowt"><span><b>Regulatory / visa change</b><br>AHPRA or migration rules shift</span><span class="sev high">High</span><span>Diversify across roles (PCW + nursing) &amp; corridors; modular workflow engine; in-house migration/compliance advisory; monitor policy.</span></div>
+        <div class="rrowt"><span><b>Candidate drop-off</b><br>Attrition during the long journey</span><span class="sev med">Med</span><span>Earn education + platform revenue early; mentoring &amp; readiness tracking; financing tied to milestones; cohort support.</span></div>
+        <div class="rrowt"><span><b>Placement / quality failure</b><br>Hire underperforms or leaves</span><span class="sev high">High</span><span>Verified credentials &amp; suitability scoring; employer ratings; replacement / partial-refund guarantee; post-placement support.</span></div>
+        <div class="rrowt"><span><b>Data privacy &amp; security</b><br>Sensitive PII across borders</span><span class="sev high">High</span><span>Encryption, RBAC, audit trail; AU Privacy Act + VN PDPD compliance; explicit consent; data-residency controls.</span></div>
+        <div class="rrowt"><span><b>Employer trust / adoption</b><br>Slow portal uptake</span><span class="sev med">Med</span><span>Lead with verified outcomes &amp; references; concierge onboarding; free first-placement pilots; transparent live status.</span></div>
+        <div class="rrowt"><span><b>Reputation / ethical recruitment</b><br>Worker-welfare scrutiny</span><span class="sev med">Med</span><span>Ethical-recruitment charter (no worker-paid placement fees); fair contracts; grievance channel; partner-RTO accreditation.</span></div>
+      </div>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>14</span></div>
+  </section>
+
+  <!-- 15 ROADMAP -->
+  <section class="slide light">
+    <div class="hdr"><div class="kicker">Roadmap</div><div class="htitle">From existing assets to a global marketplace</div></div>
+    <div class="body">
+      <div class="cols4">
+        <div class="card phase"><div class="bar" style="background:var(--navy)">Phase 1 · 0–3 mo</div><h3>Foundation</h3><p>Consolidate website, candidate DB &amp; dashboards into one data model. Launch employer portal MVP: search, verified profiles, staff orders.</p></div>
+        <div class="card phase"><div class="bar" style="background:var(--tealdk)">Phase 2 · 3–6 mo</div><h3>Workflow &amp; Trust</h3><p>Readiness pipeline, document vault, e-sign, messaging, payments. AHPRA/visa status tracking. First paid placements via portal.</p></div>
+        <div class="card phase"><div class="bar" style="background:#C8901A">Phase 3 · 6–12 mo</div><h3>Intelligence</h3><p>AI matching &amp; suitability scoring, employer subscriptions &amp; analytics, quality guarantees, self-serve onboarding.</p></div>
+        <div class="card phase"><div class="bar" style="background:var(--navy)">Phase 4 · 12 mo+</div><h3>Scale</h3><p>Expand to all ILA sectors; add Germany / Japan / Korea / Taiwan corridors. Open partner-RTO network.</p></div>
+      </div>
+    </div>
+    <div class="foot"><span>ViecVui · Global Talent Platform</span><span>15</span></div>
+  </section>
+
+  <!-- 16 CLOSE -->
+  <section class="slide dark">
+    <div class="titlewrap">
+      <div class="goldbar"></div><div class="blob blob1"></div>
+      <div class="t-kicker">The Opportunity</div>
+      <div class="t-title" style="font-size:2.9em">Turn a trusted job board into the rails of<br>Vietnam–Australia care migration</div>
+      <div class="t-sub" style="max-width:78%">Own the pipeline. Monetise education, placement and the platform. Build the trusted, compliant standard before competitors do — while the migration window is wide open.</div>
+      <div class="t-tag">Next step: align on Phase 1 scope &amp; stand up the employer portal MVP.</div>
+    </div>
+  </section>
+
+  </div>
+</div>
+
+<div class="hint">← → to navigate · F for fullscreen</div>
+<div class="nav">
+  <button onclick="go(-1)">‹ Prev</button>
+  <span class="count" id="count">1 / 13</span>
+  <button onclick="go(1)">Next ›</button>
+</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  function show(n){slides[i].classList.remove('active');i=(n+slides.length)%slides.length;slides[i].classList.add('active');document.getElementById('count').textContent=(i+1)+' / '+slides.length;}
+  function go(d){show(i+d);}
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')go(1);
+    else if(e.key==='ArrowLeft'||e.key==='PageUp')go(-1);
+    else if(e.key==='Home')show(0);
+    else if(e.key==='End')show(slides.length-1);
+    else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+  });
+</script>
+</body>
+</html>
