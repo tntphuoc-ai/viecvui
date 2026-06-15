@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViecVui — Dashboard Tiến độ & P&L</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0f1a; --surface:#131729; --card:#1a1f35; --card-hover:#1f2540;
+    --border:rgba(255,255,255,0.07); --border-strong:rgba(255,255,255,0.14);
+    --amber:#f59e0b; --amber-dim:rgba(245,158,11,0.12);
+    --red:#ef4444; --red-dim:rgba(239,68,68,0.12);
+    --green:#22c55e; --green-dim:rgba(34,197,94,0.12);
+    --blue:#60a5fa; --blue-dim:rgba(96,165,250,0.12);
+    --violet:#a78bfa; --violet-dim:rgba(167,139,250,0.12);
+    --teal:#2dd4bf; --grey:#64748b;
+    --text:#e8edf5; --text-2:#94a3b8; --text-3:#4f6080; --mono:'JetBrains Mono',monospace;
+    --p-student:#60a5fa; --p-training:#22c55e; --p-employer:#f59e0b; --p-visa:#a78bfa;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.55;min-height:100vh}
+  button,select,input{font-family:inherit}
+  nav{position:sticky;top:0;z-index:50;background:rgba(12,15,26,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;padding:0 26px;height:56px;flex-wrap:wrap;gap:8px}
+  .nav-brand{display:flex;align-items:center;gap:11px}
+  .nav-logo{width:27px;height:27px;border-radius:7px;background:var(--amber);display:flex;align-items:center;justify-content:center;
+    font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:12px;color:#0c0f1a}
+  .nav-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px}
+  .nav-sub{font-size:11px;color:var(--text-3);font-family:var(--mono)}
+  .nav-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn{border:1px solid var(--border-strong);background:var(--card);color:var(--text);border-radius:8px;padding:7px 13px;font-size:12.5px;cursor:pointer;transition:.15s;font-weight:500}
+  .btn:hover{background:var(--card-hover)}
+  .btn.primary{background:var(--amber);color:#0c0f1a;border-color:var(--amber);font-weight:700}
+  .btn.danger{color:var(--red);border-color:var(--red-dim)}
+  .btn.sm{padding:4px 9px;font-size:11px}
+  /* TABS */
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);padding:0 26px;background:var(--surface)}
+  .tab{padding:13px 18px;font-size:13.5px;font-weight:600;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;font-family:'Plus Jakarta Sans',sans-serif}
+  .tab:hover{color:var(--text)}
+  .tab.active{color:var(--amber);border-bottom-color:var(--amber)}
+  .pane{display:none}
+  .pane.active{display:block}
+  .wrap{max-width:1340px;margin:0 auto;padding:22px 26px 70px}
+  h2{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:17px;margin:28px 0 13px;display:flex;align-items:center;gap:9px}
+  h2 .ico{font-size:16px}
+  .muted{color:var(--text-2)}
+  .hint{font-size:12px;color:var(--text-3);margin-top:6px}
+  a.link{color:var(--amber);text-decoration:none;font-size:12.5px}
+  /* TEAM */
+  .team-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:760px){.team-row{grid-template-columns:1fr}}
+  .tcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;position:relative;overflow:hidden}
+  .tcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+  .tcard.ceo::before{background:var(--teal)} .tcard.cto::before{background:var(--p-visa)} .tcard.sales::before{background:var(--amber)}
+  .tcard .nm{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:15px}
+  .tcard .rl{font-size:11.5px;color:var(--text-3);font-family:var(--mono);margin:2px 0 9px}
+  .tcard .fn{font-size:12.5px;color:var(--text-2)}
+  .tcard .fn b{color:var(--text)}
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--surface),var(--card));border:1px solid var(--border);border-radius:16px;padding:22px 24px;display:flex;gap:30px;flex-wrap:wrap;align-items:center;margin-top:4px}
+  .goal-num{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:46px;line-height:1}
+  .goal-num small{font-size:20px;color:var(--text-3)}
+  .goal-lbl{font-family:var(--mono);font-size:11px;color:var(--amber);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+  .progress-area{flex:1;min-width:260px}
+  .pbar-track{height:30px;border-radius:8px;background:#0c0f1a;border:1px solid var(--border);overflow:hidden;display:flex}
+  .pbar-seg{height:100%;transition:width .4s}
+  .pbar-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--text-2)}
+  .pbar-legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:16px}
+  @media(max-width:1080px){.kpis{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .kpi .v{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:25px}
+  .kpi .l{font-size:11.5px;color:var(--text-3);font-family:var(--mono);margin-top:2px}
+  .party-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:880px){.party-row{grid-template-columns:repeat(2,1fr)}}
+  .pcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px;position:relative;overflow:hidden}
+  .pcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+  .pcard.student::before{background:var(--p-student)}.pcard.training::before{background:var(--p-training)}
+  .pcard.employer::before{background:var(--p-employer)}.pcard.visa::before{background:var(--p-visa)}
+  .pcard .ph{display:flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px}
+  .pcard .pmetric{font-size:12.5px;color:var(--text-2);margin-top:9px;display:flex;justify-content:space-between}
+  .pcard .pmetric b{color:var(--text)}
+  .mini-track{height:6px;border-radius:4px;background:#0c0f1a;overflow:hidden;margin-top:10px}
+  .mini-fill{height:100%}
+  .funnel{display:flex;flex-direction:column;gap:7px}
+  .frow{display:grid;grid-template-columns:185px 1fr 90px;gap:12px;align-items:center}
+  @media(max-width:560px){.frow{grid-template-columns:130px 1fr 70px}}
+  .frow .fl{font-size:12.5px;color:var(--text-2)}
+  .ftrack{height:26px;background:#0c0f1a;border:1px solid var(--border);border-radius:7px;overflow:hidden}
+  .ffill{height:100%;display:flex;align-items:center;padding-left:10px;font-size:12px;font-weight:600;color:#0c0f1a;white-space:nowrap;transition:width .4s}
+  .frow .fn{font-family:var(--mono);font-size:12px;text-align:right;color:var(--text-2)}
+  .kanban{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+  @media(max-width:1080px){.kanban{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.kanban{grid-template-columns:repeat(2,1fr)}}
+  .kcol{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px;min-height:60px}
+  .kcol h4{font-size:11.5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--text-2);display:flex;justify-content:space-between;margin-bottom:9px}
+  .kcol h4 b{color:var(--text)}
+  .kcard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 9px;margin-bottom:7px;cursor:grab;font-size:12.5px}
+  .kcard:active{cursor:grabbing}
+  .kcard.dragging{opacity:.4}
+  .kcard .kn{font-weight:600}
+  .kcard .kb{font-size:10.5px;color:var(--text-3);font-family:var(--mono);margin-top:1px}
+  .kcard .kchips{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+  .chip{width:9px;height:9px;border-radius:50%;display:inline-block}
+  .kcol.dragover{outline:2px dashed var(--amber);outline-offset:-4px}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:1000px}
+  th,td{border-bottom:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:middle}
+  thead th{background:var(--card);font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--text-2);text-transform:uppercase;position:sticky;top:0}
+  tbody tr:hover{background:rgba(255,255,255,0.02)}
+  td select{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px 6px;font-size:12px;max-width:140px}
+  td select.s-ok{border-color:var(--green);color:var(--green)}
+  td select.s-warn{border-color:var(--amber);color:var(--amber)}
+  td select.s-bad{border-color:var(--red);color:var(--red)}
+  td select.s-neutral{border-color:var(--border)}
+  .name-cell{font-weight:600;white-space:nowrap}
+  .risk-badge{font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:20px;font-weight:600}
+  .risk-on{background:var(--green-dim);color:var(--green)} .risk-warn{background:var(--amber-dim);color:var(--amber)}
+  .risk-off{background:var(--red-dim);color:var(--red)} .risk-done{background:var(--blue-dim);color:var(--blue)}
+  /* P&L */
+  .pl-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+  @media(max-width:900px){.pl-grid{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+  .panel h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;margin-bottom:12px}
+  table.pl{width:100%;border-collapse:collapse;font-size:13px;min-width:0}
+  table.pl td,table.pl th{border-bottom:1px solid var(--border);padding:8px 8px}
+  table.pl th{font-family:var(--mono);font-size:10.5px;color:var(--text-2);text-transform:uppercase;text-align:right}
+  table.pl th:first-child{text-align:left}
+  table.pl td{text-align:right;font-variant-numeric:tabular-nums}
+  table.pl td:first-child{text-align:left;color:var(--text-2)}
+  table.pl tr.sum td{font-weight:700;color:var(--text);border-top:1px solid var(--border-strong)}
+  table.pl tr.sub td:first-child{padding-left:20px;color:var(--text-3);font-size:12px}
+  .pos{color:var(--green)} .neg{color:var(--red)}
+  .assume{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+  .assume label{display:block;font-size:11px;color:var(--text-2);font-family:var(--mono);margin-bottom:3px}
+  .assume input{width:100%;background:var(--surface);color:var(--text);border:1px solid var(--border-strong);border-radius:7px;padding:7px 9px;font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+  .cashbox{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  @media(max-width:560px){.cashbox{grid-template-columns:1fr}}
+  .cashbox .cb{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .cashbox .cb .v{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:22px}
+  .cashbox .cb .l{font-size:11px;color:var(--text-3);font-family:var(--mono);margin-top:3px}
+  /* MODAL */
+  .overlay{position:fixed;inset:0;background:rgba(5,7,14,.7);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .overlay.show{display:flex}
+  .modal{background:var(--surface);border:1px solid var(--border-strong);border-radius:16px;padding:24px;width:100%;max-width:460px}
+  .modal h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;margin-bottom:16px}
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:12px;color:var(--text-2);margin-bottom:5px;font-family:var(--mono)}
+  .field input,.field select{width:100%;background:var(--card);color:var(--text);border:1px solid var(--border-strong);border-radius:8px;padding:9px 11px;font-size:13.5px}
+  .modal-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:20px}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--green);color:var(--green);
+    padding:10px 18px;border-radius:10px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;z-index:200}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand"><div class="nav-logo">VV</div>
+    <div><div class="nav-title">Dashboard · Tiến độ & P&L</div><div class="nav-sub">Aged Care Pathway · mục tiêu 50 / năm 1</div></div></div>
+  <div class="nav-actions">
+    <a class="link" href="ops_playbook.html">↗ Playbook</a>
+    <button class="btn sm" id="btnSeed">Dữ liệu mẫu</button>
+    <button class="btn sm" id="btnExport">Xuất CSV</button>
+    <button class="btn sm danger" id="btnReset">Xoá hết</button>
+    <button class="btn primary" id="btnAdd">+ Học viên</button>
+  </div>
+</nav>
+<div class="tabs">
+  <div class="tab active" data-tab="progress">📊 Tiến độ</div>
+  <div class="tab" data-tab="pl">💰 P&L Tracking</div>
+</div>
+
+<!-- ============ TAB: PROGRESS ============ -->
+<div class="pane active" id="pane-progress"><div class="wrap">
+
+  <h2 style="margin-top:6px"><span class="ico">👥</span> Đội ngũ & phân công (3 người tham gia)</h2>
+  <div class="team-row">
+    <div class="tcard ceo"><div class="nm">Nam — CEO</div><div class="rl">Điều hành & đối ngoại</div>
+      <div class="fn">Phụ trách: <b>Vận hành & Tài chính</b>, <b>Hồ sơ & Pháp chế</b>, oversight Đào tạo. Tiếp xúc nhà đầu tư, COLAB.</div></div>
+    <div class="tcard cto"><div class="nm">Pop — CTO</div><div class="rl">Công nghệ & dữ liệu</div>
+      <div class="fn">Phụ trách: <b>Công nghệ</b> — CRM/ATS, dashboard này, automation, BI. Đỡ chéo data cho mọi bộ phận.</div></div>
+    <div class="tcard sales"><div class="nm">Đội Sales / BD</div><div class="rl">Tăng trưởng</div>
+      <div class="fn">Phụ trách: <b>Marketing</b>, <b>Tuyển sinh</b> (B2C), <b>Phát triển đối tác</b> (B2B: employer, Upskilled, Nam An, RMA).</div></div>
+  </div>
+
+  <div class="hero">
+    <div><div class="goal-num"><span id="goalDone">0</span><small>/50</small></div><div class="goal-lbl">đã bay sang Úc</div></div>
+    <div class="progress-area">
+      <div class="pbar-track" id="pbar"></div>
+      <div class="pbar-legend">
+        <span><i class="dot" style="background:var(--blue)"></i>Recruitment <b id="lg-recruit">0</b></span>
+        <span><i class="dot" style="background:var(--green)"></i>Training <b id="lg-train">0</b></span>
+        <span><i class="dot" style="background:var(--violet)"></i>Visa <b id="lg-visa">0</b></span>
+        <span><i class="dot" style="background:var(--amber)"></i>Pre-departure <b id="lg-pre">0</b></span>
+        <span><i class="dot" style="background:#34d399"></i>Placed <b id="lg-placed">0</b></span>
+        <span><i class="dot" style="background:var(--grey)"></i>Dropped <b id="lg-drop">0</b></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v" id="k-total">0</div><div class="l">Tổng học viên</div></div>
+    <div class="kpi"><div class="v" id="k-active">0</div><div class="l">Đang trong pipeline</div></div>
+    <div class="kpi"><div class="v" style="color:var(--green)" id="k-ontrack">0</div><div class="l">On-track</div></div>
+    <div class="kpi"><div class="v" style="color:var(--amber)" id="k-risk">0</div><div class="l">At-risk</div></div>
+    <div class="kpi"><div class="v" style="color:var(--violet)" id="k-visa">0</div><div class="l">Visa đã nộp</div></div>
+    <div class="kpi"><div class="v" style="color:var(--amber)" id="k-gap">50</div><div class="l">Còn thiếu để đạt 50</div></div>
+  </div>
+
+  <h2><span class="ico">🧭</span> Tình trạng theo chặng</h2>
+  <div class="party-row">
+    <div class="pcard student"><div class="ph">🎯 Tuyển sinh</div>
+      <div class="pmetric"><span>Đã ký HĐ (paid)</span><b id="ps-a">0</b></div>
+      <div class="pmetric"><span>Đã bay</span><b id="ps-b">0</b></div>
+      <div class="mini-track"><div class="mini-fill" id="ps-fill" style="background:var(--p-student);width:0%"></div></div></div>
+    <div class="pcard training"><div class="ph">📚 Đào tạo</div>
+      <div class="pmetric"><span>IELTS 5.0+</span><b id="pt-ielts">0</b></div>
+      <div class="pmetric"><span>Cert III + Practicum</span><b id="pt-cert">0</b></div>
+      <div class="mini-track"><div class="mini-fill" id="pt-fill" style="background:var(--p-training);width:0%"></div></div></div>
+    <div class="pcard employer"><div class="ph">🏥 Employer</div>
+      <div class="pmetric"><span>Đã nomination</span><b id="pe-nom">0</b></div>
+      <div class="pmetric"><span>Đã ký HĐ lao động</span><b id="pe-con">0</b></div>
+      <div class="mini-track"><div class="mini-fill" id="pe-fill" style="background:var(--p-employer);width:0%"></div></div></div>
+    <div class="pcard visa"><div class="ph">🛂 Visa</div>
+      <div class="pmetric"><span>Đã nộp 482</span><b id="pv-lodged">0</b></div>
+      <div class="pmetric"><span>Đã được cấp</span><b id="pv-granted">0</b></div>
+      <div class="mini-track"><div class="mini-fill" id="pv-fill" style="background:var(--p-visa);width:0%"></div></div></div>
+  </div>
+
+  <h2><span class="ico">📉</span> Phễu chuyển đổi (so với mục tiêu 50 bay)</h2>
+  <div class="funnel" id="funnel"></div>
+
+  <h2><span class="ico">🗂️</span> Bảng tiến độ — kéo thẻ để đổi stage</h2>
+  <p class="hint" style="margin-bottom:12px">Kéo–thả thẻ sang cột khác để cập nhật stage. Mọi thay đổi tự lưu trên máy bạn (localStorage).</p>
+  <div class="kanban" id="kanban"></div>
+
+  <h2><span class="ico">📋</span> Chi tiết từng học viên</h2>
+  <div class="tbl-wrap"><table id="tbl"><thead><tr>
+    <th>Học viên</th><th>Batch</th><th>Stage</th><th>IELTS</th>
+    <th>Cert III (Upskilled)</th><th>Practicum (Nam An)</th><th>Skills</th>
+    <th>Employer</th><th>Visa</th><th>Trạng thái</th><th></th>
+  </tr></thead><tbody id="tbody"></tbody></table></div>
+  <p class="hint">On-track / At-risk tính tự động từ stage + tiến độ. Dữ liệu lưu trên trình duyệt máy này — bấm “Xuất CSV” để sao lưu.</p>
+</div></div>
+
+<!-- ============ TAB: P&L ============ -->
+<div class="pane" id="pane-pl"><div class="wrap">
+  <h2 style="margin-top:6px"><span class="ico">💰</span> P&L Tracking — Actual (từ roster) vs Target 50</h2>
+  <p class="hint" style="margin-bottom:14px">Doanh thu/chi phí tự tính từ danh sách học viên ở tab Tiến độ theo unit economics (P&L ViecVui). Sửa giả định bên phải để cập nhật ngay.</p>
+  <div class="pl-grid">
+    <div class="panel">
+      <h3>Bảng P&L (USD)</h3>
+      <table class="pl"><thead><tr><th>Khoản mục</th><th>Actual</th><th>Target 50</th></tr></thead>
+        <tbody id="pl-body"></tbody>
+      </table>
+      <div class="cashbox">
+        <div class="cb"><div class="v" id="cb-wc">$0</div><div class="l">Vốn lưu động</div></div>
+        <div class="cb"><div class="v" id="cb-cash">$0</div><div class="l">Cash position ước tính</div></div>
+        <div class="cb"><div class="v" id="cb-runway">0</div><div class="l">Runway (tháng)</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Giả định (sửa được)</h3>
+      <div class="assume">
+        <div><label>Training fee /HV</label><input type="number" id="a-train" value="4000"></div>
+        <div><label>Service fee /HV</label><input type="number" id="a-service" value="2000"></div>
+        <div><label>English fee /HV</label><input type="number" id="a-english" value="700"></div>
+        <div><label>Placement commission /HV</label><input type="number" id="a-comm" value="3585"></div>
+        <div><label>COGS RTO (Upskilled) /HV</label><input type="number" id="a-rto" value="2208"></div>
+        <div><label>COGS English (8A) /HV</label><input type="number" id="a-eng8a" value="500"></div>
+        <div><label>COGS dịch thuật /HV</label><input type="number" id="a-trans" value="80"></div>
+        <div><label>COGS practicum (Nam An) /HV</label><input type="number" id="a-prac" value="0"></div>
+        <div><label>OPEX / tháng</label><input type="number" id="a-opex" value="15519"></div>
+        <div><label>Số tháng đã chạy</label><input type="number" id="a-months" value="1"></div>
+        <div><label>Vốn lưu động (USD)</label><input type="number" id="a-wc" value="150000"></div>
+        <div><label>Mục tiêu (HV)</label><input type="number" id="a-target" value="50"></div>
+      </div>
+      <p class="hint" style="margin-top:12px">Ghi nhận: học phí (training+service+English) khi HV đã <b>nhập học</b> (paid). Commission 40% khi <b>nomination</b>, 60% còn lại khi <b>visa cấp</b>. COGS tính theo HV đã nhập học.</p>
+    </div>
+  </div>
+
+  <h2><span class="ico">🧮</span> Đơn vị kinh tế / học viên</h2>
+  <div class="pl-grid">
+    <div class="panel"><h3>Per-student economics</h3>
+      <table class="pl"><tbody id="unit-body"></tbody></table>
+    </div>
+    <div class="panel"><h3>Diễn giải</h3>
+      <p class="hint" id="pl-note" style="line-height:1.6"></p>
+    </div>
+  </div>
+</div></div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay"><div class="modal">
+  <h3 id="modalTitle">Thêm học viên</h3>
+  <div class="field"><label>Họ tên</label><input id="f-name" placeholder="VD: Nguyễn Thị A"></div>
+  <div class="field"><label>Batch</label><select id="f-batch"><option>Batch 1</option><option>Batch 2</option><option>Batch 3</option><option>Batch 4</option></select></div>
+  <div class="field"><label>Stage</label><select id="f-stage"></select></div>
+  <div class="modal-actions"><button class="btn" id="btnCancel">Huỷ</button><button class="btn primary" id="btnSave">Lưu</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var LS_KEY="viecvui_dashboard_v2";
+  var STAGES=[
+    {id:"recruit",label:"Recruitment",color:"var(--blue)"},
+    {id:"train",label:"Training",color:"var(--green)"},
+    {id:"visa",label:"Visa",color:"var(--violet)"},
+    {id:"pre",label:"Pre-departure",color:"var(--amber)"},
+    {id:"placed",label:"Placed",color:"#34d399"},
+    {id:"drop",label:"Dropped",color:"var(--grey)"}
+  ];
+  var FIELDS={
+    ielts:["Chưa thi","< 4.5","4.5","5.0","5.5+"],
+    cert:["Chưa bắt đầu","Đang học","Hoàn thành"],
+    practicum:["Chưa","Đang làm","Hoàn thành"],
+    skills:["Chưa nộp","Đã nộp","Đạt"],
+    employer:["Chưa","Shortlisted","Nomination","Đã ký HĐ"],
+    visa:["Chưa nộp","Đã nộp","Đã cấp","Từ chối"]
+  };
+  var ASSUME_KEYS=["a-train","a-service","a-english","a-comm","a-rto","a-eng8a","a-trans","a-prac","a-opex","a-months","a-wc","a-target"];
+
+  var students=[], editingId=null, nextId=1;
+  function uid(){return "s"+(nextId++)+"_"+Math.random().toString(36).slice(2,6);}
+  function $(id){return document.getElementById(id);}
+  function set(id,v){var e=$(id);if(e)e.textContent=v;}
+  function byId(id){for(var i=0;i<students.length;i++)if(students[i].id===id)return students[i];return null;}
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+  function fmt(n){return "$"+Math.round(n).toLocaleString("en-US");}
+
+  function load(){
+    try{var raw=localStorage.getItem(LS_KEY);if(raw){var o=JSON.parse(raw);students=o.students||[];nextId=o.nextId||(students.length+1);
+      if(o.assume){ASSUME_KEYS.forEach(function(k){if(o.assume[k]!=null&&$(k))$(k).value=o.assume[k];});}return true;}}catch(e){}
+    return false;
+  }
+  function save(){
+    var assume={};ASSUME_KEYS.forEach(function(k){assume[k]=$(k)?$(k).value:null;});
+    try{localStorage.setItem(LS_KEY,JSON.stringify({students:students,nextId:nextId,assume:assume}));}catch(e){}
+  }
+
+  function seedData(){
+    var names=["Nguyễn Thị Hương","Trần Văn Khôi","Lê Thị Hà","Phạm Minh Tú","Đặng Thị Mai","Võ Quốc Bảo",
+      "Bùi Thị Lan","Hoàng Văn Nam","Đỗ Thị Thu","Ngô Minh Quân","Lý Thị Ngọc","Phan Văn Đức"];
+    var P=[
+      {stage:"placed",ielts:"5.5+",cert:"Hoàn thành",practicum:"Hoàn thành",skills:"Đạt",employer:"Đã ký HĐ",visa:"Đã cấp",batch:"Batch 1"},
+      {stage:"pre",ielts:"5.0",cert:"Hoàn thành",practicum:"Hoàn thành",skills:"Đạt",employer:"Đã ký HĐ",visa:"Đã cấp",batch:"Batch 1"},
+      {stage:"visa",ielts:"5.0",cert:"Hoàn thành",practicum:"Hoàn thành",skills:"Đã nộp",employer:"Nomination",visa:"Đã nộp",batch:"Batch 1"},
+      {stage:"visa",ielts:"5.0",cert:"Hoàn thành",practicum:"Hoàn thành",skills:"Đạt",employer:"Nomination",visa:"Đã nộp",batch:"Batch 1"},
+      {stage:"train",ielts:"4.5",cert:"Đang học",practicum:"Đang làm",skills:"Đã nộp",employer:"Shortlisted",visa:"Chưa nộp",batch:"Batch 2"},
+      {stage:"train",ielts:"4.5",cert:"Đang học",practicum:"Chưa",skills:"Chưa nộp",employer:"Chưa",visa:"Chưa nộp",batch:"Batch 2"},
+      {stage:"train",ielts:"< 4.5",cert:"Đang học",practicum:"Chưa",skills:"Chưa nộp",employer:"Chưa",visa:"Chưa nộp",batch:"Batch 2"},
+      {stage:"train",ielts:"4.5",cert:"Đang học",practicum:"Đang làm",skills:"Đã nộp",employer:"Shortlisted",visa:"Chưa nộp",batch:"Batch 2"},
+      {stage:"recruit",ielts:"Chưa thi",cert:"Chưa bắt đầu",practicum:"Chưa",skills:"Chưa nộp",employer:"Chưa",visa:"Chưa nộp",batch:"Batch 3"},
+      {stage:"recruit",ielts:"< 4.5",cert:"Chưa bắt đầu",practicum:"Chưa",skills:"Chưa nộp",employer:"Chưa",visa:"Chưa nộp",batch:"Batch 3"},
+      {stage:"recruit",ielts:"Chưa thi",cert:"Chưa bắt đầu",practicum:"Chưa",skills:"Chưa nộp",employer:"Chưa",visa:"Chưa nộp",batch:"Batch 3"},
+      {stage:"drop",ielts:"< 4.5",cert:"Đang học",practicum:"Chưa",skills:"Chưa nộp",employer:"Chưa",visa:"Chưa nộp",batch:"Batch 2"}
+    ];
+    students=[];nextId=1;
+    for(var i=0;i<names.length;i++){var p=P[i];students.push({id:uid(),name:names[i],batch:p.batch,stage:p.stage,
+      ielts:p.ielts,cert:p.cert,practicum:p.practicum,skills:p.skills,employer:p.employer,visa:p.visa});}
+    save();renderAll();toast("Đã nạp 12 học viên mẫu");
+  }
+
+  function isPlaced(s){return s.stage==="placed";}
+  function isDropped(s){return s.stage==="drop";}
+  function active(s){return !isDropped(s)&&!isPlaced(s);}
+  function paid(s){return s.stage==="train"||s.stage==="visa"||s.stage==="pre"||s.stage==="placed";}
+  function ieltsOk(s){return s.ielts==="5.0"||s.ielts==="5.5+";}
+  function certDone(s){return s.cert==="Hoàn thành";}
+  function pracDone(s){return s.practicum==="Hoàn thành";}
+  function nominated(s){return s.employer==="Nomination"||s.employer==="Đã ký HĐ";}
+  function visaLodgedS(s){return s.visa==="Đã nộp"||s.visa==="Đã cấp";}
+
+  function riskOf(s){
+    if(isPlaced(s))return {cls:"risk-done",label:"Đã bay"};
+    if(isDropped(s))return {cls:"risk-off",label:"Dropped"};
+    var p=0;
+    if(s.stage==="train"){if(s.ielts==="Chưa thi"||s.ielts==="< 4.5")p++;if(s.cert==="Chưa bắt đầu")p++;}
+    if(s.stage==="visa"){if(!ieltsOk(s))p++;if(!certDone(s))p++;if(!pracDone(s))p++;if(s.employer==="Chưa")p++;}
+    if(s.stage==="pre"){if(s.visa!=="Đã cấp")p++;if(s.employer!=="Đã ký HĐ")p++;}
+    if(s.visa==="Từ chối")p+=2;
+    return p>0?{cls:"risk-warn",label:"At-risk"}:{cls:"risk-on",label:"On-track"};
+  }
+
+  function counts(){
+    var c={total:students.length,active:0,placed:0,drop:0,visaLodged:0,visaGranted:0,ontrack:0,risk:0,
+      byStage:{},ieltsOk:0,certDone:0,pracDone:0,nom:0,empContract:0,studentReady:0,paid:0};
+    STAGES.forEach(function(st){c.byStage[st.id]=0;});
+    students.forEach(function(s){
+      c.byStage[s.stage]=(c.byStage[s.stage]||0)+1;
+      if(isPlaced(s))c.placed++; if(isDropped(s))c.drop++; if(active(s))c.active++;
+      if(paid(s))c.paid++;
+      if(visaLodgedS(s))c.visaLodged++; if(s.visa==="Đã cấp")c.visaGranted++;
+      if(ieltsOk(s))c.ieltsOk++; if(certDone(s))c.certDone++; if(pracDone(s))c.pracDone++;
+      if(nominated(s))c.nom++; if(s.employer==="Đã ký HĐ")c.empContract++;
+      if(active(s)&&ieltsOk(s)&&certDone(s)&&pracDone(s))c.studentReady++;
+      if(!isDropped(s)){var r=riskOf(s);if(r.label==="On-track"||r.label==="Đã bay")c.ontrack++;else if(r.label==="At-risk")c.risk++;}
+    });
+    return c;
+  }
+
+  function renderAll(){
+    var c=counts();
+    set("goalDone",c.placed);set("k-total",c.total);set("k-active",c.active);
+    set("k-ontrack",c.ontrack);set("k-risk",c.risk);set("k-visa",c.visaLodged);set("k-gap",Math.max(0,50-c.placed));
+    set("lg-recruit",c.byStage.recruit);set("lg-train",c.byStage.train);set("lg-visa",c.byStage.visa);
+    set("lg-pre",c.byStage.pre);set("lg-placed",c.byStage.placed);set("lg-drop",c.byStage.drop);
+    var pbar=$("pbar");pbar.innerHTML="";
+    [["recruit","var(--blue)"],["train","var(--green)"],["visa","var(--violet)"],["pre","var(--amber)"],["placed","#34d399"]].forEach(function(sg){
+      var n=c.byStage[sg[0]];if(!n)return;var d=document.createElement("div");d.className="pbar-seg";
+      d.style.width=(n/50*100)+"%";d.style.background=sg[1];d.title=sg[0]+": "+n;pbar.appendChild(d);});
+    set("ps-a",c.paid);set("ps-b",c.placed);$("ps-fill").style.width=Math.min(100,c.placed/50*100)+"%";
+    set("pt-ielts",c.ieltsOk);set("pt-cert",c.pracDone+"/"+c.certDone);$("pt-fill").style.width=(c.total?c.certDone/c.total*100:0)+"%";
+    set("pe-nom",c.nom);set("pe-con",c.empContract);$("pe-fill").style.width=(c.total?c.nom/c.total*100:0)+"%";
+    set("pv-lodged",c.visaLodged);set("pv-granted",c.visaGranted);$("pv-fill").style.width=(c.total?c.visaLodged/c.total*100:0)+"%";
+    renderFunnel(c);renderKanban();renderTable();renderPL(c);
+    save();
+  }
+
+  function renderFunnel(c){
+    var rows=[
+      ["Đã ký hợp đồng",c.total,"var(--blue)"],
+      ["Đã nhập học (paid)",c.paid+c.placed-(c.placed?0:0),"#22d3ee"],
+      ["IELTS 5.0+",c.ieltsOk,"#22d3ee"],
+      ["Cert III hoàn thành",c.certDone,"var(--green)"],
+      ["Practicum hoàn thành",c.pracDone,"#4ade80"],
+      ["Employer nomination",c.nom,"var(--amber)"],
+      ["Visa nộp",c.visaLodged,"var(--violet)"],
+      ["Visa cấp",c.visaGranted,"#c4b5fd"],
+      ["Đã bay (Placed)",c.placed,"#34d399"]
+    ];
+    var max=Math.max(50,c.total,1);var f=$("funnel");f.innerHTML="";
+    rows.forEach(function(r){var pct=Math.min(100,r[1]/max*100);var div=document.createElement("div");div.className="frow";
+      div.innerHTML='<div class="fl">'+r[0]+'</div><div class="ftrack"><div class="ffill" style="width:'+pct+'%;background:'+r[2]+'">'+(r[1]>0?r[1]:"")+'</div></div><div class="fn">'+r[1]+' / 50</div>';
+      f.appendChild(div);});
+  }
+
+  function chipColor(s){return [
+    ieltsOk(s)?"var(--green)":"#3b4660",
+    certDone(s)?"var(--green)":"#3b4660",
+    pracDone(s)?"#4ade80":"#3b4660",
+    nominated(s)?"var(--amber)":"#3b4660",
+    visaLodgedS(s)?"var(--violet)":"#3b4660"];}
+
+  function renderKanban(){
+    var k=$("kanban");k.innerHTML="";
+    STAGES.forEach(function(st){
+      var col=document.createElement("div");col.className="kcol";col.dataset.stage=st.id;
+      var inCol=students.filter(function(s){return s.stage===st.id;});
+      col.innerHTML='<h4><span>'+st.label+'</span><b>'+inCol.length+'</b></h4>';
+      inCol.forEach(function(s){var card=document.createElement("div");card.className="kcard";card.draggable=true;card.dataset.id=s.id;
+        var chips=chipColor(s).map(function(c){return '<span class="chip" style="background:'+c+'"></span>';}).join("");
+        card.innerHTML='<div class="kn">'+escapeHtml(s.name)+'</div><div class="kb">'+s.batch+'</div><div class="kchips">'+chips+'</div>';
+        col.appendChild(card);});
+      k.appendChild(col);});
+    wireDnD();
+  }
+
+  function ieltsOkVal(v){return v==="5.0"||v==="5.5+";}
+  function selClass(field,val){
+    if(field==="ielts")return ieltsOkVal(val)?"s-ok":(val==="4.5"?"s-warn":"s-neutral");
+    if(field==="cert")return val==="Hoàn thành"?"s-ok":(val==="Đang học"?"s-warn":"s-neutral");
+    if(field==="practicum")return val==="Hoàn thành"?"s-ok":(val==="Đang làm"?"s-warn":"s-neutral");
+    if(field==="skills")return val==="Đạt"?"s-ok":(val==="Đã nộp"?"s-warn":"s-neutral");
+    if(field==="employer")return val==="Đã ký HĐ"?"s-ok":((val==="Nomination"||val==="Shortlisted")?"s-warn":"s-neutral");
+    if(field==="visa")return val==="Đã cấp"?"s-ok":(val==="Từ chối"?"s-bad":(val==="Đã nộp"?"s-warn":"s-neutral"));
+    return "s-neutral";
+  }
+  function buildSelect(field,val,id){
+    var opts=FIELDS[field].map(function(o){return '<option'+(o===val?' selected':'')+'>'+o+'</option>';}).join("");
+    return '<select class="'+selClass(field,val)+'" data-id="'+id+'" data-field="'+field+'">'+opts+'</select>';
+  }
+  function buildStageSelect(val,id){
+    var opts=STAGES.map(function(st){return '<option value="'+st.id+'"'+(st.id===val?' selected':'')+'>'+st.label+'</option>';}).join("");
+    return '<select data-id="'+id+'" data-field="stage" class="s-neutral">'+opts+'</select>';
+  }
+  function renderTable(){
+    var tb=$("tbody");tb.innerHTML="";
+    if(!students.length){tb.innerHTML='<tr><td colspan="11" style="text-align:center;color:var(--text-3);padding:26px">Chưa có học viên. Bấm “+ Học viên” hoặc “Dữ liệu mẫu”.</td></tr>';return;}
+    students.forEach(function(s){var r=riskOf(s);var tr=document.createElement("tr");
+      tr.innerHTML='<td class="name-cell">'+escapeHtml(s.name)+'</td><td>'+s.batch+'</td><td>'+buildStageSelect(s.stage,s.id)+'</td>'+
+        '<td>'+buildSelect("ielts",s.ielts,s.id)+'</td><td>'+buildSelect("cert",s.cert,s.id)+'</td>'+
+        '<td>'+buildSelect("practicum",s.practicum,s.id)+'</td><td>'+buildSelect("skills",s.skills,s.id)+'</td>'+
+        '<td>'+buildSelect("employer",s.employer,s.id)+'</td><td>'+buildSelect("visa",s.visa,s.id)+'</td>'+
+        '<td><span class="risk-badge '+r.cls+'">'+r.label+'</span></td>'+
+        '<td><button class="btn sm danger" data-del="'+s.id+'">Xoá</button></td>';
+      tb.appendChild(tr);});
+    Array.prototype.forEach.call(tb.querySelectorAll("select"),function(sel){
+      sel.addEventListener("change",function(){var s=byId(sel.dataset.id);if(!s)return;s[sel.dataset.field]=sel.value;renderAll();});});
+    Array.prototype.forEach.call(tb.querySelectorAll("[data-del]"),function(b){
+      b.addEventListener("click",function(){if(confirm("Xoá học viên này?")){students=students.filter(function(x){return x.id!==b.dataset.del;});renderAll();toast("Đã xoá");}});});
+  }
+
+  function wireDnD(){
+    var cards=document.querySelectorAll(".kcard");var cols=document.querySelectorAll(".kcol");var dragId=null;
+    cards.forEach(function(card){
+      card.addEventListener("dragstart",function(){dragId=card.dataset.id;card.classList.add("dragging");});
+      card.addEventListener("dragend",function(){card.classList.remove("dragging");});});
+    cols.forEach(function(col){
+      col.addEventListener("dragover",function(e){e.preventDefault();col.classList.add("dragover");});
+      col.addEventListener("dragleave",function(){col.classList.remove("dragover");});
+      col.addEventListener("drop",function(e){e.preventDefault();col.classList.remove("dragover");var s=byId(dragId);if(s){s.stage=col.dataset.stage;renderAll();}});});
+  }
+
+  // ---------- P&L ----------
+  function num(id){var v=parseFloat($(id).value);return isNaN(v)?0:v;}
+  function renderPL(c){
+    var train=num("a-train"),service=num("a-service"),english=num("a-english"),comm=num("a-comm"),
+        rto=num("a-rto"),eng8a=num("a-eng8a"),trans=num("a-trans"),prac=num("a-prac"),
+        opex=num("a-opex"),months=num("a-months"),wc=num("a-wc"),target=num("a-target")||50;
+    var cogsPer=rto+eng8a+trans+prac;
+    // Actual (from roster)
+    var tuition=c.paid*(train+service+english);
+    var comm40=c.nom*(comm*0.4);
+    var comm60=c.visaGranted*(comm*0.6);
+    var revA=tuition+comm40+comm60;
+    var cogsA=c.paid*cogsPer;
+    var grossA=revA-cogsA;
+    var opexA=opex*months;
+    var ebitdaA=grossA-opexA;
+    // Target (50 fully through)
+    var revT=target*(train+service+english+comm);
+    var cogsT=target*cogsPer;
+    var grossT=revT-cogsT;
+    var opexT=opex*12;
+    var ebitdaT=grossT-opexT;
+    function row(label,a,t,cls,sub){
+      return '<tr class="'+(cls||"")+(sub?" sub":"")+'"><td>'+label+'</td><td>'+fmt(a)+'</td><td>'+fmt(t)+'</td></tr>';
+    }
+    var html="";
+    html+=row("Học phí (training+service+English)",tuition,target*(train+service+english),"sub");
+    html+=row("Commission 40% (nomination)",comm40,target*comm*0.4,"sub");
+    html+=row("Commission 60% (visa cấp)",comm60,target*comm*0.6,"sub");
+    html+=row("Tổng doanh thu",revA,revT,"sum");
+    html+=row("COGS (Upskilled+8A+dịch+practicum)",cogsA,cogsT,"sub");
+    html+=row("Gross profit",grossA,grossT,"sum");
+    html+=row("OPEX",opexA,opexT,"sub");
+    html+='<tr class="sum"><td>EBITDA</td><td class="'+(ebitdaA>=0?"pos":"neg")+'">'+fmt(ebitdaA)+'</td><td class="'+(ebitdaT>=0?"pos":"neg")+'">'+fmt(ebitdaT)+'</td></tr>';
+    $("pl-body").innerHTML=html;
+    // cash
+    var cash=wc+ebitdaA;
+    var runway=opex>0?Math.max(0,cash)/opex:0;
+    set("cb-wc",fmt(wc));set("cb-cash",fmt(cash));set("cb-runway",runway.toFixed(1));
+    var cbCash=$("cb-cash");cbCash.style.color=cash<opex*3?"var(--red)":(cash<opex*4?"var(--amber)":"var(--green)");
+    // unit economics
+    var revPer=train+service+english+comm;
+    var gpPer=revPer-cogsPer;
+    var u="";
+    u+='<tr><td>Doanh thu / HV</td><td>'+fmt(revPer)+'</td></tr>';
+    u+='<tr class="sub"><td>— Training</td><td>'+fmt(train)+'</td></tr>';
+    u+='<tr class="sub"><td>— Service</td><td>'+fmt(service)+'</td></tr>';
+    u+='<tr class="sub"><td>— English</td><td>'+fmt(english)+'</td></tr>';
+    u+='<tr class="sub"><td>— Placement commission</td><td>'+fmt(comm)+'</td></tr>';
+    u+='<tr><td>COGS / HV</td><td>'+fmt(cogsPer)+'</td></tr>';
+    u+='<tr class="sum"><td>Gross profit / HV</td><td class="pos">'+fmt(gpPer)+'</td></tr>';
+    u+='<tr><td>Gross margin</td><td>'+(revPer?Math.round(gpPer/revPer*100):0)+'%</td></tr>';
+    u+='<tr><td>Break-even (HV/năm)</td><td>'+(gpPer>0?Math.ceil(opex*12/gpPer):"—")+'</td></tr>';
+    $("unit-body").innerHTML=u;
+    $("pl-note").innerHTML="Hiện <b>"+c.paid+"</b> HV đã nhập học, <b>"+c.nom+"</b> đã nomination, <b>"+c.visaGranted+"</b> đã được cấp visa. "+
+      "Actual EBITDA <b>"+fmt(ebitdaA)+"</b> với "+months+" tháng OPEX. "+
+      "Runway còn <b>"+runway.toFixed(1)+" tháng</b> — "+(cash<opex*4?"<span class='neg'>dưới ngưỡng an toàn 4 tháng, cần inject vốn hoặc đẩy nhanh commission.</span>":"<span class='pos'>trên ngưỡng an toàn 4 tháng.</span>")+
+      " Mỗi HV tạo gross profit ~"+fmt(gpPer)+" ("+(revPer?Math.round(gpPer/revPer*100):0)+"% margin); cần ~"+(gpPer>0?Math.ceil(opex*12/gpPer):"—")+" HV/năm để hoà vốn OPEX.";
+  }
+
+  // ---------- Modal ----------
+  function openModal(id){
+    editingId=id||null;var stageSel=$("f-stage");
+    stageSel.innerHTML=STAGES.map(function(st){return '<option value="'+st.id+'">'+st.label+'</option>';}).join("");
+    if(id){var s=byId(id);$("modalTitle").textContent="Sửa học viên";$("f-name").value=s.name;$("f-batch").value=s.batch;stageSel.value=s.stage;}
+    else{$("modalTitle").textContent="Thêm học viên";$("f-name").value="";$("f-batch").value="Batch 1";stageSel.value="recruit";}
+    $("overlay").classList.add("show");$("f-name").focus();
+  }
+  function closeModal(){$("overlay").classList.remove("show");editingId=null;}
+  function saveModal(){
+    var name=$("f-name").value.trim();if(!name){$("f-name").focus();return;}
+    var batch=$("f-batch").value,stage=$("f-stage").value;
+    if(editingId){var s=byId(editingId);s.name=name;s.batch=batch;s.stage=stage;toast("Đã cập nhật");}
+    else{students.push({id:uid(),name:name,batch:batch,stage:stage,ielts:"Chưa thi",cert:"Chưa bắt đầu",practicum:"Chưa",skills:"Chưa nộp",employer:"Chưa",visa:"Chưa nộp"});toast("Đã thêm học viên");}
+    closeModal();renderAll();
+  }
+
+  function exportCSV(){
+    var head=["Name","Batch","Stage","IELTS","CertIII_Upskilled","Practicum_NamAn","SkillsAssessment","Employer","Visa","Status"];
+    var rows=[head];
+    students.forEach(function(s){rows.push([s.name,s.batch,stageLabel(s.stage),s.ielts,s.cert,s.practicum,s.skills,s.employer,s.visa,riskOf(s).label]);});
+    var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(",");}).join("\n");
+    var blob=new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8;"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="ViecVui_progress_"+new Date().toISOString().slice(0,10)+".csv";a.click();
+    toast("Đã xuất CSV");
+  }
+  function stageLabel(id){for(var i=0;i<STAGES.length;i++)if(STAGES[i].id===id)return STAGES[i].label;return id;}
+
+  var toastTimer=null;
+  function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove("show");},1800);}
+
+  // tabs
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(tab){
+    tab.addEventListener("click",function(){
+      document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active");});
+      document.querySelectorAll(".pane").forEach(function(p){p.classList.remove("active");});
+      tab.classList.add("active");$("pane-"+tab.dataset.tab).classList.add("active");
+    });
+  });
+
+  // wire
+  $("btnAdd").addEventListener("click",function(){openModal(null);});
+  $("btnCancel").addEventListener("click",closeModal);
+  $("btnSave").addEventListener("click",saveModal);
+  $("overlay").addEventListener("click",function(e){if(e.target===$("overlay"))closeModal();});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")closeModal();if(e.key==="Enter"&&$("overlay").classList.contains("show"))saveModal();});
+  $("btnSeed").addEventListener("click",function(){if(!students.length||confirm("Thay dữ liệu hiện tại bằng 12 học viên mẫu?"))seedData();});
+  $("btnExport").addEventListener("click",exportCSV);
+  $("btnReset").addEventListener("click",function(){if(confirm("Xoá toàn bộ học viên?")){students=[];nextId=1;renderAll();toast("Đã xoá hết");}});
+  ASSUME_KEYS.forEach(function(k){var el=$(k);if(el)el.addEventListener("input",function(){renderPL(counts());save();});});
+
+  if(!load()){seedData();}else{renderAll();}
+})();
+</script>
+</body>
+</html>
