@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViecVui — Nursing Ops Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0f1a;
+    --surface: #131729;
+    --card: #1a1f35;
+    --card-hover: #1f2540;
+    --border: rgba(255,255,255,0.07);
+    --border-strong: rgba(255,255,255,0.14);
+    --amber: #f59e0b;
+    --amber-dim: rgba(245,158,11,0.12);
+    --amber-border: rgba(245,158,11,0.3);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.1);
+    --red-border: rgba(239,68,68,0.3);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --green-border: rgba(34,197,94,0.3);
+    --blue: #60a5fa;
+    --blue-dim: rgba(96,165,250,0.1);
+    --blue-border: rgba(96,165,250,0.3);
+    --text: #e8edf5;
+    --text-2: #94a3b8;
+    --text-3: #4f6080;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .no-print { display: none; }
+    body { background: #fff; color: #111; }
+    .card, .phase-block { break-inside: avoid; }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(12,15,26,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 58px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-logo {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: var(--amber); display: flex; align-items: center;
+    justify-content: center; font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 13px; color: #0c0f1a;
+  }
+  .nav-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.02em; }
+  .nav-subtitle { font-size: 11px; color: var(--text-3); font-family: var(--mono); }
+  .nav-pills { display: flex; gap: 4px; }
+  .nav-pill {
+    padding: 5px 14px; border-radius: 20px; font-size: 12px;
+    color: var(--text-2); text-decoration: none; transition: all 0.15s;
+  }
+  .nav-pill:hover { background: var(--card); color: var(--text); }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1140px; margin: 0 auto; padding: 0 40px; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--amber-dim); border: 1px solid var(--amber-border);
+    border-radius: 20px; padding: 4px 14px; font-size: 11px;
+    font-family: var(--mono); color: var(--amber); margin-bottom: 20px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .hero-tag::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--amber); animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .hero h1 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 42px; line-height: 1.15; letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--amber); }
+  .hero-sub { font-size: 16px; color: var(--text-2); max-width: 600px; margin-bottom: 36px; }
+
+  /* ── STAT STRIP ── */
+  .stat-strip {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  }
+  .stat {
+    background: var(--surface); padding: 18px 20px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .stat-val {
+    font-family: var(--mono); font-size: 22px; font-weight: 500;
+    color: var(--text);
+  }
+  .stat-val.red { color: var(--red); }
+  .stat-val.amber { color: var(--amber); }
+  .stat-val.green { color: var(--green); }
+  .stat-lbl { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.07em; }
+
+  /* ── WARNING BANNER ── */
+  .warning-banner {
+    background: var(--red-dim); border: 1px solid var(--red-border);
+    border-radius: 12px; padding: 20px 24px; margin: 32px 0 0;
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+  .warning-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .warning-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--red); margin-bottom: 6px; }
+  .warning-items { display: flex; flex-direction: column; gap: 5px; }
+  .warning-item { font-size: 13px; color: var(--text-2); display: flex; gap: 10px; }
+  .warning-item::before { content: '→'; color: var(--red); flex-shrink: 0; }
+
+  /* ── SECTION ── */
+  section { padding: 52px 0; border-bottom: 1px solid var(--border); }
+  .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 32px; }
+  .section-num {
+    font-family: var(--mono); font-size: 11px; color: var(--text-3);
+    background: var(--card); border: 1px solid var(--border);
+    padding: 3px 10px; border-radius: 4px;
+  }
+  .section-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 22px; }
+  .section-sub { font-size: 13px; color: var(--text-3); margin-top: 2px; }
+  .phase-badge {
+    display: inline-block; padding: 3px 12px; border-radius: 4px;
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.05em; margin-bottom: 8px;
+  }
+  .phase-badge.p1 { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-border); }
+  .phase-badge.p2 { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
+  .phase-badge.p3 { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+  .phase-badge.p4 { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    display: flex; gap: 0;
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .tl-phase {
+    flex: 1; padding: 16px 18px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .tl-phase:last-child { border-right: none; }
+  .tl-phase.active { background: var(--card); }
+  .tl-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); font-family: var(--mono); margin-bottom: 4px; }
+  .tl-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+  .tl-dates { font-size: 11px; color: var(--text-3); font-family: var(--mono); }
+  .tl-bar { height: 3px; border-radius: 2px; margin-top: 10px; }
+  .tl-bar.red { background: var(--red); }
+  .tl-bar.amber { background: var(--amber); }
+  .tl-bar.blue { background: var(--blue); }
+  .tl-bar.green { background: var(--green); }
+
+  /* ── CARDS ── */
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 22px 24px;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: var(--border-strong); }
+  .card.critical { border-color: var(--red-border); border-left: 3px solid var(--red); }
+  .card.warning-card { border-left: 3px solid var(--amber); }
+  .card-icon { font-size: 20px; margin-bottom: 12px; }
+  .card-title {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .card-body { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+  .card-footer {
+    margin-top: 16px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-meta { font-size: 11px; color: var(--text-3); font-family: var(--mono); }
+
+  /* ── GATE CARDS ── */
+  .gate {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; margin-bottom: 16px;
+  }
+  .gate-header {
+    padding: 18px 24px; display: flex; align-items: center;
+    justify-content: space-between; border-bottom: 1px solid var(--border);
+  }
+  .gate-header-left { display: flex; align-items: center; gap: 14px; }
+  .gate-num {
+    width: 36px; height: 36px; border-radius: 9px; display: flex;
+    align-items: center; justify-content: center;
+    font-family: var(--mono); font-weight: 500; font-size: 14px; flex-shrink: 0;
+  }
+  .gate-num.red { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-border); }
+  .gate-num.amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
+  .gate-num.blue { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+  .gate-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; }
+  .gate-desc { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+  .gate-status {
+    font-size: 11px; font-family: var(--mono); padding: 4px 12px;
+    border-radius: 20px; border: 1px solid;
+  }
+  .gate-status.open { color: var(--red); border-color: var(--red-border); background: var(--red-dim); }
+  .gate-status.pending { color: var(--amber); border-color: var(--amber-border); background: var(--amber-dim); }
+  .gate-body { padding: 20px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .gate-col-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-3); font-family: var(--mono); margin-bottom: 10px; }
+
+  /* ── CHECKLIST ── */
+  .checklist { display: flex; flex-direction: column; gap: 7px; }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; color: var(--text-2); line-height: 1.5;
+  }
+  .check-box {
+    width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0;
+    border: 1.5px solid var(--border-strong); margin-top: 2px;
+    background: transparent;
+  }
+  .check-item.red .check-box { border-color: var(--red); }
+  .check-item.amber .check-box { border-color: var(--amber); }
+  .check-item strong { color: var(--text); font-weight: 500; }
+
+  /* ── RED FLAGS ── */
+  .red-flags { display: flex; flex-direction: column; gap: 7px; }
+  .red-flag {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; color: var(--text-2); line-height: 1.5;
+  }
+  .rf-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--red); flex-shrink: 0; margin-top: 7px;
+  }
+
+  /* ── FLOW ── */
+  .flow { display: flex; align-items: center; gap: 0; margin: 24px 0; flex-wrap: wrap; }
+  .flow-step {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; min-width: 120px;
+  }
+  .flow-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px; font-size: 12px;
+    font-weight: 500; width: 110px;
+  }
+  .flow-box.active { border-color: var(--amber-border); background: var(--amber-dim); }
+  .flow-sub { font-size: 10px; color: var(--text-3); margin-top: 5px; font-family: var(--mono); }
+  .flow-arrow { color: var(--text-3); font-size: 18px; padding: 0 4px; align-self: center; margin-bottom: 16px; }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: var(--surface); padding: 11px 16px; text-align: left;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--text-3); font-family: var(--mono); font-weight: 400;
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 12px 16px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  td strong { color: var(--text); font-weight: 500; }
+  .pill {
+    display: inline-block; padding: 2px 10px; border-radius: 20px;
+    font-size: 11px; font-family: var(--mono); border: 1px solid;
+  }
+  .pill.red { color: var(--red); border-color: var(--red-border); background: var(--red-dim); }
+  .pill.amber { color: var(--amber); border-color: var(--amber-border); background: var(--amber-dim); }
+  .pill.green { color: var(--green); border-color: var(--green-border); background: var(--green-dim); }
+  .pill.blue { color: var(--blue); border-color: var(--blue-border); background: var(--blue-dim); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 10px; padding: 16px 20px;
+    display: flex; gap: 14px; align-items: flex-start;
+    margin: 16px 0; font-size: 13px;
+  }
+  .callout.amber { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+  .callout.red { background: var(--red-dim); border: 1px solid var(--red-border); }
+  .callout.green { background: var(--green-dim); border: 1px solid var(--green-border); }
+  .callout.blue { background: var(--blue-dim); border: 1px solid var(--blue-border); }
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout strong { font-weight: 500; }
+
+  /* ── CADENCE ── */
+  .cadence-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .cadence-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  .cadence-header {
+    padding: 14px 18px; border-bottom: 1px solid var(--border);
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
+  }
+  .cadence-body { padding: 14px 18px; }
+  .cadence-item { font-size: 12px; color: var(--text-2); padding: 5px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; }
+  .cadence-item:last-child { border-bottom: none; }
+  .cadence-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-3); flex-shrink: 0; margin-top: 7px; }
+
+  /* ── KPI GRID ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .kpi {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .kpi-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+  .kpi-val { font-family: var(--mono); font-size: 20px; color: var(--text); margin-bottom: 4px; }
+  .kpi-sub { font-size: 11px; color: var(--text-3); }
+  .kpi-divider { width: 100%; height: 2px; border-radius: 1px; margin-top: 12px; }
+
+  /* ── CASH FLOW TABLE ── */
+  .cf-header {
+    display: grid; grid-template-columns: 160px repeat(8,1fr);
+    background: var(--surface); border: 1px solid var(--border);
+    border-bottom: none; border-radius: 10px 10px 0 0; overflow: hidden;
+  }
+  .cf-cell {
+    padding: 10px 12px; font-size: 11px; color: var(--text-3);
+    font-family: var(--mono); text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .cf-cell:first-child { text-align: left; }
+  .cf-cell:last-child { border-right: none; }
+  .cf-row {
+    display: grid; grid-template-columns: 160px repeat(8,1fr);
+    border: 1px solid var(--border); border-top: none;
+  }
+  .cf-row:last-child { border-radius: 0 0 10px 10px; overflow: hidden; }
+  .cf-row.total { background: var(--surface); font-weight: 500; }
+  .cf-row.burn { background: rgba(239,68,68,0.04); }
+  .cf-val {
+    padding: 9px 12px; font-size: 12px; font-family: var(--mono);
+    text-align: center; border-right: 1px solid var(--border);
+    color: var(--text-2);
+  }
+  .cf-val:first-child { text-align: left; color: var(--text-3); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .cf-val:last-child { border-right: none; }
+  .cf-val.pos { color: var(--green); }
+  .cf-val.neg { color: var(--red); }
+  .cf-val.zero { color: var(--text-3); }
+
+  /* ── STUDENT JOURNEY ── */
+  .journey {
+    display: flex; align-items: stretch; gap: 0;
+    border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  }
+  .journey-stage {
+    flex: 1; padding: 20px 18px;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+  }
+  .journey-stage:last-child { border-right: none; }
+  .js-num { font-size: 10px; color: var(--text-3); font-family: var(--mono); margin-bottom: 6px; }
+  .js-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+  .js-duration { font-size: 11px; font-family: var(--mono); margin-bottom: 10px; }
+  .js-items { flex: 1; }
+  .js-item { font-size: 11px; color: var(--text-2); padding: 3px 0; display: flex; gap: 6px; }
+  .js-item::before { content: '–'; color: var(--text-3); }
+  .js-bar { height: 2px; margin-top: 14px; border-radius: 1px; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 0; text-align: center;
+    font-size: 11px; color: var(--text-3); font-family: var(--mono);
+    border-top: 1px solid var(--border);
+  }
+  footer span { color: var(--amber); }
+
+  /* ── UTILS ── */
+  .mt8 { margin-top: 8px; }
+  .mt16 { margin-top: 16px; }
+  .mt24 { margin-top: 24px; }
+  .mb16 { margin-bottom: 16px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .label-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 12px; }
+  h4 { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px; color: var(--text-2); margin-bottom: 8px; }
+  p { color: var(--text-2); font-size: 14px; line-height: 1.65; }
+  .mono { font-family: var(--mono); }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="no-print">
+  <div class="nav-brand">
+    <div class="nav-logo">VV</div>
+    <div>
+      <div class="nav-title">ViecVui Nursing</div>
+      <div class="nav-subtitle">ops playbook — conservative edition</div>
+    </div>
+  </div>
+  <div class="nav-pills">
+    <a href="#phase1" class="nav-pill">Phase 1</a>
+    <a href="#phase2" class="nav-pill">Phase 2</a>
+    <a href="#phase3" class="nav-pill">Phase 3</a>
+    <a href="#daily" class="nav-pill">Daily Ops</a>
+    <a href="#finance" class="nav-pill">Finance</a>
+    <a href="#risks" class="nav-pill">Risks</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-tag">Conservative Scenario · Founding Team Only · June 2026</div>
+    <h1>Nursing <span>Operation</span><br>Playbook</h1>
+    <p class="hero-sub">Bản chạy máy dành cho founding team — từng bước cụ thể, ai làm gì, khi nào, và dấu hiệu dừng lại.</p>
+
+    <div class="stat-strip">
+      <div class="stat">
+        <span class="stat-val red">–$124k</span>
+        <span class="stat-lbl">Burn 2026 (8 tháng)</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val amber">$150k</span>
+        <span class="stat-lbl">Working capital cần có</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">$0</span>
+        <span class="stat-lbl">Revenue 2026 (conservative)</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val green">$132k</span>
+        <span class="stat-lbl">Net earnings 2027</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">50</span>
+        <span class="stat-lbl">Students — batch 1 (2027)</span>
+      </div>
+    </div>
+
+    <div class="warning-banner mt24">
+      <div class="warning-icon">⚠</div>
+      <div>
+        <div class="warning-title">3 Conservative Assumptions — baked in toàn bộ playbook này</div>
+        <div class="warning-items">
+          <div class="warning-item"><strong>Employer pipeline = $0 confirmed.</strong> Không có LOI nào từ aged care facilities. Gate #2 là nhiệm vụ phải hoàn thành TRƯỚC mọi thứ khác, kể cả tuyển sinh.</div>
+          <div class="warning-item"><strong>Không có advance commission.</strong> Employers không trả 40% trước. Toàn bộ $150k working capital phải là vốn founder — không có shortcut.</div>
+          <div class="warning-item"><strong>Revenue 2026 = $0.</strong> Không ghi nhận bất kỳ doanh thu nào trong năm 2026. Enrollment đầu tiên tính vào Q1/2027 khi toàn bộ 3 gates đã green.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TIMELINE ── -->
+<section style="padding: 36px 0; border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <div class="timeline">
+      <div class="tl-phase active">
+        <div class="tl-label">Phase 1</div>
+        <div class="tl-name">Prerequisites</div>
+        <div class="tl-dates">Feb → Apr 2026</div>
+        <div class="tl-bar red"></div>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-label">Phase 2</div>
+        <div class="tl-name">Launch</div>
+        <div class="tl-dates">May → Aug 2026</div>
+        <div class="tl-bar amber"></div>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-label">Phase 3</div>
+        <div class="tl-name">Training Ops</div>
+        <div class="tl-dates">Jan → Aug 2027</div>
+        <div class="tl-bar blue"></div>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-label">Phase 4</div>
+        <div class="tl-name">Daily Ops</div>
+        <div class="tl-dates">Sep 2027 → ongoing</div>
+        <div class="tl-bar green"></div>
+      </div>
+    </div>
+    <div style="font-size: 12px; color: var(--text-3); margin-top: 8px; font-family: var(--mono);">
+      ★ Conservative · Batch 1: 50 students · First arrivals AU — Q4 2027 · First placement commission — Q4 2027 · Growth: 50 → 60 → 72 → 86
+    </div>
+  </div>
+</section>
+
+<!-- ── PHASE 1 ── -->
+<section id="phase1">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <div>
+        <div class="phase-badge p1">Phase 1 — Feb → Apr 2026</div>
+        <div class="section-title">Prerequisites: 3 Gates phải green trước khi làm bất cứ thứ gì</div>
+        <div class="section-sub">Không pass đủ 3 gates = không launch. Không phải "launch và xử lý sau."</div>
+      </div>
+    </div>
+
+    <div class="callout amber">
+      <div class="callout-icon">⚡</div>
+      <div><strong>Nguyên tắc vận hành của phase này:</strong> CEO không làm gì khác ngoài 3 nhiệm vụ dưới đây cho đến khi xong. Mọi thứ khác — website, branding, marketing — đều là lãng phí nếu 3 gates chưa được đóng lại.</div>
+    </div>
+
+    <!-- Gate 1 -->
+    <div class="gate mt24">
+      <div class="gate-header">
+        <div class="gate-header-left">
+          <div class="gate-num red">G1</div>
+          <div>
+            <div class="gate-name">RTO Partnership — Hợp đồng ký tên, có binding terms</div>
+            <div class="gate-desc">8A Academy + TAFE/RTO — scope, timeline, exit clause</div>
+          </div>
+        </div>
+        <div class="gate-status open">⚠ Chưa ký</div>
+      </div>
+      <div class="gate-body">
+        <div>
+          <div class="gate-col-title">Checklist phải có trong hợp đồng</div>
+          <div class="checklist">
+            <div class="check-item red"><div class="check-box"></div><span>Xác định rõ: mỗi student trả <strong>$2,500 AUD cho RTO</strong>, đổi lại ViecVui nhận gì</span></div>
+            <div class="check-item red"><div class="check-box"></div><span>Scope học: <strong>Certificate III in Individual Support (Ageing)</strong> — số giờ lý thuyết, online/offline</span></div>
+            <div class="check-item red"><div class="check-box"></div><span><strong>120 giờ practicum</strong>: địa điểm thực hành tại VN được TAFE chấp nhận — văn bản xác nhận</span></div>
+            <div class="check-item red"><div class="check-box"></div><span>SLA: từ enroll → nhận Cert III ≤ <strong>5 tháng</strong></span></div>
+            <div class="check-item"><div class="check-box"></div><span>Điều khoản nếu student fail: hoàn tiền policy, ai chịu chi phí</span></div>
+            <div class="check-item"><div class="check-box"></div><span>Exit clause: nếu RTO mất accreditation, ViecVui được làm gì?</span></div>
+            <div class="check-item"><div class="check-box"></div><span>Payment milestone cho RTO: trả theo giai đoạn hay upfront?</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="gate-col-title">Red flags — dừng lại ngay nếu gặp</div>
+          <div class="red-flags">
+            <div class="red-flag"><div class="rf-dot"></div><span>RTO vẫn nói "đang thương lượng" sau ngày <strong>15/03/2026</strong></span></div>
+            <div class="red-flag"><div class="rf-dot"></div><span>TAFE không chấp nhận practicum tại cơ sở y tế Việt Nam</span></div>
+            <div class="red-flag"><div class="rf-dot"></div><span>Không có điều khoản hoàn tiền rõ ràng nếu student fail</span></div>
+            <div class="red-flag"><div class="rf-dot"></div><span>RTO yêu cầu trả toàn bộ $2,500 AUD/student upfront khi enroll</span></div>
+          </div>
+          <div class="callout amber mt16">
+            <div class="callout-icon">💡</div>
+            <div><strong>Đàm phán ưu tiên:</strong> Trả RTO theo milestone — 50% khi student hoàn thành tháng 2, 50% khi Cert III cấp. Cải thiện cash flow đáng kể, không ảnh hưởng chất lượng.</div>
+          </div>
+          <div style="margin-top: 12px; padding: 12px 16px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 11px; color: var(--text-3); font-family: var(--mono);">Người phụ trách</div>
+            <div style="font-size: 13px; margin-top: 4px;"><strong>CEO</strong> — deadline cứng: 15/03/2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gate 2 -->
+    <div class="gate">
+      <div class="gate-header">
+        <div class="gate-header-left">
+          <div class="gate-num red">G2</div>
+          <div>
+            <div class="gate-name">Employer Pipeline — Minimum 2 LOI ký từ aged care facilities</div>
+            <div class="gate-desc">Đây là rủi ro #1. Conservative assumption: chưa có ai confirmed.</div>
+          </div>
+        </div>
+        <div class="gate-status open">⚠ Chưa có</div>
+      </div>
+      <div class="gate-body">
+        <div>
+          <div class="gate-col-title">Minimum cần có trong LOI</div>
+          <div class="checklist">
+            <div class="check-item red"><div class="check-box"></div><span>Employer đang có hoặc đang apply <strong>Aged Care Industry Labour Agreement</strong> với Dept. of Home Affairs</span></div>
+            <div class="check-item red"><div class="check-box"></div><span>Cam kết nhận tối thiểu <strong>10 workers/năm</strong> từ ViecVui</span></div>
+            <div class="check-item red"><div class="check-box"></div><span>Salary minimum <strong>$51,222 AUD/year</strong> được confirm</span></div>
+            <div class="check-item red"><div class="check-box"></div><span>Timeline: họ cần người bắt đầu làm từ khi nào?</span></div>
+            <div class="check-item"><div class="check-box"></div><span>HR contact person phụ trách nomination process</span></div>
+            <div class="check-item"><div class="check-box"></div><span>Facility location, shift type (day/night/rotating)</span></div>
+          </div>
+          <div class="callout red mt16">
+            <div class="callout-icon">🔴</div>
+            <div><strong>Bài học AMPC (Simon):</strong> Không bao giờ recruit workers trước khi employer confirmed. ViecVui phải lock 2 employers TRƯỚC KHI mở intake bất kỳ student nào.</div>
+          </div>
+        </div>
+        <div>
+          <div class="gate-col-title">Cách tiếp cận — Ms. Hong + BD</div>
+          <div class="checklist">
+            <div class="check-item amber"><div class="check-box"></div><span><strong>Ms. Hong</strong>: lập danh sách 10 aged care facilities tiềm năng trong tuần đầu tiên của February</span></div>
+            <div class="check-item amber"><div class="check-box"></div><span>CEO gặp trực tiếp tại Úc hoặc video call với HR manager + Care manager (không chỉ email)</span></div>
+            <div class="check-item amber"><div class="check-box"></div><span><strong>Ben Van Leirop</strong> hoặc equivalent: activate ngay — commission $500 AUD/worker confirmed placement</span></div>
+            <div class="check-item amber"><div class="check-box"></div><span>Target: 2 LOI signed by <strong>31/03/2026</strong>. Nếu không đủ → delay launch 60 ngày, không phải launch rồi hy vọng</span></div>
+          </div>
+          <div class="callout blue mt16">
+            <div class="callout-icon">💡</div>
+            <div><strong>Pitch angle với employer:</strong> "Bạn không cần deal với recruitment, không cần training. Chúng tôi giao người đã có Cert III, IELTS 5.0+, và visa. Bạn chỉ cần nominate và onboard." — Đây là pain point thật của aged care HR.</div>
+          </div>
+          <div style="margin-top: 12px; padding: 12px 16px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 11px; color: var(--text-3); font-family: var(--mono);">Người phụ trách</div>
+            <div style="font-size: 13px; margin-top: 4px;"><strong>Ms. Hong + CEO</strong> — deadline: 31/03/2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gate 3 -->
+    <div class="gate">
+      <div class="gate-header">
+        <div class="gate-header-left">
+          <div class="gate-num amber">G3</div>
+          <div>
+            <div class="gate-name">Working Capital — $150,000 USD secured và available</div>
+            <div class="gate-desc">Conservative: không có advance từ employer, toàn bộ từ founder capital</div>
+          </div>
+        </div>
+        <div class="gate-status pending">Action required</div>
+      </div>
+      <div class="gate-body">
+        <div>
+          <div class="gate-col-title">Breakdown cần thiết</div>
+          <div style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden;">
+            <div style="display: grid; grid-template-columns: 1fr auto; padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text-2);">
+              <span>Burn 8 tháng (May–Dec 2026)</span>
+              <span class="mono" style="color: var(--red);">$124,151</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr auto; padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text-2);">
+              <span>Buffer sự cố + phát sinh</span>
+              <span class="mono" style="color: var(--amber);">$25,849</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr auto; padding: 10px 14px; background: var(--surface); font-size: 13px; font-weight: 500;">
+              <span>Total cần confirmed</span>
+              <span class="mono" style="color: var(--text);">$150,000</span>
+            </div>
+          </div>
+          <div class="callout amber mt16">
+            <div class="callout-icon">⚡</div>
+            <div><strong>Rule cứng:</strong> Không được dùng $150k như một pool chung. Tạo tài khoản ngân hàng riêng, drawdown theo tháng đúng budget. Mỗi tháng review: còn bao nhiêu runway?</div>
+          </div>
+        </div>
+        <div>
+          <div class="gate-col-title">Cách setup financial controls ngay từ ngày 1</div>
+          <div class="checklist">
+            <div class="check-item amber"><div class="check-box"></div><span>Mở tài khoản ngân hàng riêng cho operating expenses của ViecVui Nursing</span></div>
+            <div class="check-item amber"><div class="check-box"></div><span>Drawdown $15,519/tháng vào đầu tháng — không rút thêm nếu không có CEO approve</span></div>
+            <div class="check-item"><div class="check-box"></div><span>Monthly P&L review vào ngày cuối mỗi tháng — CEO + Admin</span></div>
+            <div class="check-item"><div class="check-box"></div><span>Cấm chi ngoài budget không có written approval từ CEO</span></div>
+            <div class="check-item"><div class="check-box"></div><span>Mọi student payment phải có receipt và được track vào spreadsheet ngay khi nhận</span></div>
+          </div>
+          <div style="margin-top: 12px; padding: 12px 16px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size: 11px; color: var(--text-3); font-family: var(--mono);">Người phụ trách</div>
+            <div style="font-size: 13px; margin-top: 4px;"><strong>CEO</strong> — confirmed trước 30/04/2026 (trước ngày launch)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout green mt24">
+      <div class="callout-icon">✓</div>
+      <div><strong>Go/No-Go Decision — 30/04/2026:</strong> Nếu cả 3 gates đều green → launch Phase 2 từ 01/05/2026. Nếu bất kỳ gate nào chưa xong → delay 30 ngày, không thêm nhân sự, không chi marketing. Gates này bảo vệ $150k của bạn.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PHASE 2 ── -->
+<section id="phase2">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <div>
+        <div class="phase-badge p2">Phase 2 — May → Dec 2026</div>
+        <div class="section-title">Launch: Build Pipeline — Không phải Bán</div>
+        <div class="section-sub">2026 là năm setup. Áp lực enroll nhanh = chọn nhầm học viên = dropout rate cao = mất uy tín với employer.</div>
+      </div>
+    </div>
+
+    <!-- Team Setup -->
+    <h3>2.1 — Team Setup (01/05/2026)</h3>
+    <div class="tbl-wrap mb16">
+      <table>
+        <thead>
+          <tr>
+            <th>Vai trò</th>
+            <th>Người</th>
+            <th>Trách nhiệm chính</th>
+            <th>Bắt đầu</th>
+            <th>Cost 2026 (USD)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CEO</strong></td>
+            <td>TBD</td>
+            <td>Strategy, partner deals, cash flow, go/no-go decisions</td>
+            <td>01/05</td>
+            <td class="mono" style="color: var(--amber);">$80,000</td>
+          </tr>
+          <tr>
+            <td><strong>Marketing / Recruitment</strong></td>
+            <td>Phong</td>
+            <td>Tuyển sinh, events, content, lead qualify</td>
+            <td>01/05</td>
+            <td class="mono">$10,566</td>
+          </tr>
+          <tr>
+            <td><strong>Admin / Operations</strong></td>
+            <td>Phương</td>
+            <td>Hồ sơ học viên, tracking, visa timeline</td>
+            <td>01/05</td>
+            <td class="mono">$12,075</td>
+          </tr>
+          <tr>
+            <td><strong>AU Business Development</strong></td>
+            <td>Ms. Hong / Ben</td>
+            <td>Employer deals, account management, post-placement monitoring</td>
+            <td>01/02 (gates only)</td>
+            <td class="mono" style="color: var(--text-3);">Commission only</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout red">
+      <div class="callout-icon">🔴</div>
+      <div><strong>Critical gap:</strong> AU BD ở $0 salary trong P&L là một rủi ro nghiêm trọng. Phải cấu trúc commission rõ ràng ngay từ đầu — đề xuất $500 AUD/worker khi placement confirmed. Không có skin-in-the-game = không có urgency để close employers.</div>
+    </div>
+
+    <!-- Student Target Profile -->
+    <h3 class="mt24">2.2 — Target Student Profile</h3>
+    <div class="two-col mt16">
+      <div>
+        <div class="card warning-card">
+          <div class="card-title" style="color: var(--green);">✓ Prioritize — Profile lý tưởng</div>
+          <div class="checklist mt8">
+            <div class="check-item"><div class="check-box"></div><span>Sinh viên năm 3–4 ngành Điều dưỡng (Can Tho, HCM, Hà Nội)</span></div>
+            <div class="check-item"><div class="check-box"></div><span>Tuổi: <strong>20–35</strong> (visa 186 giới hạn 45 nhưng target trẻ để maximize)</span></div>
+            <div class="check-item"><div class="check-box"></div><span>IELTS hiện tại ≥ <strong>4.0</strong> hoặc có nền tảng để train</span></div>
+            <div class="check-item"><div class="check-box"></div><span>Có mục tiêu thật sự: muốn định cư hoặc làm lâu dài tại Úc</span></div>
+            <div class="check-item"><div class="check-box"></div><span>Gia đình có khả năng chi $6,700 USD upfront hoặc có plan vay rõ ràng</span></div>
+            <div class="check-item"><div class="check-box"></div><span>Không đang đi làm full-time — có thể commit thời gian học</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card critical">
+          <div class="card-title" style="color: var(--red);">✗ Disqualify ngay — đừng lãng phí thời gian</div>
+          <div class="red-flags mt8">
+            <div class="red-flag"><div class="rf-dot"></div><span>Từng bị từ chối visa Úc hoặc các nước Anglophone</span></div>
+            <div class="red-flag"><div class="rf-dot"></div><span>IELTS dưới 4.0 và không cam kết thời gian học cụ thể</span></div>
+            <div class="red-flag"><div class="rf-dot"></div><span>Không có bằng cấp liên quan đến y tế/chăm sóc</span></div>
+            <div class="red-flag"><div class="rf-dot"></div><span>Tuổi trên 40 (visa 186 giới hạn 45 = rủi ro cao nếu có delay)</span></div>
+            <div class="red-flag"><div class="rf-dot"></div><span>Tài chính mơ hồ — chưa có plan cụ thể</span></div>
+            <div class="red-flag"><div class="rf-dot"></div><span>Động lực không rõ hoặc chỉ muốn "thử xem"</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acquisition Channels -->
+    <h3 class="mt24">2.3 — Kênh Tuyển Sinh</h3>
+    <div class="card-grid mt16">
+      <div class="card">
+        <div class="card-icon">🎓</div>
+        <div class="card-title">Đại học / Cao đẳng Điều dưỡng</div>
+        <div class="card-body">Ký MOU trực tiếp với Khoa Điều dưỡng. Seminar tại trường. Pitch dual qualification: tốt nghiệp với cả bằng VN + AQF Cert III.</div>
+        <div class="card-footer">
+          <span class="card-meta">Target: Can Tho, HCM, Hà Nội</span>
+          <span class="pill green">HIGH</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📱</div>
+        <div class="card-title">Facebook / Zalo Groups</div>
+        <div class="card-body">Cộng đồng y tế, du học Úc, điều dưỡng viên VN. Content: visa pathway explainer, salary VN vs AU comparison, Q&A thực tế. Tần suất: 3 posts/week.</div>
+        <div class="card-footer">
+          <span class="card-meta">Phong phụ trách</span>
+          <span class="pill amber">MEDIUM</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎤</div>
+        <div class="card-title">Hội thảo 2 lần/năm</div>
+        <div class="card-body">HCM (tháng 6) + Hà Nội (tháng 9). Format: Panel Q&A thực tế. Video tour aged care facility Úc. KHÔNG hứa hẹn quá — nói thẳng về công việc khó nhưng pathway rõ.</div>
+        <div class="card-footer">
+          <span class="card-meta">Budget: $1,000/event</span>
+          <span class="pill green">HIGH</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Intake SOP -->
+    <h3 class="mt24">2.4 — Intake SOP: 4 bước, chuẩn hóa từ học viên đầu tiên</h3>
+    <div class="journey mt16">
+      <div class="journey-stage">
+        <div class="js-num">BƯỚC 1</div>
+        <div class="js-name">Pre-Screen</div>
+        <div class="js-duration" style="color: var(--amber);">30 phút — Phong</div>
+        <div class="js-items">
+          <div class="js-item">Form đăng ký online</div>
+          <div class="js-item">Phone screen 15 phút</div>
+          <div class="js-item">Go/No-go trong 24h</div>
+          <div class="js-item">Gửi info package nếu GO</div>
+        </div>
+        <div class="js-bar" style="background: var(--amber);"></div>
+      </div>
+      <div class="journey-stage">
+        <div class="js-num">BƯỚC 2</div>
+        <div class="js-name">Assessment</div>
+        <div class="js-duration" style="color: var(--blue);">1 giờ — CEO</div>
+        <div class="js-items">
+          <div class="js-item">Kiểm tra bằng cấp gốc</div>
+          <div class="js-item">English test viết + nói</div>
+          <div class="js-item">Situational judgment</div>
+          <div class="js-item">Tư vấn timeline thực tế</div>
+        </div>
+        <div class="js-bar" style="background: var(--blue);"></div>
+      </div>
+      <div class="journey-stage">
+        <div class="js-num">BƯỚC 3</div>
+        <div class="js-name">Contract + Deposit</div>
+        <div class="js-duration" style="color: var(--green);">1 ngày — Phương</div>
+        <div class="js-items">
+          <div class="js-item">Ký hợp đồng với milestone rõ</div>
+          <div class="js-item">Deposit $500 USD non-refund</div>
+          <div class="js-item">Tạo student file đầy đủ</div>
+          <div class="js-item">Enter tracking sheet</div>
+        </div>
+        <div class="js-bar" style="background: var(--green);"></div>
+      </div>
+      <div class="journey-stage">
+        <div class="js-num">BƯỚC 4</div>
+        <div class="js-name">Onboarding</div>
+        <div class="js-duration" style="color: var(--text-3);">2 giờ — CEO + Phương</div>
+        <div class="js-items">
+          <div class="js-item">Orientation 2h — full journey</div>
+          <div class="js-item">Assign English schedule</div>
+          <div class="js-item">Assign student ID</div>
+          <div class="js-item">Sign commitment checklist</div>
+        </div>
+        <div class="js-bar" style="background: var(--text-3);"></div>
+      </div>
+    </div>
+
+    <div class="callout amber mt16">
+      <div class="callout-icon">📋</div>
+      <div><strong>Hợp đồng phải nói thẳng:</strong> "Đây là hành trình 14–18 tháng. Công việc aged care tại Úc nặng về thể lực và cảm xúc. Thu nhập không cao như tưởng tượng trong năm đầu. Nhưng pathway PR là thật và rõ ràng." Nói thật ngay từ đầu = retention cao hơn, less conflict sau này.</div>
+    </div>
+
+    <!-- Target 2026 -->
+    <h3 class="mt24">2.5 — Target 2026: Build Pipeline 65+ Prospects cho Batch 1 = 50 Students</h3>
+    <div class="callout amber" style="margin-bottom: 16px;">
+      <div class="callout-icon">⚡</div>
+      <div><strong>Tại sao cần 65+ prospects cho 50 students?</strong> Từ pipeline → enrolled phải tính attrition: ~15–20% sẽ drop sau assessment, IELTS không đạt, hoặc đổi ý. Cần cushion đủ để đảm bảo đủ 50 khi mở intake Q1/2027.</div>
+    </div>
+    <div class="card-grid">
+      <div class="kpi" style="background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px;">
+        <div class="kpi-label">Leads / tháng</div>
+        <div class="kpi-val">25+</div>
+        <div class="kpi-sub">Tháng 5–12/2026 (8 tháng)</div>
+        <div class="kpi-divider" style="background: var(--amber);"></div>
+      </div>
+      <div class="kpi" style="background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px;">
+        <div class="kpi-label">Qualified / tháng</div>
+        <div class="kpi-val">8–10</div>
+        <div class="kpi-sub">Pass đủ assessment để vào danh sách chờ</div>
+        <div class="kpi-divider" style="background: var(--blue);"></div>
+      </div>
+      <div class="kpi" style="background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px;">
+        <div class="kpi-label">Pipeline cuối 2026</div>
+        <div class="kpi-val">65+</div>
+        <div class="kpi-sub">→ Enroll 50 vào Q1/2027</div>
+        <div class="kpi-divider" style="background: var(--green);"></div>
+      </div>
+    </div>
+    <div class="callout blue mt16">
+      <div class="callout-icon">ℹ</div>
+      <div><strong>Conservative call:</strong> Không nhận tiền, không enroll chính thức trong 2026. Toàn bộ pipeline là prospects đã qua assessment, chờ confirm khi training bắt đầu Q1/2027. Lý do: nếu enroll sớm mà còn vấn đề với RTO hoặc employer, phải refund = phức tạp pháp lý và mất trust.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PHASE 3 ── -->
+<section id="phase3">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <div>
+        <div class="phase-badge p3">Phase 3 — Jan 2027 → Oct 2027</div>
+        <div class="section-title">Training Operations: Chạy Cohort Đầu Tiên</div>
+        <div class="section-sub">50 students — Revenue bắt đầu chảy từ Q1/2027. Đây là lúc mọi SOP phải hoạt động như máy.</div>
+      </div>
+    </div>
+
+    <!-- Full Journey Timeline -->
+    <h3>3.1 — Hành trình đầy đủ per student (14–18 tháng)</h3>
+    <div class="tbl-wrap mt16">
+      <table>
+        <thead>
+          <tr><th>Stage</th><th>Thời gian</th><th>Hoạt động chính</th><th>Người phụ trách</th><th>Revenue trigger</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Contract signed</strong></td>
+            <td class="mono">Jan 2027</td>
+            <td>Ký hợp đồng, nhận full payment training + service fee</td>
+            <td>Phương</td>
+            <td><span class="pill green">+$6,700/student</span></td>
+          </tr>
+          <tr>
+            <td><strong>2. English Training</strong></td>
+            <td class="mono">Jan → Jun 2027</td>
+            <td>8A Academy delivery. Benchmark check mỗi 6 tuần. Flag lag sớm.</td>
+            <td>Phương (track), 8A (deliver)</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><strong>3. Cert III Training</strong></td>
+            <td class="mono">Jan → May 2027</td>
+            <td>RTO delivery song song. 120h practicum tại cơ sở VN được approve.</td>
+            <td>Phương (track), RTO (deliver)</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><strong>4. Skills Assessment</strong></td>
+            <td class="mono">Feb → Apr 2027</td>
+            <td>Submit ANMAC/ACWA ngay tháng 2 — song song với training, không đợi xong</td>
+            <td>Phương + RMA</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><strong>5. Visa Prep + Submit</strong></td>
+            <td class="mono">Jun → Jul 2027</td>
+            <td>Toàn bộ documents ready. RMA submit 482 visa. Employer send nomination.</td>
+            <td>RMA + Employer</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><strong>6. Visa granted</strong></td>
+            <td class="mono">Oct → Dec 2027</td>
+            <td>6 tháng processing. Parallel: confirm employment contract.</td>
+            <td>RMA, Ms. Hong</td>
+            <td><span class="pill green">+$3,585 commission</span></td>
+          </tr>
+          <tr>
+            <td><strong>7. Departure + Placement</strong></td>
+            <td class="mono">Nov 2027 → Jan 2028</td>
+            <td>Pre-departure briefing. Đưa đón / coordinator tại Úc. Day-1 onboard check.</td>
+            <td>CEO + Ms. Hong</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><strong>8. Post-placement</strong></td>
+            <td class="mono">Tháng 1–24 sau arrival</td>
+            <td>Check-in schedule. Monitor retention. Build toward 186 visa.</td>
+            <td>Ms. Hong + CEO</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Training Tracks -->
+    <h3 class="mt32">3.2 — Hai Track Training Song Song</h3>
+    <div class="two-col mt16">
+      <div class="card">
+        <div class="phase-badge p3">English Track — 8A Academy</div>
+        <div class="card-title mt8">IELTS 5.0 → 5.5</div>
+        <div class="card-body mt8">Target visa 482: IELTS 5.0. Target visa 186 (sau 2 năm): IELTS 5.5.</div>
+        <div class="checklist mt16">
+          <div class="check-item"><div class="check-box"></div><span>Mock test mỗi 6 tuần — Phương track trong spreadsheet</span></div>
+          <div class="check-item red"><div class="check-box"></div><span>Tháng 3: nếu chưa đạt 4.5 (mock) → case review NGAY, không chờ</span></div>
+          <div class="check-item red"><div class="check-box"></div><span>Tháng 5: chưa đạt 5.0 → delay visa submission, review options</span></div>
+        </div>
+        <div style="margin-top: 16px; padding: 12px 14px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border);">
+          <div style="font-size: 11px; color: var(--text-3); margin-bottom: 6px;">Benchmark nội bộ</div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; font-family: var(--mono);">
+            <span>T+1 → 4.0</span><span>T+3 → 4.5</span><span>T+5 → 5.0+</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="phase-badge p3">Cert III Track — RTO</div>
+        <div class="card-title mt8">Certificate III in Individual Support (Ageing)</div>
+        <div class="card-body mt8">AQF Level 3 — core requirement cho visa pathway.</div>
+        <div class="checklist mt16">
+          <div class="check-item red"><div class="check-box"></div><span>Practicum site tại VN phải được TAFE approve bằng văn bản TRƯỚC khi students bắt đầu</span></div>
+          <div class="check-item"><div class="check-box"></div><span>120 giờ practicum phải được documented đúng format của TAFE — Phương phụ trách</span></div>
+          <div class="check-item"><div class="check-box"></div><span>Completion target: tháng 5/2027 — đủ thời gian chuẩn bị visa submit tháng 6/2027</span></div>
+          <div class="check-item amber"><div class="check-box"></div><span>Nếu có học viên fail môn: options là retake trước khi visa submit, không phải delay toàn cohort</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visa Document Checklist -->
+    <h3 class="mt24">3.3 — Visa Document Checklist per Student</h3>
+    <div class="two-col mt16">
+      <div>
+        <div class="gate-col-title" style="margin-bottom: 10px;">Documents required</div>
+        <div class="checklist">
+          <div class="check-item"><div class="check-box"></div><span>Passport — còn hiệu lực ≥ 3.5 năm từ ngày submit</span></div>
+          <div class="check-item"><div class="check-box"></div><span>Birth certificate — bản dịch công chứng</span></div>
+          <div class="check-item"><div class="check-box"></div><span>Police clearance VN — phải còn trong 6 tháng</span></div>
+          <div class="check-item"><div class="check-box"></div><span>Medical examination — approved panel doctor</span></div>
+          <div class="check-item red"><div class="check-box"></div><span>IELTS/PTE official score — 5.0 minimum</span></div>
+          <div class="check-item red"><div class="check-box"></div><span>Skills assessment letter — ANMAC hoặc ACWA</span></div>
+          <div class="check-item red"><div class="check-box"></div><span>Certificate III — original + certified copy</span></div>
+          <div class="check-item red"><div class="check-box"></div><span>Nomination letter từ aged care employer</span></div>
+          <div class="check-item"><div class="check-box"></div><span>Character references (nếu RMA yêu cầu)</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="gate-col-title" style="margin-bottom: 10px;">Tracking pipeline — cột bắt buộc trong spreadsheet</div>
+        <div style="font-size: 12px; color: var(--text-2); line-height: 2; font-family: var(--mono); background: var(--surface); padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border);">
+          Student ID · Name · IELTS status<br>
+          Cert III status · Skills Ass. submitted<br>
+          Visa submitted · Visa expected date<br>
+          Employer confirmed · Departure date<br>
+          <span style="color: var(--amber);">→ Review mỗi thứ 2 — CEO + Phương</span>
+        </div>
+        <div class="callout red mt16">
+          <div class="callout-icon">⚠</div>
+          <div><strong>Escalation rules:</strong> Visa chậm 30 ngày → RMA check. Chậm 60 ngày → escalate với employer, họ có thể expedite nomination. Visa từ chối → phân tích reason trước khi reapply.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DAILY OPS ── -->
+<section id="daily">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <div>
+        <div class="phase-badge p4">Phase 4 — Daily Ops — Ongoing</div>
+        <div class="section-title">Operating Cadence: Nhịp vận hành hàng ngày / tuần / tháng</div>
+        <div class="section-sub">Khi model đã chạy, đây là máy móc phải giữ cho đều đặn.</div>
+      </div>
+    </div>
+
+    <div class="cadence-grid">
+      <div class="cadence-card">
+        <div class="cadence-header" style="border-left: 3px solid var(--text-3);">Daily — Phương</div>
+        <div class="cadence-body">
+          <div class="cadence-item"><div class="cadence-dot"></div>Check email: RMA, TAFE, employers</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Update tracking spreadsheet</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Flag bất kỳ issue cần CEO trong ngày</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Upcoming deadlines tuần này?</div>
+        </div>
+      </div>
+      <div class="cadence-card">
+        <div class="cadence-header" style="border-left: 3px solid var(--amber);">Thứ 2 — CEO + Phương (30')</div>
+        <div class="cadence-body">
+          <div class="cadence-item"><div class="cadence-dot"></div>Visa pipeline: ai đang stuck?</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>IELTS progress — ai cần intervention?</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Deadlines tuần này</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>AU update từ Ms. Hong</div>
+        </div>
+      </div>
+      <div class="cadence-card">
+        <div class="cadence-header" style="border-left: 3px solid var(--blue);">Monthly — CEO (cuối tháng)</div>
+        <div class="cadence-body">
+          <div class="cadence-item"><div class="cadence-dot"></div>P&L: actual vs. budget</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Student pipeline per stage</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Cash runway: còn bao nhiêu tháng?</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Employer satisfaction report</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>1 improvement initiative</div>
+        </div>
+      </div>
+      <div class="cadence-card">
+        <div class="cadence-header" style="border-left: 3px solid var(--green);">Quarterly — Full Team</div>
+        <div class="cadence-body">
+          <div class="cadence-item"><div class="cadence-dot"></div>Revenue forecast update</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Pipeline: đủ cho batch tiếp?</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Partner review: RTO + 8A</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Pricing review</div>
+          <div class="cadence-item"><div class="cadence-dot"></div>Lessons learned batch hiện tại</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Post-placement -->
+    <h3 class="mt32">4.1 — Post-Placement Monitoring (bài học quan trọng từ AMPC)</h3>
+    <div class="callout blue">
+      <div class="callout-icon">ℹ</div>
+      <div>AMPC đúc kết: <strong>"Post-employment support là giai đoạn thách thức nhất."</strong> Nếu học viên quit trước 6 tháng → employer không hài lòng → mất deal tương lai. Retention = referral nguồn mới.</div>
+    </div>
+    <div class="tbl-wrap mt16">
+      <table>
+        <thead>
+          <tr><th>Thời điểm</th><th>Format</th><th>Với ai</th><th>Agenda</th><th>Người phụ trách</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tuần 2 sau arrival</td>
+            <td>Zalo call</td>
+            <td>Học viên</td>
+            <td>Đang ổn không? Vấn đề gì? Ai cần liên lạc?</td>
+            <td>Ms. Hong</td>
+          </tr>
+          <tr>
+            <td>Tháng 1</td>
+            <td>Email + call</td>
+            <td>HR employer</td>
+            <td>Satisfaction? Adaptation issues? Cần can thiệp không?</td>
+            <td>Ms. Hong</td>
+          </tr>
+          <tr>
+            <td>Tháng 3</td>
+            <td>Email</td>
+            <td>Học viên</td>
+            <td>IELTS progress? Workplace issues? Cần support gì?</td>
+            <td>Phương</td>
+          </tr>
+          <tr>
+            <td>Tháng 6</td>
+            <td>Call</td>
+            <td>HR employer</td>
+            <td>Performance review. Đang cần thêm người không?</td>
+            <td>Ms. Hong + CEO</td>
+          </tr>
+          <tr>
+            <td>Tháng 12</td>
+            <td>Meeting</td>
+            <td>Employer management</td>
+            <td>Annual review. Forecast next batch. Expand relationship?</td>
+            <td>CEO</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINANCE ── -->
+<section id="finance">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <div>
+        <div class="section-title">Financial Guardrails</div>
+        <div class="section-sub">Conservative cash flow — không có advance từ employer, không có revenue 2026.</div>
+      </div>
+    </div>
+
+    <!-- Unit Economics -->
+    <h3>5.1 — Unit Economics per Student</h3>
+    <div class="card-grid mt16">
+      <div class="card">
+        <div class="card-title">Revenue per Student</div>
+        <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--text-2);">Training fee</span>
+            <span class="mono" style="color: var(--green);">$4,000</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--text-2);">Service package</span>
+            <span class="mono" style="color: var(--green);">$2,000</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--text-2);">English / IELTS fee</span>
+            <span class="mono" style="color: var(--green);">$700</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--text-2);">Placement commission</span>
+            <span class="mono" style="color: var(--green);">$3,585</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; padding: 8px 0;">
+            <span>Total</span>
+            <span class="mono" style="color: var(--green);">$10,285</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">COGS per Student</div>
+        <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--text-2);">RTO fee (2,500 AUD)</span>
+            <span class="mono" style="color: var(--red);">–$2,208</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--text-2);">English program (8A)</span>
+            <span class="mono" style="color: var(--red);">–$500</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--text-2);">Document translation</span>
+            <span class="mono" style="color: var(--red);">–$80</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--text-2);">VAT commission 10%</span>
+            <span class="mono" style="color: var(--red);">–$359</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; padding: 8px 0;">
+            <span>Total COGS</span>
+            <span class="mono" style="color: var(--red);">–$3,147</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="background: var(--amber-dim); border-color: var(--amber-border);">
+        <div class="card-title">Gross Profit per Student</div>
+        <div style="margin-top: 20px; text-align: center;">
+          <div style="font-family: var(--mono); font-size: 36px; color: var(--amber); font-weight: 500;">$7,138</div>
+          <div style="font-size: 13px; color: var(--text-2); margin-top: 6px;">Gross margin: 69.4%</div>
+        </div>
+        <div style="margin-top: 12px; padding: 10px 14px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 12px; color: var(--text-2);">
+          Break-even: <strong style="color: var(--text);">~27 students/year</strong> để cover full OPEX $191k
+        </div>
+        <div style="margin-top: 8px; padding: 10px 14px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 12px;">
+          <div style="color: var(--text-3); margin-bottom: 4px;">Batch 1 (50 students) — full year P&L</div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);"><span style="color:var(--text-2)">Total Revenue</span><span style="color:var(--green)">$514k</span></div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);"><span style="color:var(--text-2)">EBITDA</span><span style="color:var(--amber)">$166k</span></div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);"><span style="color:var(--text-2)">Net Earnings</span><span style="color:var(--green)">$132k</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cash Flow Table -->
+    <h3 class="mt32">5.2 — Conservative Cash Flow 2026–2027 (Quarterly, 50 Students)</h3>
+    <div class="callout red" style="margin-bottom: 16px;">
+      <div class="callout-icon">🔴</div>
+      <div><strong>Conservative model:</strong> Không có advance commission. Revenue 2026 = $0. Training/service fees thu Q1–Q2/2027 (20 students Jan, 30 students Apr). Placement commission về Q4/2027 sau visa granted.</div>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <div style="min-width: 860px;">
+        <div style="display: grid; grid-template-columns: 170px repeat(7,1fr); background: var(--surface); border: 1px solid var(--border); border-radius: 10px 10px 0 0; overflow: hidden;">
+          <div style="padding: 10px 12px; font-size: 11px; color: var(--text-3); font-family: var(--mono); border-right: 1px solid var(--border);">Item</div>
+          <div style="padding: 10px; font-size: 11px; color: var(--text-3); font-family: var(--mono); text-align: center; border-right: 1px solid var(--border);">May–Aug'26</div>
+          <div style="padding: 10px; font-size: 11px; color: var(--text-3); font-family: var(--mono); text-align: center; border-right: 1px solid var(--border);">Sep–Dec'26</div>
+          <div style="padding: 10px; font-size: 11px; color: var(--text-3); font-family: var(--mono); text-align: center; border-right: 1px solid var(--border);">Q1'27 <span style="color:var(--text-3);font-size:10px;">(20 enrolled)</span></div>
+          <div style="padding: 10px; font-size: 11px; color: var(--text-3); font-family: var(--mono); text-align: center; border-right: 1px solid var(--border);">Q2'27 <span style="color:var(--text-3);font-size:10px;">(30 enrolled)</span></div>
+          <div style="padding: 10px; font-size: 11px; color: var(--text-3); font-family: var(--mono); text-align: center; border-right: 1px solid var(--border);">Q3'27 <span style="color:var(--text-3);font-size:10px;">(training)</span></div>
+          <div style="padding: 10px; font-size: 11px; color: var(--text-3); font-family: var(--mono); text-align: center; border-right: 1px solid var(--border);">Q4'27 <span style="color:var(--text-3);font-size:10px;">(visa + comm.)</span></div>
+          <div style="padding: 10px; font-size: 11px; color: var(--text-3); font-family: var(--mono); text-align: center;">Full 2027</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 170px repeat(7,1fr); border: 1px solid var(--border); border-top: none;">
+          <div style="padding: 10px 12px; font-size: 11px; color: var(--text-3); border-right: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.05em;">Training + Svc fee</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">$0</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">$0</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--green); border-right: 1px solid var(--border);">+$134k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--green); border-right: 1px solid var(--border);">+$201k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">—</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">—</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--green);">$335k</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 170px repeat(7,1fr); border: 1px solid var(--border); border-top: none;">
+          <div style="padding: 10px 12px; font-size: 11px; color: var(--text-3); border-right: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.05em;">Placement comm.</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">$0</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">$0</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">$0</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">$0</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">$0</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--green); border-right: 1px solid var(--border);">+$179k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--green);">$179k</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 170px repeat(7,1fr); border: 1px solid var(--border); border-top: none;">
+          <div style="padding: 10px 12px; font-size: 11px; color: var(--text-3); border-right: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.05em;">COGS (RTO + ENG)</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">—</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--text-3); border-right: 1px solid var(--border);">—</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$11.6k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$72.6k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$55.2k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$17.9k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red);">–$157k</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 170px repeat(7,1fr); border: 1px solid var(--border); border-top: none; background: rgba(239,68,68,0.04);">
+          <div style="padding: 10px 12px; font-size: 11px; color: var(--text-3); border-right: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.05em;">OPEX (fixed)</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$62k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$62k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$47.8k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$47.8k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$47.8k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$47.8k</div>
+          <div style="padding: 10px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red);">–$191k</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 170px repeat(7,1fr); border: 1px solid var(--border); border-top: none; background: var(--surface); font-weight: 500; border-radius: 0 0 10px 10px; overflow: hidden;">
+          <div style="padding: 12px 12px; font-size: 12px; border-right: 1px solid var(--border);">NET CASH</div>
+          <div style="padding: 12px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$62k</div>
+          <div style="padding: 12px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$62k</div>
+          <div style="padding: 12px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--green); border-right: 1px solid var(--border);">+$74.6k</div>
+          <div style="padding: 12px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--green); border-right: 1px solid var(--border);">+$80.6k</div>
+          <div style="padding: 12px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--red); border-right: 1px solid var(--border);">–$103k</div>
+          <div style="padding: 12px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--green); border-right: 1px solid var(--border);">+$113k</div>
+          <div style="padding: 12px; font-size: 12px; font-family: var(--mono); text-align: center; color: var(--green);">+$166k</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size: 11px; color: var(--text-3); font-family: var(--mono); margin-top: 8px;">★ Q3/2027 âm: RTO fee balance $55k chạy nhưng commission chưa về. Cash từ Q1+Q2 ($155k) đủ cover. $150k working capital từ 2026 vẫn còn intact khi Q1/2027 bắt đầu thu phí từ students.</div>
+
+    <!-- Growth projection -->
+    <h3 class="mt32">5.3 — Growth Projection (20%/năm từ batch 1 = 50)</h3>
+    <div class="tbl-wrap mt16" style="margin-bottom: 0;">
+      <table>
+        <thead>
+          <tr><th>Năm</th><th>Students</th><th>Total Revenue</th><th>Gross Profit</th><th>EBITDA</th><th>Net Earnings</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>2026</strong></td>
+            <td class="mono">0</td>
+            <td class="mono" style="color:var(--text-3);">$0</td>
+            <td class="mono" style="color:var(--text-3);">$0</td>
+            <td class="mono" style="color:var(--red);">–$124k</td>
+            <td class="mono" style="color:var(--red);">–$124k</td>
+          </tr>
+          <tr style="background: rgba(245,158,11,0.04);">
+            <td><strong>2027 — Batch 1</strong></td>
+            <td class="mono"><strong style="color:var(--amber);">50</strong></td>
+            <td class="mono" style="color:var(--green);">$514k</td>
+            <td class="mono" style="color:var(--green);">$357k</td>
+            <td class="mono" style="color:var(--amber);">$166k</td>
+            <td class="mono" style="color:var(--green);">$132k</td>
+          </tr>
+          <tr>
+            <td><strong>2028</strong></td>
+            <td class="mono">60</td>
+            <td class="mono" style="color:var(--green);">$617k</td>
+            <td class="mono" style="color:var(--green);">$428k</td>
+            <td class="mono" style="color:var(--green);">$218k</td>
+            <td class="mono" style="color:var(--green);">$174k</td>
+          </tr>
+          <tr>
+            <td><strong>2029</strong></td>
+            <td class="mono">72</td>
+            <td class="mono" style="color:var(--green);">$741k</td>
+            <td class="mono" style="color:var(--green);">$514k</td>
+            <td class="mono" style="color:var(--green);">$304k</td>
+            <td class="mono" style="color:var(--green);">$243k</td>
+          </tr>
+          <tr>
+            <td><strong>2030</strong></td>
+            <td class="mono">86</td>
+            <td class="mono" style="color:var(--green);">$885k</td>
+            <td class="mono" style="color:var(--green);">$614k</td>
+            <td class="mono" style="color:var(--green);">$403k</td>
+            <td class="mono" style="color:var(--green);">$323k</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size: 11px; color: var(--text-3); font-family: var(--mono); margin-top: 6px; margin-bottom: 24px;">OPEX tăng 10% từ 2028 (salary increment). 2030 OPEX bao gồm Support Staff headcount thêm.</div>
+
+    <!-- Cash alerts -->
+    <h3 class="mt24">5.4 — Cash Alerts: 3 triggers CEO phải act ngay</h3>
+    <div class="card-grid">
+      <div class="card critical">
+        <div style="font-size: 11px; font-family: var(--mono); color: var(--red); margin-bottom: 8px;">ALERT #1</div>
+        <div class="card-title">Cash &lt; 3 tháng burn rate</div>
+        <div class="card-body">Inject capital NGAY hoặc accelerate thu tiền từ students hiện tại. Không wait-and-see.</div>
+      </div>
+      <div class="card critical">
+        <div style="font-size: 11px; font-family: var(--mono); color: var(--red); margin-bottom: 8px;">ALERT #2</div>
+        <div class="card-title">Tháng 9/2026: 0 employer LOI</div>
+        <div class="card-body">Dừng toàn bộ student intake. Không nhận deposit từ học viên khi chưa có employer confirmed.</div>
+      </div>
+      <div class="card critical">
+        <div style="font-size: 11px; font-family: var(--mono); color: var(--red); margin-bottom: 8px;">ALERT #3</div>
+        <div class="card-title">IELTS pass rate &lt; 70%</div>
+        <div class="card-body">Review screening đầu vào ngay. Đang nhận nhầm học viên — sẽ ảnh hưởng toàn bộ pipeline 2027.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RISKS ── -->
+<section id="risks">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <div>
+        <div class="section-title">Risk Register</div>
+        <div class="section-sub">8 rủi ro chính — xếp theo impact × likelihood.</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Rủi ro</th>
+            <th>Likelihood</th>
+            <th>Impact</th>
+            <th>Mitigation cụ thể</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">R1</td>
+            <td><strong>Employer pipeline không close được trước launch</strong></td>
+            <td><span class="pill red">CAO</span></td>
+            <td><span class="pill red">CRITICAL</span></td>
+            <td>Gate #2 bắt buộc. Nếu 31/03 không có 2 LOI → delay launch 60 ngày, tìm employer mới. Không launch khi thiếu gate này.</td>
+            <td>CEO + Ms. Hong</td>
+          </tr>
+          <tr>
+            <td class="mono">R2</td>
+            <td><strong>Cash dưới ngưỡng 3 tháng runway</strong></td>
+            <td><span class="pill amber">TRUNG BÌNH</span></td>
+            <td><span class="pill red">CRITICAL</span></td>
+            <td>Monthly cash review. Chuẩn bị emergency capital injection plan trước (founder hoặc bridge loan). Không chờ đến lúc khủng hoảng.</td>
+            <td>CEO</td>
+          </tr>
+          <tr>
+            <td class="mono">R3</td>
+            <td><strong>RTO mất accreditation hoặc rút lui</strong></td>
+            <td><span class="pill green">THẤP</span></td>
+            <td><span class="pill red">CRITICAL</span></td>
+            <td>Contract phải có exit clause. Pre-identify backup RTO (có ít nhất 1 option thứ 2 trong tay trước khi ký với primary).</td>
+            <td>CEO</td>
+          </tr>
+          <tr>
+            <td class="mono">R4</td>
+            <td><strong>IELTS pass rate thấp — bottleneck toàn pipeline</strong></td>
+            <td><span class="pill red">CAO</span></td>
+            <td><span class="pill amber">HIGH</span></td>
+            <td>Benchmark mock test mỗi 6 tuần. Disqualify sớm thay vì giữ học viên không eligible. Screening đầu vào phải cứng về English baseline.</td>
+            <td>Phương + 8A</td>
+          </tr>
+          <tr>
+            <td class="mono">R5</td>
+            <td><strong>Học viên bỏ sau khi đã nộp tiền</strong></td>
+            <td><span class="pill amber">TRUNG BÌNH</span></td>
+            <td><span class="pill amber">MEDIUM</span></td>
+            <td>Contract rõ điều khoản hoàn tiền. Deposit $500 non-refundable. Nói thật về timeline và độ khó ngay từ orientation — giảm shock sau này.</td>
+            <td>Phương</td>
+          </tr>
+          <tr>
+            <td class="mono">R6</td>
+            <td><strong>Học viên quit job tại Úc trước 6 tháng</strong></td>
+            <td><span class="pill amber">TRUNG BÌNH</span></td>
+            <td><span class="pill red">HIGH</span></td>
+            <td>Pre-departure briefing thực tế. Check-in tuần 2, tháng 1, 3, 6. Buddy system: cluster học viên cùng region nếu có thể. Ms. Hong có vai trò trực tiếp.</td>
+            <td>Ms. Hong</td>
+          </tr>
+          <tr>
+            <td class="mono">R7</td>
+            <td><strong>Visa policy Australia thay đổi</strong></td>
+            <td><span class="pill green">THẤP</span></td>
+            <td><span class="pill amber">HIGH</span></td>
+            <td>RMA on retainer — theo dõi DIBP announcements tháng tháng. Aged Care Labour Agreement đã là government priority → ít khả năng bị cắt ngắn hạn.</td>
+            <td>RMA</td>
+          </tr>
+          <tr>
+            <td class="mono">R8</td>
+            <td><strong>AU BD không close đủ employer deals</strong></td>
+            <td><span class="pill red">CAO</span></td>
+            <td><span class="pill red">HIGH</span></td>
+            <td>Cấu trúc commission rõ ($500 AUD/placement). CEO tham gia trực tiếp vào 3 employer calls đầu tiên. Nếu Ben/Ms. Hong không close trong 60 ngày → cần BD hire hoặc external broker.</td>
+            <td>CEO</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── KPIs ── -->
+<section style="padding: 52px 0;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <div>
+        <div class="section-title">KPI Dashboard</div>
+        <div class="section-sub">Số cần biết mỗi tháng — không cần BI tool phức tạp, một Google Sheet là đủ.</div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2,1fr); gap: 24px;">
+      <div>
+        <h4>Funnel KPIs</h4>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>Metric</th><th>Target 2026 (build)</th><th>Target 2027</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Leads / tháng</td><td class="mono">30+</td><td class="mono">60+</td></tr>
+              <tr><td>Pre-screen pass rate</td><td class="mono">35–40%</td><td class="mono">40%+</td></tr>
+              <tr><td>Contracts signed / tháng</td><td class="mono">0 (Q4 pipeline only)</td><td class="mono">4–5/tháng</td></tr>
+              <tr><td>IELTS pass rate (5.0+)</td><td class="mono">—</td><td class="mono">≥80%</td></tr>
+              <tr><td>Cert III completion rate</td><td class="mono">—</td><td class="mono">≥95%</td></tr>
+              <tr><td>Visa approval rate</td><td class="mono">—</td><td class="mono">≥90%</td></tr>
+              <tr><td>6-month AU retention</td><td class="mono">—</td><td class="mono">≥85%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h4>Financial KPIs</h4>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>Metric</th><th>Target</th><th>Alert nếu</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Gross margin per student</td><td class="mono">≥70%</td><td class="mono" style="color:var(--red);">&lt;65%</td></tr>
+              <tr><td>Actual vs. budget OPEX</td><td class="mono">≤+10%</td><td class="mono" style="color:var(--red);">&gt;+15%</td></tr>
+              <tr><td>Cash runway</td><td class="mono">≥4 tháng</td><td class="mono" style="color:var(--red);">&lt;3 tháng</td></tr>
+              <tr><td>Revenue per employee</td><td class="mono">$150k+ (2027)</td><td class="mono" style="color:var(--red);">&lt;$100k</td></tr>
+              <tr><td>Days to collect from signed</td><td class="mono">≤7 ngày</td><td class="mono" style="color:var(--red);">&gt;14 ngày</td></tr>
+              <tr><td>Placement commission cycle</td><td class="mono">7–9 tháng</td><td class="mono" style="color:var(--amber);">&gt;12 tháng</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div>ViecVui Nursing Industry · Operation Playbook · <span>Conservative Edition</span></div>
+    <div style="margin-top: 6px;">Based on: P&L Forecast 2026–2029 · RAILS Visa Factsheet · 8A Academy Presentation · AMPC Migrant Employment Manual</div>
+    <div style="margin-top: 6px; color: var(--text-3);">Version 1.1 · June 2026 · Batch 1 = 50 students · For internal use only</div>
+  </div>
+</footer>
+
+</body>
+</html>

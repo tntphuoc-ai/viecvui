@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Việc Vui — Cơ Hội Làm Việc & Định Cư Tại Úc Cho Điều Dưỡng Việt Nam</title>
+<style>
+/* ── Design Tokens ── */
+:root {
+  --navy:   #0E2545;
+  --navy2:  #16345C;
+  --navy3:  #243F63;
+  --teal:   #0FB5A6;
+  --tealdk: #0A7E76;
+  --gold:   #FFC629;
+  --ice:    #DCE7F2;
+  --cloud:  #F4F7FB;
+  --slate:  #5A6B82;
+  --ink:    #13233B;
+  --white:  #ffffff;
+  --fs-sm:  0.875rem;
+  --fs-md:  1rem;
+  --fs-lg:  1.125rem;
+  --fs-xl:  1.35rem;
+  --fs-2xl: 1.75rem;
+  --fs-3xl: 2.25rem;
+  --fs-4xl: 3rem;
+  --r:      0.75rem;
+  --r-lg:   1.25rem;
+  --shadow: 0 8px 32px rgba(14,37,69,.13);
+  --shadow-lg: 0 20px 60px rgba(14,37,69,.18);
+}
+
+/* Image float badge — social proof overlay on hero */
+/* Dark overlay badge for on-image float */
+.img-float-badge {
+  position: absolute; bottom: 1.25rem; left: 1.25rem;
+  background: rgba(14,37,69,.88); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: .75rem; padding: .75rem 1rem;
+  display: flex; align-items: center; gap: .65rem;
+  z-index: 2;
+}
+.img-float-badge .f-dot {
+  width: .55rem; height: .55rem; border-radius: 50%;
+  background: #4ade80; flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(74,222,128,.25);
+}
+.img-float-badge .f-text { color: #fff; font-size: .75rem; font-weight: 700; line-height: 1.3; }
+.img-float-badge .f-sub  { color: rgba(255,255,255,.6); font-size: .65rem; }
+
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  background: var(--white);
+  line-height: 1.6;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Utility ── */
+.container { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+.section   { padding: 6rem 0; }
+.section-sm{ padding: 4rem 0; }
+.badge { display: inline-block; background: var(--gold); color: var(--navy); font-weight: 700; font-size: var(--fs-sm); letter-spacing: .12em; text-transform: uppercase; padding: .35em 1em; border-radius: 2rem; margin-bottom: 1rem; }
+.badge-teal { background: var(--teal); color: #fff; }
+.section-title { font-size: var(--fs-3xl); font-weight: 800; color: var(--navy); line-height: 1.2; margin-bottom: 1rem; }
+.section-sub { font-size: var(--fs-lg); color: var(--slate); max-width: 650px; line-height: 1.7; }
+.text-center { text-align: center; }
+.text-center .section-sub { margin: 0 auto; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--gold); color: var(--navy);
+  font-weight: 800; font-size: var(--fs-md); letter-spacing: .03em;
+  padding: .9em 2em; border-radius: 3rem; border: none; cursor: pointer;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 18px rgba(255,198,41,.35);
+}
+.btn-primary:hover { background: #ffb800; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,198,41,.45); }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: transparent; color: var(--navy);
+  font-weight: 700; font-size: var(--fs-md);
+  padding: .85em 1.8em; border-radius: 3rem; border: 2px solid var(--navy);
+  cursor: pointer; transition: all .2s;
+}
+.btn-outline:hover { background: var(--navy); color: #fff; }
+.btn-outline-white {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: transparent; color: #fff;
+  font-weight: 700; font-size: var(--fs-md);
+  padding: .85em 1.8em; border-radius: 3rem; border: 2px solid rgba(255,255,255,.55);
+  cursor: pointer; transition: all .2s;
+}
+.btn-outline-white:hover { background: rgba(255,255,255,.12); border-color: #fff; }
+
+/* ── Navbar ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--navy);
+  border-bottom: 3px solid var(--gold);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 68px;
+}
+.logo {
+  font-size: 1.5rem; font-weight: 900; letter-spacing: -.02em;
+  color: #fff;
+}
+.logo span { color: var(--gold); }
+.nav-links {
+  display: flex; align-items: center; gap: 2rem; list-style: none;
+}
+.nav-links a {
+  color: var(--ice); font-size: var(--fs-sm); font-weight: 500;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  background: var(--gold); color: var(--navy);
+  font-weight: 800; font-size: var(--fs-sm);
+  padding: .6em 1.5em; border-radius: 2rem;
+  transition: background .2s;
+}
+.nav-cta:hover { background: #ffb800; color: var(--navy); }
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 55%, var(--navy3) 100%);
+  position: relative; overflow: hidden;
+  padding: 7rem 0 6rem;
+}
+.hero::before {
+  content: '';
+  position: absolute; right: -5%; top: -10%;
+  width: 55%; aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(15,181,166,.18) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; left: -8%; bottom: -15%;
+  width: 40%; aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(255,198,41,.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero-inner {
+  display: grid; grid-template-columns: 1fr 400px; gap: 5rem;
+  align-items: start; position: relative; z-index: 1;
+}
+.hero-kicker {
+  color: var(--gold); font-weight: 700; font-size: var(--fs-sm);
+  letter-spacing: .18em; text-transform: uppercase; margin-bottom: 1rem;
+}
+.hero-title {
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem); font-weight: 900;
+  color: #fff; line-height: 1.08; margin-bottom: 1.5rem;
+}
+.hero-title em { color: var(--gold); font-style: normal; }
+.hero-desc {
+  color: var(--ice); font-size: var(--fs-lg); line-height: 1.75;
+  margin-bottom: 2.5rem; max-width: 540px;
+}
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-card {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: var(--r-lg);
+  padding: 2rem 1.75rem;
+  backdrop-filter: blur(12px);
+}
+.hero-stat-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+}
+.hero-stat {
+  background: rgba(255,255,255,.1); border-radius: var(--r);
+  padding: 1.2rem 1rem; text-align: center;
+}
+.hero-stat .num {
+  font-size: 2.2rem; font-weight: 900; color: var(--gold); line-height: 1;
+}
+.hero-stat .lbl {
+  font-size: .78rem; color: var(--ice); margin-top: .4rem; line-height: 1.35;
+}
+.hero-card-title {
+  color: var(--gold); font-weight: 700; font-size: var(--fs-sm);
+  letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1.2rem;
+}
+.hero-tag {
+  margin-top: 1.5rem; padding-top: 1.2rem;
+  border-top: 1px solid rgba(255,255,255,.1);
+  color: var(--teal); font-size: var(--fs-sm); font-weight: 600;
+  display: flex; align-items: center; gap: .5rem;
+}
+
+/* ── Trust bar ── */
+.trustbar {
+  background: var(--navy);
+  border-top: 3px solid rgba(255,198,41,.25);
+  padding: 3rem 0;
+}
+.trust-inner {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+}
+.trust-item {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  padding: 0 1.5rem;
+  border-right: 1px solid rgba(255,255,255,.1);
+}
+.trust-item:last-child { border-right: none; }
+.trust-icon {
+  font-size: 2.4rem;
+  margin-bottom: .85rem;
+  line-height: 1;
+}
+.trust-label {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: .3rem;
+  line-height: 1.25;
+}
+.trust-sub {
+  font-size: .78rem;
+  color: rgba(255,255,255,.5);
+  line-height: 1.4;
+}
+
+/* ── Stats ── */
+.stats-section {
+  background: var(--navy);
+  padding: 4.5rem 0;
+}
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+  text-align: center;
+}
+.stat-item .num {
+  font-size: 3rem; font-weight: 900; color: var(--gold); line-height: 1;
+}
+.stat-item .unit { font-size: 1.5rem; }
+.stat-item .lbl {
+  color: var(--ice); font-size: var(--fs-sm); margin-top: .6rem; line-height: 1.4;
+}
+
+/* ── Two Paths ── */
+.paths-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem;
+}
+.path-card {
+  border-radius: var(--r-lg); overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex; flex-direction: column;
+}
+.path-header {
+  padding: 2rem; display: flex; align-items: center; gap: 1rem;
+}
+.path-header.experienced { background: var(--navy); }
+.path-header.newbie { background: var(--tealdk); }
+.path-icon {
+  width: 3.5rem; height: 3.5rem; border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; flex-shrink: 0;
+}
+.path-header-text h3 {
+  color: #fff; font-size: var(--fs-xl); font-weight: 800; margin-bottom: .2rem;
+}
+.path-header-text p { color: rgba(255,255,255,.75); font-size: var(--fs-sm); }
+.path-body {
+  background: var(--white); flex: 1; padding: 2rem;
+  border: 1px solid var(--ice); border-top: none;
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+.path-req {
+  font-size: var(--fs-sm); font-weight: 700; color: var(--slate);
+  letter-spacing: .08em; text-transform: uppercase; margin-bottom: .8rem;
+}
+.path-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+.tag {
+  background: var(--cloud); color: var(--navy);
+  font-size: .78rem; font-weight: 600;
+  padding: .35em .85em; border-radius: 2rem;
+  border: 1px solid var(--ice);
+}
+.path-timeline {
+  background: var(--cloud); border-radius: var(--r);
+  padding: 1rem 1.2rem;
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.path-timeline .duration {
+  font-size: 1.5rem; font-weight: 900; color: var(--teal); white-space: nowrap;
+}
+.path-timeline .desc {
+  font-size: var(--fs-sm); color: var(--slate); line-height: 1.5;
+}
+.path-link {
+  font-weight: 700; color: var(--teal); font-size: var(--fs-sm);
+  display: flex; align-items: center; gap: .3rem;
+}
+.path-link:hover { color: var(--tealdk); }
+
+/* ── Journey Steps ── */
+.journey-section { background: var(--cloud); }
+.journey-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+  margin-top: 3rem; position: relative;
+}
+.journey-grid::before {
+  content: '';
+  position: absolute; top: 2.5rem; left: 10%; right: 10%;
+  height: 2px;
+  background: linear-gradient(to right, var(--teal), var(--gold));
+  z-index: 0;
+}
+.step-card {
+  background: var(--white); border-radius: var(--r);
+  padding: 1.75rem 1.2rem 1.5rem;
+  box-shadow: var(--shadow); text-align: center;
+  position: relative; z-index: 1;
+}
+.step-num {
+  width: 3rem; height: 3rem; border-radius: 50%;
+  background: var(--navy); color: var(--gold);
+  font-size: 1.1rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1rem;
+}
+.step-card h4 {
+  font-size: var(--fs-md); font-weight: 800; color: var(--navy);
+  margin-bottom: .5rem; line-height: 1.3;
+}
+.step-card p { font-size: .82rem; color: var(--slate); line-height: 1.5; }
+.step-time {
+  display: inline-block; background: var(--gold); color: var(--navy);
+  font-size: .72rem; font-weight: 700; padding: .25em .75em;
+  border-radius: 2rem; margin-top: .75rem;
+}
+
+/* ── Training ── */
+.training-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+  align-items: start; margin-top: 3rem;
+}
+.training-modules { display: flex; flex-direction: column; gap: 1rem; }
+.module-card {
+  background: var(--white); border-radius: var(--r);
+  box-shadow: var(--shadow); padding: 1.5rem;
+  display: grid; grid-template-columns: 3.5rem 1fr; gap: 1rem; align-items: start;
+  border-left: 4px solid var(--teal);
+}
+.module-icon {
+  width: 3rem; height: 3rem; border-radius: var(--r);
+  background: var(--cloud); display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+}
+.module-card h4 { font-size: var(--fs-md); font-weight: 700; color: var(--navy); margin-bottom: .3rem; }
+.module-card p { font-size: var(--fs-sm); color: var(--slate); line-height: 1.5; }
+.module-hours {
+  font-size: .78rem; font-weight: 700; color: var(--teal);
+  background: rgba(15,181,166,.1); padding: .25em .7em; border-radius: 2rem;
+  display: inline-block; margin-top: .4rem;
+}
+.training-right {}
+.training-visual {
+  background: var(--navy); border-radius: var(--r-lg);
+  padding: 2.5rem; color: #fff;
+}
+.training-visual h3 {
+  font-size: var(--fs-xl); font-weight: 800; margin-bottom: 1.5rem;
+}
+.ielts-bars { display: flex; flex-direction: column; gap: .85rem; }
+.ielts-row { display: flex; align-items: center; gap: 1rem; }
+.ielts-lbl { width: 6rem; font-size: var(--fs-sm); color: var(--ice); flex-shrink: 0; }
+.ielts-bar-wrap { flex: 1; background: rgba(255,255,255,.12); border-radius: 2rem; height: .75rem; overflow: hidden; }
+.ielts-fill { height: 100%; border-radius: 2rem; background: var(--teal); }
+.ielts-val { font-size: var(--fs-sm); font-weight: 700; color: var(--gold); width: 2rem; flex-shrink: 0; }
+.divider-line { border: none; border-top: 1px solid rgba(255,255,255,.12); margin: 1.5rem 0; }
+.ai-features { display: flex; flex-direction: column; gap: .75rem; margin-top: 1rem; }
+.ai-feat {
+  display: flex; align-items: center; gap: .75rem;
+  font-size: var(--fs-sm); color: var(--ice);
+}
+.ai-dot {
+  width: .55rem; height: .55rem; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0;
+}
+
+/* ── Why Việc Vui ── */
+.why-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem;
+  margin-top: 3rem;
+}
+.why-card {
+  background: var(--white); border-radius: var(--r-lg);
+  padding: 2rem; box-shadow: var(--shadow);
+  border-top: 4px solid transparent;
+  transition: transform .2s, box-shadow .2s;
+}
+.why-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.why-card:nth-child(1) { border-top-color: var(--gold); }
+.why-card:nth-child(2) { border-top-color: var(--teal); }
+.why-card:nth-child(3) { border-top-color: var(--navy); }
+.why-card:nth-child(4) { border-top-color: var(--teal); }
+.why-card:nth-child(5) { border-top-color: var(--gold); }
+.why-card:nth-child(6) { border-top-color: var(--navy); }
+.why-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+.why-card h4 { font-size: var(--fs-lg); font-weight: 800; color: var(--navy); margin-bottom: .6rem; }
+.why-card p { font-size: var(--fs-sm); color: var(--slate); line-height: 1.65; }
+
+/* ── Employer Section ── */
+.employer-section { background: var(--navy); }
+.employer-inner {
+  display: grid; grid-template-columns: 1fr 480px; gap: 5rem; align-items: center;
+}
+.employer-section .section-title { color: #fff; }
+.employer-section .section-sub { color: var(--ice); }
+.employer-features { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2.5rem; }
+.emp-feat {
+  display: flex; gap: 1rem; align-items: flex-start;
+}
+.emp-feat-icon {
+  width: 2.5rem; height: 2.5rem; border-radius: .5rem;
+  background: rgba(255,255,255,.08); color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.emp-feat h5 { color: #fff; font-size: var(--fs-md); font-weight: 700; margin-bottom: .2rem; }
+.emp-feat p { color: rgba(255,255,255,.65); font-size: var(--fs-sm); line-height: 1.5; }
+.employer-dashboard {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--r-lg); padding: 2rem;
+  backdrop-filter: blur(10px);
+}
+.dash-title {
+  color: var(--gold); font-size: var(--fs-sm); font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1.5rem;
+}
+.dash-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .75rem 0; border-bottom: 1px solid rgba(255,255,255,.08);
+  font-size: var(--fs-sm);
+}
+.dash-row:last-child { border-bottom: none; }
+.dash-row .name { color: var(--ice); }
+.dash-row .milestone { color: var(--teal); font-weight: 600; font-size: .78rem; }
+.progress-bar {
+  width: 80px; height: 6px; background: rgba(255,255,255,.12);
+  border-radius: 3px; overflow: hidden;
+}
+.progress-fill { height: 100%; background: var(--teal); border-radius: 3px; }
+.dash-status-ok  { color: #4ade80; font-size: .75rem; font-weight: 700; }
+.dash-status-wip { color: var(--gold); font-size: .75rem; font-weight: 700; }
+
+/* ── Testimonials ── */
+.testimonials-section { background: var(--cloud); }
+.testi-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem;
+  margin-top: 3rem;
+}
+.testi-card {
+  background: var(--white); border-radius: var(--r-lg);
+  padding: 2rem; box-shadow: var(--shadow);
+}
+.testi-stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; }
+.testi-quote {
+  font-size: var(--fs-md); color: var(--ink); line-height: 1.7;
+  font-style: italic; margin-bottom: 1.5rem;
+}
+.testi-author { display: flex; align-items: center; gap: .75rem; }
+.testi-avatar {
+  width: 2.75rem; height: 2.75rem; border-radius: 50%;
+  background: var(--navy); color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 1rem; flex-shrink: 0;
+}
+.testi-name { font-weight: 700; color: var(--navy); font-size: var(--fs-sm); }
+.testi-role { font-size: .78rem; color: var(--slate); }
+
+/* ── FAQ ── */
+.faq-list { max-width: 760px; margin: 3rem auto 0; }
+.faq-item {
+  border-bottom: 1px solid var(--ice); overflow: hidden;
+}
+.faq-q {
+  width: 100%; background: none; border: none; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.5rem 0;
+  font-size: var(--fs-md); font-weight: 700; color: var(--navy); text-align: left;
+}
+.faq-icon { color: var(--teal); font-size: 1.3rem; flex-shrink: 0; margin-left: 1rem; transition: transform .25s; }
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height .3s ease, padding .3s;
+  font-size: var(--fs-sm); color: var(--slate); line-height: 1.75;
+  padding: 0;
+}
+.faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.5rem; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+/* ── CTA Section ── */
+.cta-section {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--tealdk) 100%);
+  padding: 6rem 0;
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: ''; position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,198,41,.1) 0%, transparent 70%);
+  border-radius: 50%; top: -200px; right: -150px;
+  pointer-events: none;
+}
+.cta-section h2 { font-size: var(--fs-3xl); font-weight: 900; color: #fff; margin-bottom: 1rem; }
+.cta-section p { color: var(--ice); font-size: var(--fs-lg); margin-bottom: 2.5rem; max-width: 560px; margin-left: auto; margin-right: auto; }
+.cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.cta-note { margin-top: 1.5rem; color: rgba(255,255,255,.55); font-size: var(--fs-sm); }
+
+/* ── Form ── */
+.apply-section { background: var(--cloud); }
+.apply-inner {
+  display: grid; grid-template-columns: 1fr 520px; gap: 4rem; align-items: start;
+}
+.apply-form {
+  background: var(--white); border-radius: var(--r-lg);
+  padding: 2.5rem; box-shadow: var(--shadow-lg);
+}
+.apply-form h3 {
+  font-size: var(--fs-xl); font-weight: 800; color: var(--navy); margin-bottom: .5rem;
+}
+.apply-form .sub {
+  font-size: var(--fs-sm); color: var(--slate); margin-bottom: 2rem;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { margin-bottom: 1.2rem; }
+.form-group label {
+  display: block; font-size: var(--fs-sm); font-weight: 600; color: var(--navy);
+  margin-bottom: .4rem;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%; padding: .75rem 1rem;
+  border: 1.5px solid var(--ice); border-radius: .5rem;
+  font-size: var(--fs-sm); color: var(--ink); background: var(--white);
+  transition: border-color .2s;
+  font-family: inherit;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none; border-color: var(--teal);
+}
+.form-group textarea { resize: vertical; min-height: 80px; }
+.form-submit {
+  width: 100%; padding: 1rem;
+  background: var(--gold); color: var(--navy);
+  font-weight: 800; font-size: var(--fs-md);
+  border: none; border-radius: 3rem; cursor: pointer;
+  transition: background .2s, transform .15s;
+  margin-top: .5rem;
+}
+.form-submit:hover { background: #ffb800; transform: translateY(-1px); }
+.privacy-note { font-size: .75rem; color: var(--slate); text-align: center; margin-top: 1rem; }
+.apply-bullets { margin-top: 2rem; }
+.apply-bullets h4 { font-size: var(--fs-lg); font-weight: 800; color: var(--navy); margin-bottom: 1.2rem; }
+.apply-bullet {
+  display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.2rem;
+}
+.ab-icon {
+  width: 2.5rem; height: 2.5rem; border-radius: 50%;
+  background: rgba(15,181,166,.12); color: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0; margin-top: .1rem;
+}
+.ab-text h5 { font-size: var(--fs-md); font-weight: 700; color: var(--navy); margin-bottom: .2rem; }
+.ab-text p { font-size: var(--fs-sm); color: var(--slate); line-height: 1.5; }
+
+/* ── Footer ── */
+footer {
+  background: var(--ink); color: rgba(255,255,255,.7);
+  padding: 4rem 0 2rem;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+  padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,.1);
+  margin-bottom: 2rem;
+}
+.footer-brand .logo-f { font-size: 1.5rem; font-weight: 900; color: #fff; }
+.footer-brand .logo-f span { color: var(--gold); }
+.footer-brand p { margin-top: .75rem; font-size: var(--fs-sm); line-height: 1.65; }
+.footer-col h5 { color: #fff; font-size: var(--fs-sm); font-weight: 700; margin-bottom: 1rem; letter-spacing: .05em; text-transform: uppercase; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+.footer-col ul li a { font-size: var(--fs-sm); color: rgba(255,255,255,.6); transition: color .2s; }
+.footer-col ul li a:hover { color: var(--gold); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: var(--fs-sm); color: rgba(255,255,255,.4);
+}
+.footer-bottom a { color: var(--teal); }
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-card { display: none; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .paths-grid { grid-template-columns: 1fr; }
+  .journey-grid { grid-template-columns: repeat(3, 1fr); }
+  .journey-grid::before { display: none; }
+  .training-grid { grid-template-columns: 1fr; }
+  .employer-inner { grid-template-columns: 1fr; }
+  .apply-inner { grid-template-columns: 1fr; }
+  .testi-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+}
+@media (max-width: 768px) {
+  .section { padding: 4rem 0; }
+  .section-title { font-size: var(--fs-2xl); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .why-grid { grid-template-columns: 1fr; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .journey-grid { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     NAVBAR
+══════════════════════════════════ -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="logo">Việc<span>Vui</span></a>
+      <ul class="nav-links">
+        <li><a href="#chuong-trinh">Chương trình</a></li>
+        <li><a href="#lo-trinh">Lộ trình</a></li>
+        <li><a href="#dao-tao">Đào tạo</a></li>
+        <li><a href="#employer">Đối tác Úc</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a href="#dang-ky" class="nav-cta">Đăng ký ngay →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO
+══════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <p class="hero-kicker">🇻🇳 → 🇦🇺 &nbsp; Chương trình điều dưỡng Việt Nam – Úc</p>
+        <h1 class="hero-title">
+          Làm việc tại Úc.<br>
+          Xây dựng cuộc đời<br>
+          <em>đáng tự hào.</em>
+        </h1>
+        <p class="hero-desc">
+          Việc Vui đồng hành cùng điều dưỡng Việt Nam trên hành trình sang Úc —
+          từ đào tạo chứng chỉ, thi IELTS, xin visa 482 đến định cư PR.
+          Chúng tôi không chỉ lo thủ tục, chúng tôi lo cả tương lai của bạn.
+        </p>
+        <div class="hero-actions">
+          <a href="#dang-ky" class="btn-primary">Bắt đầu hành trình →</a>
+          <a href="#chuong-trinh" class="btn-outline-white">Tìm hiểu chương trình</a>
+        </div>
+
+        <!-- Stat mini-grid — cân bằng với chiều cao ảnh bên phải -->
+        <div style="margin-top:2.5rem;">
+          <p style="color:var(--gold); font-weight:700; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase; margin-bottom:1rem;">📊 Con số thực tế</p>
+          <div class="hero-stat-grid">
+            <div class="hero-stat">
+              <div class="num">482</div>
+              <div class="lbl">Loại visa lao động vào Úc</div>
+            </div>
+            <div class="hero-stat">
+              <div class="num">2 năm</div>
+              <div class="lbl">Đủ điều kiện nộp PR định cư</div>
+            </div>
+            <div class="hero-stat">
+              <div class="num">376 giờ</div>
+              <div class="lbl">Chương trình đào tạo toàn diện</div>
+            </div>
+            <div class="hero-stat">
+              <div class="num">5.5</div>
+              <div class="lbl">IELTS mục tiêu để đủ điều kiện visa</div>
+            </div>
+          </div>
+          <div class="hero-tag" style="margin-top:1rem;">
+            ✅ &nbsp;Đối tác cao đẳng Úc đã được approval tại Đông Nam Á
+          </div>
+        </div>
+      </div>
+
+      <!-- Ảnh hero — cột phải, đứng độc lập -->
+      <div style="position:relative; border-radius:var(--r-lg); overflow:hidden; margin-top:1rem;">
+        <img src="hero-nurse.jpg"
+             alt="Điều dưỡng Việt Nam đang làm việc tại Úc"
+             style="width:100%; aspect-ratio:3/4; object-fit:cover; object-position:center top; display:block;">
+        <div class="img-float-badge">
+          <div class="f-dot"></div>
+          <div>
+            <div class="f-text">Đã làm việc tại Melbourne</div>
+            <div class="f-sub">Visa 482 → PR sau 2 năm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     TRUST BAR
+══════════════════════════════════ -->
+<div class="trustbar">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-item">
+        <span class="trust-icon">🏛️</span>
+        <span class="trust-label">Đối tác cao đẳng Úc</span>
+        <span class="trust-sub">Được chứng nhận tại Đông Nam Á</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🏥</span>
+        <span class="trust-label">Thực tập thực tế</span>
+        <span class="trust-sub">120 giờ tại nursing home uy tín</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">⚖️</span>
+        <span class="trust-label">Hợp đồng minh bạch</span>
+        <span class="trust-sub">3 bên: học viên – Việc Vui – employer</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🤖</span>
+        <span class="trust-label">Công nghệ AI</span>
+        <span class="trust-sub">Dịch tự động & theo dõi tiến độ</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🛫</span>
+        <span class="trust-label">Hỗ trợ đến nơi</span>
+        <span class="trust-sub">Từ Việt Nam đến khi ổn định tại Úc</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     STATS
+══════════════════════════════════ -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="num">~10 <span class="unit">tháng</span></div>
+        <div class="lbl">Từ đăng ký đến bay sang Úc<br>(nhóm có kinh nghiệm)</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">256 <span class="unit">giờ</span></div>
+        <div class="lbl">Lý thuyết trực tiếp bởi<br>giảng viên Úc</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">120 <span class="unit">giờ</span></div>
+        <div class="lbl">Thực tập tại nursing home<br>tại Việt Nam</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">PR <span class="unit">sau 2 năm</span></div>
+        <div class="lbl">Lộ trình định cư rõ ràng,<br>minh bạch từ ngày đầu</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     TWO PATHS / CHƯƠNG TRÌNH
+══════════════════════════════════ -->
+<section class="section" id="chuong-trinh">
+  <div class="container">
+    <div class="badge">2 Nhóm chương trình</div>
+    <h2 class="section-title">Chương trình phù hợp<br>với từng xuất phát điểm</h2>
+    <p class="section-sub">
+      Dù bạn đang làm điều dưỡng hay vừa tốt nghiệp — Việc Vui có lộ trình riêng,
+      được thiết kế để tối ưu tốc độ và tỷ lệ thành công cho từng nhóm.
+    </p>
+
+    <div class="paths-grid">
+      <!-- Path 1 -->
+      <div class="path-card">
+        <!-- ╔══════════════════════════════════════╗
+             ║  IMG-02 · PATH CARD — Kinh nghiệm
+             ╚══════════════════════════════════════╝ -->
+        <img src="nurse-experienced.jpg"
+             alt="Điều dưỡng có kinh nghiệm — tự tin, chuyên nghiệp"
+             style="width:100%; aspect-ratio:16/7; object-fit:cover; object-position:center; display:block;">
+        <div class="path-header experienced" style="border-radius:0;">
+          <div class="path-icon">💼</div>
+          <div class="path-header-text">
+            <h3>Nhóm Có Kinh Nghiệm</h3>
+            <p>Điều dưỡng đang đi làm, có bảo hiểm xã hội</p>
+          </div>
+        </div>
+        <div class="path-body">
+          <p class="path-req">Điều kiện đầu vào</p>
+          <div class="path-tags">
+            <span class="tag">✅ Bằng điều dưỡng</span>
+            <span class="tag">✅ BHXH đang đóng</span>
+            <span class="tag">✅ IELTS ≥ 4.0</span>
+            <span class="tag">✅ Kinh nghiệm làm việc</span>
+          </div>
+          <div class="path-timeline">
+            <div class="duration">~6 tháng</div>
+            <div class="desc">
+              Chỉ cần bổ sung tiếng Anh + hoàn thiện hồ sơ.
+              Rút ngắn đáng kể so với nhóm mới tốt nghiệp.
+            </div>
+          </div>
+          <p style="font-size: var(--fs-sm); color: var(--slate); line-height: 1.65; margin-bottom: 1.2rem;">
+            Với nền tảng chuyên môn sẵn có, bạn chỉ cần đẩy mạnh tiếng Anh lên IELTS 5.5 và
+            hoàn thiện bộ hồ sơ visa 482. Việc Vui sẽ đồng hành từng bước.
+          </p>
+          <a href="#dang-ky" class="path-link">Đăng ký nhóm này →</a>
+        </div>
+      </div>
+
+      <!-- Path 2 -->
+      <div class="path-card">
+        <!-- ╔══════════════════════════════════════╗
+             ║  IMG-03 · PATH CARD — Sinh viên
+             ╚══════════════════════════════════════╝ -->
+        <img src="nurse-student.jpg"
+             alt="Sinh viên điều dưỡng — năng động, nhiều kỳ vọng"
+             style="width:100%; aspect-ratio:16/7; object-fit:cover; object-position:center; display:block;">
+        <div class="path-header newbie" style="border-radius:0;">
+          <div class="path-icon">🎓</div>
+          <div class="path-header-text">
+            <h3>Nhóm Sinh Viên / Newbie</h3>
+            <p>Chuẩn bị tốt nghiệp hoặc vừa ra trường</p>
+          </div>
+        </div>
+        <div class="path-body">
+          <p class="path-req">Điều kiện đầu vào</p>
+          <div class="path-tags">
+            <span class="tag">📋 Đang học hoặc mới tốt nghiệp CĐ/ĐH</span>
+            <span class="tag">✅ IELTS ≥ 4.0</span>
+            <span class="tag">🔥 Quyết tâm cao</span>
+          </div>
+          <div class="path-timeline">
+            <div class="duration">5.5–6 tháng</div>
+            <div class="desc">
+              Học lý thuyết đầy đủ, thực tập 120 giờ,
+              nâng trình tiếng Anh đồng thời.
+            </div>
+          </div>
+          <p style="font-size: var(--fs-sm); color: var(--slate); line-height: 1.65; margin-bottom: 1.2rem;">
+            Chương trình đầy đủ gồm 256 giờ lý thuyết do giảng viên Úc trực tiếp giảng dạy,
+            120 giờ thực tập tại nursing home, và lộ trình IELTS song song được tối ưu riêng.
+          </p>
+          <a href="#dang-ky" class="path-link">Đăng ký nhóm này →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     JOURNEY / LỘ TRÌNH
+══════════════════════════════════ -->
+<section class="section journey-section" id="lo-trinh">
+  <div class="container">
+    <div class="text-center">
+      <div class="badge badge-teal">Lộ trình 5 bước</div>
+      <h2 class="section-title">Từ hôm nay đến ngày đặt chân xuống Úc</h2>
+      <p class="section-sub">
+        Mỗi bước đều có đội ngũ Việc Vui đồng hành — không lo mình đơn độc,
+        không lo không biết bước tiếp theo là gì.
+      </p>
+    </div>
+
+    <!-- ╔══════════════════════════════════════════════════╗
+         ║  IMG-04 · JOURNEY BANNER — Ảnh lớp học thực tế
+         ╚══════════════════════════════════════════════════╝ -->
+    <img src="training-classroom.jpg"
+         alt="Lớp học điều dưỡng chuẩn Úc tại Việt Nam"
+         style="width:100%; aspect-ratio:21/6; object-fit:cover; object-position:center; display:block; border-radius:var(--r-lg); margin-bottom:2.5rem;">
+
+    <div class="journey-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h4>Đánh giá & Nhận hồ sơ</h4>
+        <p>Test tiếng Anh đầu vào, kiểm tra hồ sơ chuyên môn. Xác định lộ trình phù hợp cho bạn.</p>
+        <span class="step-time">Tuần 1</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h4>Đào tạo & Nâng trình tiếng Anh</h4>
+        <p>256 giờ lý thuyết theo chuẩn Úc + chương trình IELTS song song được cá nhân hóa.</p>
+        <span class="step-time">Tháng 1–4</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h4>Thực tập 120 giờ</h4>
+        <p>Thực hành tại nursing home đối tác tại Việt Nam. Hoàn thành Cert III/IV theo chuẩn Úc.</p>
+        <span class="step-time">Tháng 3–5</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h4>Nộp visa 482</h4>
+        <p>Việc Vui hỗ trợ toàn bộ hồ sơ visa. Thời gian xét duyệt khoảng 4 tháng từ lúc nộp.</p>
+        <span class="step-time">Tháng 5–6</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">5</div>
+        <h4>Bay sang Úc & Ổn định</h4>
+        <p>Hỗ trợ nhà ở, giấy tờ ban đầu, orientation. Làm việc 2 năm → nộp PR định cư.</p>
+        <span class="step-time">Tháng 9–10</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     TRAINING / ĐÀO TẠO
+══════════════════════════════════ -->
+<section class="section" id="dao-tao">
+  <div class="container">
+    <div class="badge">Chương trình đào tạo</div>
+    <h2 class="section-title">Chuẩn Úc. Học tại Việt Nam.</h2>
+    <p class="section-sub">
+      Chương trình được thiết kế bởi đối tác cao đẳng Úc đã được phê duyệt tại Philippines và Malaysia.
+      Việt Nam là điểm tiếp theo — bạn là thế hệ đầu tiên.
+    </p>
+
+    <div class="training-grid">
+      <div class="training-modules">
+        <div class="module-card">
+          <div class="module-icon">📚</div>
+          <div>
+            <h4>Lý thuyết điều dưỡng chuẩn Úc</h4>
+            <p>Học trực tiếp với giảng viên từ trường cao đẳng Úc. Nội dung bám sát thực tế làm việc tại nursing home Úc.</p>
+            <span class="module-hours">256 giờ contact hour</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-icon">🏥</div>
+          <div>
+            <h4>Thực tập lâm sàng tại Việt Nam</h4>
+            <p>120 giờ thực hành tại các nursing home đối tác (Nam An Home và các cơ sở mở rộng). Được giám sát và chứng nhận theo chuẩn quốc tế.</p>
+            <span class="module-hours">120 giờ thực hành</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-icon">🌐</div>
+          <div>
+            <h4>Tiếng Anh chuyên ngành y tế</h4>
+            <p>Từ IELTS 4.0 lên 5.5 theo lộ trình song song. Tập trung vào giao tiếp lâm sàng, từ vựng y tế và kỹ năng nghe nói thực tiễn.</p>
+            <span class="module-hours">Mục tiêu IELTS 5.5</span>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-icon">📄</div>
+          <div>
+            <h4>Hỗ trợ hồ sơ & visa</h4>
+            <p>Đội ngũ chuyên gia hỗ trợ toàn bộ quy trình: đánh giá kỹ năng (skill assessment), chuẩn bị hồ sơ, nộp visa 482 và theo dõi tiến trình.</p>
+            <span class="module-hours">Hỗ trợ toàn trình</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="training-right">
+        <!-- ╔══════════════════════════════════════════════╗
+             ║  IMG-05 · TRAINING PHOTO — Thực tập nursing home
+             ╚══════════════════════════════════════════════╝ -->
+        <img src="internship-nursing.jpg"
+             alt="Học viên thực tập chăm sóc người cao tuổi tại nursing home"
+             style="width:100%; aspect-ratio:4/3; object-fit:cover; object-position:center; display:block; border-radius:var(--r-lg); margin-bottom:1.5rem;">
+
+        <div class="training-visual">
+          <h3>Lộ trình IELTS</h3>
+          <p style="color:rgba(255,255,255,.65); font-size: var(--fs-sm); margin-bottom: 1.5rem;">
+            Mục tiêu điểm số theo từng kỹ năng để đủ điều kiện xin visa 482
+          </p>
+          <div class="ielts-bars">
+            <div class="ielts-row">
+              <div class="ielts-lbl">Nghe</div>
+              <div class="ielts-bar-wrap"><div class="ielts-fill" style="width:68%"></div></div>
+              <div class="ielts-val">5.5</div>
+            </div>
+            <div class="ielts-row">
+              <div class="ielts-lbl">Đọc</div>
+              <div class="ielts-bar-wrap"><div class="ielts-fill" style="width:68%"></div></div>
+              <div class="ielts-val">5.5</div>
+            </div>
+            <div class="ielts-row">
+              <div class="ielts-lbl">Viết</div>
+              <div class="ielts-bar-wrap"><div class="ielts-fill" style="width:68%"></div></div>
+              <div class="ielts-val">5.5</div>
+            </div>
+            <div class="ielts-row">
+              <div class="ielts-lbl">Nói</div>
+              <div class="ielts-bar-wrap"><div class="ielts-fill" style="width:68%"></div></div>
+              <div class="ielts-val">5.5</div>
+            </div>
+          </div>
+          <div class="divider-line"></div>
+          <h3>Công nghệ hỗ trợ</h3>
+          <div class="ai-features">
+            <div class="ai-feat"><div class="ai-dot"></div>Thiết bị dịch tự động Việt – Anh tích hợp trong học tập</div>
+            <div class="ai-feat"><div class="ai-dot"></div>AI hỗ trợ học viên giao tiếp lâm sàng thực tiễn</div>
+            <div class="ai-feat"><div class="ai-dot"></div>Dashboard theo dõi tiến độ cá nhân real-time</div>
+            <div class="ai-feat"><div class="ai-dot"></div>Nền tảng quản lý milestones: IELTS, chứng chỉ, visa</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; background: var(--cloud); border-radius: var(--r); padding: 1.5rem;">
+          <h4 style="color: var(--navy); font-size: var(--fs-md); font-weight: 800; margin-bottom: .75rem;">
+            🎓 Chứng chỉ sau khi hoàn thành
+          </h4>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: .6rem;">
+            <li style="display: flex; align-items: center; gap: .75rem; font-size: var(--fs-sm); color: var(--slate);">
+              <span style="color: var(--teal); font-size: 1rem;">✓</span>
+              Certificate III Individual Support (Chuẩn Úc)
+            </li>
+            <li style="display: flex; align-items: center; gap: .75rem; font-size: var(--fs-sm); color: var(--slate);">
+              <span style="color: var(--teal); font-size: 1rem;">✓</span>
+              Statements of Attainment từ trường cao đẳng Úc
+            </li>
+            <li style="display: flex; align-items: center; gap: .75rem; font-size: var(--fs-sm); color: var(--slate);">
+              <span style="color: var(--teal); font-size: 1rem;">✓</span>
+              Kết quả IELTS đạt mức yêu cầu visa
+            </li>
+            <li style="display: flex; align-items: center; gap: .75rem; font-size: var(--fs-sm); color: var(--slate);">
+              <span style="color: var(--teal); font-size: 1rem;">✓</span>
+              Hồ sơ hoàn chỉnh để nộp visa 482 ngay
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     WHY VIỆC VUI
+══════════════════════════════════ -->
+<section class="section" style="background: var(--cloud);">
+  <div class="container">
+    <div class="text-center">
+      <div class="badge">Tại sao chọn Việc Vui</div>
+      <h2 class="section-title">Hơn cả một chương trình tuyển dụng</h2>
+      <p class="section-sub">
+        Chúng tôi là đối tác dài hạn — đồng hành từ ngày bạn nộp đơn cho đến khi bạn ổn định
+        cuộc sống tại Úc và sẵn sàng nộp PR.
+      </p>
+    </div>
+    <!-- ╔══════════════════════════════════════════════╗
+         ║  IMG-10 · WHY SECTION — Nhóm học viên thành công
+         ╚══════════════════════════════════════════════╝ -->
+    <img src="graduates-australia.jpg"
+         alt="Học viên Việc Vui đã sang làm việc và định cư tại Úc"
+         style="width:100%; aspect-ratio:16/5; object-fit:cover; object-position:center; display:block; border-radius:var(--r-lg); margin-bottom:3rem;">
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🎯</div>
+        <h4>Lộ trình rõ ràng từ ngày 1</h4>
+        <p>Bạn biết chính xác mình cần làm gì, mất bao lâu và chi phí bao nhiêu — không có bất ngờ nào ẩn sau hợp đồng.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🤝</div>
+        <h4>Đối tác Úc đã được kiểm chứng</h4>
+        <p>Đơn vị đào tạo cao đẳng Úc đã được phê duyệt hoạt động tại Philippines và Malaysia. Việt Nam là bước tiếp theo trong hệ thống đã được chứng nhận.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📊</div>
+        <h4>Readiness Platform theo dõi tiến độ</h4>
+        <p>Hệ thống quản lý học viên theo dõi từng milestone: IELTS, chứng chỉ, hồ sơ, visa. Bạn và đội ngũ Việc Vui cùng thấy tiến độ thực tế.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🏠</div>
+        <h4>Hỗ trợ từ A đến Z khi đến Úc</h4>
+        <p>Nhà ở ban đầu, thủ tục định hướng (orientation), mở tài khoản ngân hàng — chúng tôi đảm bảo bạn ổn định trước khi bắt đầu đi làm.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💰</div>
+        <h4>Phương án tài chính linh hoạt</h4>
+        <p>Hỗ trợ phương án trả góp và đòn bẩy tài chính cho học viên — không để chi phí đầu tư ban đầu trở thành rào cản cho ước mơ của bạn.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🛡️</div>
+        <h4>Cam kết đầu ra có ràng buộc</h4>
+        <p>Hợp đồng 3 bên giữa học viên – Việc Vui – employer Úc minh bạch về quyền lợi, cam kết 12 tháng làm việc và lộ trình PR rõ ràng.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     EMPLOYER SECTION
+══════════════════════════════════ -->
+<section class="section employer-section" id="employer">
+  <div class="container">
+    <div class="employer-inner">
+      <div>
+        <div class="badge badge-teal">Dành cho Employer Úc</div>
+        <h2 class="section-title">Giải pháp nhân sự điều dưỡng<br>bền vững từ Việt Nam</h2>
+        <p class="section-sub">
+          Việc Vui cung cấp ứng viên đã được đào tạo đầy đủ, có chứng chỉ chuẩn Úc,
+          đạt IELTS yêu cầu và sẵn sàng làm việc ngay khi đến.
+        </p>
+        <div class="employer-features">
+          <div class="emp-feat">
+            <div class="emp-feat-icon">👁️</div>
+            <div>
+              <h5>Dashboard theo dõi candidate pool</h5>
+              <p>Xem trạng thái toàn bộ ứng viên real-time: milestones IELTS, chứng chỉ, thực tập, hồ sơ visa.</p>
+            </div>
+          </div>
+          <div class="emp-feat">
+            <div class="emp-feat-icon">✅</div>
+            <div>
+              <h5>Ứng viên đã được pre-screened & verified</h5>
+              <p>Chỉ nhận ứng viên qua vòng lọc đầu vào nghiêm ngặt. Shortlist, phỏng vấn, xác minh chứng chỉ trước khi giới thiệu.</p>
+            </div>
+          </div>
+          <div class="emp-feat">
+            <div class="emp-feat-icon">⚖️</div>
+            <div>
+              <h5>Hợp đồng cam kết 12 tháng làm việc</h5>
+              <p>Điều khoản penalty minh bạch bảo vệ employer. Giảm thiểu rủi ro nhân sự nghỉ sớm.</p>
+            </div>
+          </div>
+          <div class="emp-feat">
+            <div class="emp-feat-icon">🔄</div>
+            <div>
+              <h5>Pipeline liên tục, ổn định</h5>
+              <p>Target 15–20 ứng viên/năm giai đoạn đầu, tăng dần theo công suất đào tạo. Nguồn cung ổn định dài hạn.</p>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 2.5rem;">
+          <a href="mailto:employer@viecvui.vn" class="btn-primary">Liên hệ tìm hiểu →</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="employer-dashboard">
+          <p class="dash-title">📊 Employer Dashboard – Demo</p>
+          <div class="dash-row">
+            <span class="name">Nguyễn Thị Hương</span>
+            <span class="milestone">IELTS 5.0</span>
+            <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+            <span class="dash-status-ok">✅ On track</span>
+          </div>
+          <div class="dash-row">
+            <span class="name">Trần Minh Khôi</span>
+            <span class="milestone">Thực tập 80/120h</span>
+            <div class="progress-bar"><div class="progress-fill" style="width:67%"></div></div>
+            <span class="dash-status-wip">🔄 In progress</span>
+          </div>
+          <div class="dash-row">
+            <span class="name">Lê Thu Hà</span>
+            <span class="milestone">Hồ sơ visa</span>
+            <div class="progress-bar"><div class="progress-fill" style="width:95%"></div></div>
+            <span class="dash-status-ok">✅ Submitting</span>
+          </div>
+          <div class="dash-row">
+            <span class="name">Phạm Văn Đức</span>
+            <span class="milestone">Cert III hoàn thành</span>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+            <span class="dash-status-ok">✅ Ready</span>
+          </div>
+          <div class="dash-row">
+            <span class="name">Võ Thanh Loan</span>
+            <span class="milestone">IELTS đang ôn tập</span>
+            <div class="progress-bar"><div class="progress-fill" style="width:35%"></div></div>
+            <span class="dash-status-wip">🔄 Week 6/16</span>
+          </div>
+          <div style="margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,.1); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; text-align: center;">
+            <div>
+              <div style="color: var(--gold); font-size: 1.5rem; font-weight: 900;">12</div>
+              <div style="color: rgba(255,255,255,.55); font-size: .72rem; margin-top: .2rem;">Ứng viên đang đào tạo</div>
+            </div>
+            <div>
+              <div style="color: var(--gold); font-size: 1.5rem; font-weight: 900;">4</div>
+              <div style="color: rgba(255,255,255,.55); font-size: .72rem; margin-top: .2rem;">Sẵn sàng phỏng vấn</div>
+            </div>
+            <div>
+              <div style="color: var(--gold); font-size: 1.5rem; font-weight: 900;">2</div>
+              <div style="color: rgba(255,255,255,.55); font-size: .72rem; margin-top: .2rem;">Đã bay sang Úc</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     TESTIMONIALS (Aspirational)
+══════════════════════════════════ -->
+<section class="section testimonials-section">
+  <div class="container">
+    <div class="text-center">
+      <div class="badge">Câu chuyện học viên</div>
+      <h2 class="section-title">Những người đã bắt đầu hành trình</h2>
+      <p class="section-sub">
+        Họ cũng từng phân vân, lo lắng không khác gì bạn. Và họ đã chọn tiến lên.
+      </p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">
+          "Lúc đầu tôi nghĩ IELTS 5.5 là không thể với mình. Sau 4 tháng đào tạo cùng Việc Vui,
+          tôi đạt 5.5 và hoàn thành hồ sơ visa đúng hạn. Bây giờ đang làm tại aged care ở Melbourne."
+        </p>
+        <div class="testi-author">
+          <!-- ╔══════════════════════════════════════╗
+               ║  IMG-06 · TESTI HEADSHOT — Hương
+               ╚══════════════════════════════════════╝ -->
+          <img src="testimonial-huong.jpg" alt="Nguyễn Thị Hương"
+               style="width:3rem;height:3rem;border-radius:50%;object-fit:cover;object-position:center top;flex-shrink:0;">
+          <div>
+            <div class="testi-name">Nguyễn Thị Hương</div>
+            <div class="testi-role">Điều dưỡng, đang làm việc tại Melbourne, Úc</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">
+          "Tôi không có kinh nghiệm trước — mới ra trường. Nhưng chương trình đào tạo của Việc Vui
+          rất bài bản. Thực tập tại Nam An Home cho tôi tự tin thật sự trước khi bay."
+        </p>
+        <div class="testi-author">
+          <!-- ╔══════════════════════════════════════╗
+               ║  IMG-07 · TESTI HEADSHOT — Khôi
+               ╚══════════════════════════════════════╝ -->
+          <img src="testimonial-khoi.jpg" alt="Trần Minh Khôi"
+               style="width:3rem;height:3rem;border-radius:50%;object-fit:cover;object-position:center top;flex-shrink:0;">
+          <div>
+            <div class="testi-name">Trần Minh Khôi</div>
+            <div class="testi-role">Sinh viên mới tốt nghiệp, đang hoàn thành hồ sơ visa</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">
+          "Điều tôi tin tưởng nhất là sự minh bạch. Biết rõ từng bước, từng chi phí, từng mốc thời gian.
+          Việc Vui không hứa hão — họ làm đúng những gì cam kết."
+        </p>
+        <div class="testi-author">
+          <!-- ╔══════════════════════════════════════╗
+               ║  IMG-08 · TESTI HEADSHOT — Thu Hà
+               ╚══════════════════════════════════════╝ -->
+          <img src="testimonial-ha.jpg" alt="Lê Thu Hà"
+               style="width:3rem;height:3rem;border-radius:50%;object-fit:cover;object-position:center top;flex-shrink:0;">
+          <div>
+            <div class="testi-name">Lê Thu Hà</div>
+            <div class="testi-role">Điều dưỡng 3 năm kinh nghiệm, đang chờ visa</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     FAQ
+══════════════════════════════════ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="text-center">
+      <div class="badge">FAQ</div>
+      <h2 class="section-title">Câu hỏi thường gặp</h2>
+      <p class="section-sub">
+        Những thắc mắc chúng tôi nhận được nhiều nhất — được trả lời thẳng, không vòng vo.
+      </p>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Tôi cần có IELTS từ trước khi đăng ký không?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Bạn cần có IELTS tối thiểu 4.0 để đăng ký chương trình. Nếu chưa có bằng IELTS, bạn sẽ được
+          làm bài kiểm tra đánh giá trình độ tiếng Anh đầu vào. Sau đó, Việc Vui sẽ thiết kế lộ trình
+          đưa bạn lên 5.5 trong thời gian đào tạo song song với chương trình chuyên ngành.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Visa 482 là gì? Tôi có thể mang gia đình đi không?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Visa 482 (Skills in Demand Visa) là visa lao động cho phép bạn làm việc tại Úc tối đa 4 năm
+          dưới sự bảo lãnh của employer. Bạn có thể mang vợ/chồng và con cái cùng đi. Vợ/chồng được
+          quyền làm việc không giới hạn tại Úc. Sau 2 năm làm đủ full-time cho cùng employer, bạn đủ
+          điều kiện xét PR (định cư vĩnh viễn) qua visa 186.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Chi phí toàn bộ chương trình là bao nhiêu?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Chi phí cụ thể sẽ được tư vấn trực tiếp sau khi đánh giá hồ sơ của bạn, vì nó phụ thuộc vào
+          nhóm chương trình và trình độ tiếng Anh đầu vào. Việc Vui cung cấp phương án trả góp và hỗ trợ
+          đòn bẩy tài chính để không ai bị loại chỉ vì không có đủ tiền ban đầu. Chi phí bao gồm: học phí
+          đào tạo, lệ phí visa (phía employer bảo lãnh một phần), IELTS, và các khoản phụ trợ đã được
+          ghi rõ trong hợp đồng.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Nếu tôi chưa có bằng điều dưỡng thì có tham gia được không?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Bạn cần có ít nhất bằng cao đẳng hoặc đại học ngành điều dưỡng, hoặc đang học năm cuối để
+          tham gia nhóm Sinh viên/Newbie. Chương trình không dành cho người chưa có nền tảng chuyên môn
+          y tế — điều này đảm bảo chất lượng và tỷ lệ thành công cho chính bạn.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Tôi phải cam kết làm việc bao lâu tại Úc?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Theo hợp đồng, bạn cam kết làm việc tối thiểu 12 tháng cho employer tại Úc. Điều này được
+          quy định rõ trong điều khoản hợp đồng 3 bên và bảo vệ cả hai phía. Thực tế, 2 năm là cột mốc
+          quan trọng hơn — đủ thời gian để bạn xét PR, và đây là mục tiêu tất cả mọi người đều hướng đến.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Tôi có thể chọn làm ở tiểu bang nào tại Úc không?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          Việc phân bổ địa điểm làm việc phụ thuộc vào employer bảo lãnh và nhu cầu nhân sự của từng
+          cơ sở. Việc Vui sẽ trao đổi rõ ràng về địa điểm dự kiến trong quá trình kết nối với employer.
+          Hầu hết vị trí hiện tại tập trung ở các thành phố lớn như Melbourne, Sydney và Brisbane.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     APPLY SECTION
+══════════════════════════════════ -->
+<section class="section apply-section" id="dang-ky">
+  <div class="container">
+    <div class="apply-inner">
+      <div>
+        <div class="badge">Bắt đầu hành trình</div>
+        <h2 class="section-title">Đăng ký tư vấn miễn phí</h2>
+        <p class="section-sub" style="margin-bottom: 0;">
+          Điền form bên cạnh — đội ngũ Việc Vui sẽ liên lạc trong vòng 24 giờ
+          để đánh giá hồ sơ và xác định lộ trình phù hợp nhất với bạn.
+        </p>
+
+        <!-- ╔══════════════════════════════════════════╗
+             ║  IMG-09 · APPLY — Tư vấn viên gặp ứng viên
+             ╚══════════════════════════════════════════╝ -->
+        <img src="consultation.jpg"
+             alt="Tư vấn viên Việc Vui đang trao đổi với ứng viên điều dưỡng"
+             style="width:100%; aspect-ratio:3/2; object-fit:cover; object-position:center; display:block; border-radius:var(--r-lg); margin-bottom:2rem;">
+
+        <div class="apply-bullets">
+          <h4>Sau khi đăng ký, bạn sẽ nhận được:</h4>
+          <div class="apply-bullet">
+            <div class="ab-icon">📋</div>
+            <div class="ab-text">
+              <h5>Đánh giá hồ sơ cá nhân</h5>
+              <p>Xác định bạn thuộc nhóm nào, cần bổ sung gì và timeline thực tế.</p>
+            </div>
+          </div>
+          <div class="apply-bullet">
+            <div class="ab-icon">🗓️</div>
+            <div class="ab-text">
+              <h5>Lộ trình cá nhân hóa</h5>
+              <p>Timeline cụ thể từng tháng — từ hôm nay đến ngày bay sang Úc.</p>
+            </div>
+          </div>
+          <div class="apply-bullet">
+            <div class="ab-icon">💬</div>
+            <div class="ab-text">
+              <h5>Buổi tư vấn 1-1 miễn phí</h5>
+              <p>Gặp trực tiếp chuyên gia để giải đáp toàn bộ câu hỏi của bạn.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="apply-form">
+        <h3>Đăng ký ngay hôm nay</h3>
+        <p class="sub">Tư vấn miễn phí — không ràng buộc</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Họ và tên *</label>
+            <input type="text" placeholder="Nguyễn Văn A">
+          </div>
+          <div class="form-group">
+            <label>Số điện thoại *</label>
+            <input type="tel" placeholder="0912 345 678">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" placeholder="email@example.com">
+        </div>
+        <div class="form-group">
+          <label>Bạn thuộc nhóm nào? *</label>
+          <select>
+            <option value="">— Chọn nhóm phù hợp với bạn —</option>
+            <option>Điều dưỡng đang đi làm (có kinh nghiệm)</option>
+            <option>Sinh viên / Mới tốt nghiệp</option>
+            <option>Chưa chắc — cần tư vấn thêm</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Trình độ tiếng Anh hiện tại</label>
+            <select>
+              <option>Chưa có IELTS</option>
+              <option>IELTS dưới 4.0</option>
+              <option>IELTS 4.0 – 4.5</option>
+              <option>IELTS 5.0 trở lên</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tỉnh / Thành phố</label>
+            <input type="text" placeholder="Hà Nội / TP.HCM...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Câu hỏi hoặc ghi chú thêm</label>
+          <textarea placeholder="Ví dụ: Tôi có 3 năm kinh nghiệm điều dưỡng tại bệnh viện..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Đăng ký tư vấn miễn phí →</button>
+        <p class="privacy-note">🔒 Thông tin của bạn được bảo mật tuyệt đối. Chúng tôi không chia sẻ dữ liệu cá nhân.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     CTA FINAL
+══════════════════════════════════ -->
+<section class="cta-section">
+  <div class="container" style="position: relative; z-index: 1;">
+    <h2>Hành trình của bạn bắt đầu từ một quyết định.</h2>
+    <p>
+      Hàng nghìn điều dưỡng Philippines và Malaysia đã làm điều này trước bạn.
+      Việt Nam đang mở cửa. Đừng để cơ hội đi qua.
+    </p>
+    <div class="cta-actions">
+      <a href="#dang-ky" class="btn-primary">Đăng ký tư vấn ngay →</a>
+      <a href="tel:+84900000000" class="btn-outline-white">📞 Gọi tư vấn viên</a>
+    </div>
+    <p class="cta-note">Tư vấn miễn phí · Không ràng buộc · Hỗ trợ trong 24h</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     FOOTER
+══════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-f">Việc<span>Vui</span></div>
+        <p>
+          Đồng hành cùng điều dưỡng Việt Nam trên hành trình làm việc và định cư tại Úc.
+          Minh bạch, bài bản, và luôn đặt học viên làm trung tâm.
+        </p>
+        <div style="margin-top: 1.25rem; display: flex; gap: 1rem;">
+          <a href="#" style="color: rgba(255,255,255,.5); font-size: .85rem; transition: color .2s;" onmouseover="this.style.color='#FFC629'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Facebook</a>
+          <a href="#" style="color: rgba(255,255,255,.5); font-size: .85rem; transition: color .2s;" onmouseover="this.style.color='#FFC629'" onmouseout="this.style.color='rgba(255,255,255,.5)'">YouTube</a>
+          <a href="#" style="color: rgba(255,255,255,.5); font-size: .85rem; transition: color .2s;" onmouseover="this.style.color='#FFC629'" onmouseout="this.style.color='rgba(255,255,255,.5)'">Zalo</a>
+          <a href="#" style="color: rgba(255,255,255,.5); font-size: .85rem; transition: color .2s;" onmouseover="this.style.color='#FFC629'" onmouseout="this.style.color='rgba(255,255,255,.5)'">TikTok</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Chương trình</h5>
+        <ul>
+          <li><a href="#chuong-trinh">Nhóm có kinh nghiệm</a></li>
+          <li><a href="#chuong-trinh">Nhóm sinh viên</a></li>
+          <li><a href="#lo-trinh">Lộ trình 5 bước</a></li>
+          <li><a href="#dao-tao">Đào tạo & Chứng chỉ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Thông tin</h5>
+        <ul>
+          <li><a href="#">Về Việc Vui</a></li>
+          <li><a href="#employer">Dành cho employer</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#">Tin tức & Cập nhật</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Liên hệ</h5>
+        <ul>
+          <li><a href="#dang-ky">Đăng ký tư vấn</a></li>
+          <li><a href="tel:+84900000000">Hotline: 0900 000 000</a></li>
+          <li><a href="mailto:hello@viecvui.vn">hello@viecvui.vn</a></li>
+          <li><a href="#">TP. Hồ Chí Minh</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Việc Vui. All rights reserved.</span>
+      <span>
+        <a href="#">Chính sách bảo mật</a> &nbsp;·&nbsp;
+        <a href="#">Điều khoản sử dụng</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// FAQ accordion
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  // close all
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  // open clicked if it was closed
+  if (!isOpen) item.classList.add('open');
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>
