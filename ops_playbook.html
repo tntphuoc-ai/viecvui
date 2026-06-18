@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ViecVui — Operating Playbook (7 bộ phận nội bộ)</title>
+<title>ViecVui — Operating Playbook (7 Internal Functions)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -15,7 +15,6 @@
     --green:#22c55e; --green-dim:rgba(34,197,94,0.1); --green-border:rgba(34,197,94,0.3);
     --blue:#60a5fa; --blue-dim:rgba(96,165,250,0.1); --blue-border:rgba(96,165,250,0.3);
     --text:#e8edf5; --text-2:#94a3b8; --text-3:#4f6080; --mono:'JetBrains Mono',monospace;
-    /* 7 function colors */
     --f-mkt:#f472b6; --f-adm:#60a5fa; --f-bd:#f59e0b; --f-trn:#22c55e;
     --f-case:#a78bfa; --f-ops:#2dd4bf; --f-tech:#38bdf8;
   }
@@ -39,7 +38,7 @@
     border-radius:20px;padding:4px 14px;font-size:11px;font-family:var(--mono);color:var(--amber);margin-bottom:20px;letter-spacing:.06em;text-transform:uppercase}
   h1{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:39px;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
   h1 .accent{color:var(--amber)}
-  .hero-lede{color:var(--text-2);font-size:17px;max-width:800px}
+  .hero-lede{color:var(--text-2);font-size:17px;max-width:820px}
   .hero-stats{display:flex;gap:14px;flex-wrap:wrap;margin-top:26px}
   .hstat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 18px;min-width:140px}
   .hstat .v{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:23px}
@@ -48,27 +47,25 @@
   .sec-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
   h2{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:26px;letter-spacing:-.01em;margin-bottom:8px}
   h3{font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:18px;margin:22px 0 12px}
-  .sec-intro{color:var(--text-2);max-width:840px;margin-bottom:24px}
-  /* FUNCTION CARDS */
+  .sec-intro{color:var(--text-2);max-width:860px;margin-bottom:24px}
   .fgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
   @media(max-width:980px){.fgrid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:560px){.fgrid{grid-template-columns:1fr}}
   .fcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;position:relative;overflow:hidden}
-  .fcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
   .fcard .ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:10px;background:rgba(255,255,255,.05)}
   .fcard .nm{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:15px}
   .fcard .role{font-size:13px;color:var(--text-2);margin-top:7px}
   .fcard .tp{font-size:11.5px;color:var(--text-3);font-family:var(--mono);margin-top:9px}
   .fcard .tp b{color:var(--text-2)}
-  /* SWIMLANE */
+  .fcard .own{font-size:11.5px;margin-top:7px;color:var(--amber);font-family:var(--mono)}
   .tl-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
   .tl{min-width:1080px;width:100%;border-collapse:collapse;font-size:12.5px}
   .tl th,.tl td{border:1px solid var(--border)}
   .tl thead th{background:var(--card);font-family:var(--mono);font-size:10.5px;color:var(--text-2);padding:9px 6px;text-align:center;font-weight:500}
   .tl thead th .ph{display:block;color:var(--amber);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
-  .tl .lane-label{background:var(--card);padding:11px 13px;width:150px;min-width:150px;vertical-align:middle}
+  .tl .lane-label{background:var(--card);padding:11px 13px;width:165px;min-width:165px;vertical-align:middle}
   .tl .lane-label .ln{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13.5px}
-  .tl .lane-label .lw{font-size:10px;color:var(--text-3);font-family:var(--mono)}
+  .tl .lane-label .lw{font-size:10px;color:var(--amber);font-family:var(--mono);margin-top:2px}
   .tl td.cell{vertical-align:top;padding:0;height:1px}
   .bar{margin:5px;border-radius:7px;padding:7px 9px;font-size:11px;line-height:1.32;color:#0c0f1a;font-weight:600;min-height:36px}
   .bar small{display:block;font-weight:400;font-size:9.5px;opacity:.82;margin-top:2px}
@@ -80,16 +77,15 @@
   .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--text-2)}
   .legend span{display:inline-flex;align-items:center;gap:6px}
   .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
-  /* DETAIL BLOCKS */
   .stage-block{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:15px;overflow:hidden}
   .sb-head{display:flex;align-items:center;gap:12px;padding:14px 19px;border-bottom:1px solid var(--border);background:var(--surface)}
   .sb-ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
   .sb-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:16px}
-  .sb-tp{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3)}
+  .sb-tp{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-3);text-align:right}
   .sb-body{padding:4px 19px 16px}
   .phase{display:flex;gap:14px;padding:13px 0;border-bottom:1px dashed var(--border)}
   .phase:last-child{border-bottom:none}
-  .phase-when{flex:0 0 132px}
+  .phase-when{flex:0 0 150px}
   .phase-when .pw-tag{font-family:var(--mono);font-size:10px;color:var(--amber);display:block}
   .phase-when .pw-cal{font-size:11px;color:var(--text-3)}
   .phase-main{flex:1}
@@ -101,25 +97,21 @@
   .tag.kpi{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
   .tag.dep{color:var(--blue);border-color:var(--blue-border);background:var(--blue-dim)}
   .tag.gate{color:var(--red);border-color:var(--red-border);background:var(--red-dim)}
-  /* TABLE */
   .tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
   table.grid{width:100%;border-collapse:collapse;font-size:13px;min-width:700px}
   table.grid th,table.grid td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top}
   table.grid thead th{background:var(--card);font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--text-2);text-transform:uppercase}
   table.grid tbody tr:nth-child(even){background:rgba(255,255,255,0.015)}
-  /* CALLOUT */
   .callout{border-radius:12px;padding:15px 18px;margin:18px 0;border:1px solid;font-size:13.5px}
   .callout.red{background:var(--red-dim);border-color:var(--red-border)}
   .callout.amber{background:var(--amber-dim);border-color:var(--amber-border)}
   .callout.green{background:var(--green-dim);border-color:var(--green-border)}
   .callout b{display:block;margin-bottom:4px;font-family:'Plus Jakarta Sans',sans-serif}
-  /* HANDOFF */
   .flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;margin-top:6px}
   .flow .node{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 13px;flex:1;min-width:120px;position:relative}
   .flow .node .nt{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px}
   .flow .node .nd{font-size:11.5px;color:var(--text-3);margin-top:3px}
   .flow .arr{align-self:center;color:var(--text-3);font-size:18px}
-  /* BATCH */
   .batch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}
   @media(max-width:880px){.batch-grid{grid-template-columns:repeat(2,1fr)}}
   .batch{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px}
@@ -127,8 +119,8 @@
   .batch .bn{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:30px;margin:4px 0;color:var(--f-adm)}
   .batch .bd{font-size:12px;color:var(--text-2)}
   .ps-wrap{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:16px;overflow-x:auto;margin-top:8px}
-  .ps-grid{min-width:780px}
-  .ps-months,.ps-row{display:grid;grid-template-columns:140px repeat(10,1fr);gap:4px;align-items:center}
+  .ps-grid{min-width:820px}
+  .ps-months,.ps-row{display:grid;grid-template-columns:150px repeat(10,1fr);gap:4px;align-items:center}
   .ps-months div{font-family:var(--mono);font-size:10px;color:var(--text-3);text-align:center;padding-bottom:4px}
   .ps-months div:first-child{text-align:left;color:var(--amber)}
   .ps-row{margin:5px 0}
@@ -145,13 +137,13 @@
 <body>
 <nav class="no-print">
   <div class="nav-brand"><div class="nav-logo">VV</div>
-    <div><div class="nav-title">ViecVui · Operating Playbook</div><div class="nav-subtitle">7 bộ phận nội bộ · Aged Care Pathway</div></div></div>
+    <div><div class="nav-title">ViecVui · Operating Playbook</div><div class="nav-subtitle">7 internal functions · Aged Care Pathway</div></div></div>
   <div class="nav-pills">
-    <a class="nav-pill" href="#map">Mô hình</a>
-    <a class="nav-pill" href="#functions">7 bộ phận</a>
+    <a class="nav-pill" href="#team">Team</a>
+    <a class="nav-pill" href="#map">Model</a>
+    <a class="nav-pill" href="#functions">Functions</a>
     <a class="nav-pill" href="#timeline">Timeline</a>
-    <a class="nav-pill" href="#detail">Chi tiết</a>
-    <a class="nav-pill" href="#handoff">Bàn giao</a>
+    <a class="nav-pill" href="#detail">Detail</a>
     <a class="nav-pill" href="#gates">Gates</a>
     <a class="nav-pill" href="#fifty">50 students</a>
   </div>
@@ -159,35 +151,58 @@
 
 <header class="hero">
   <div class="container">
-    <div class="hero-tag">● Operating Playbook · v2.0 · Tháng 6/2026</div>
-    <h1>Hệ thống vận hành ViecVui — <span class="accent">7 bộ phận nội bộ</span><br>và timeline để đưa 50 học viên sang Úc</h1>
-    <p class="hero-lede">Tài liệu này nhìn từ <b>bên trong</b>: 7 bộ phận ViecVui tự vận hành, mỗi bộ phận làm gì qua từng giai đoạn, bàn giao cho nhau ra sao. Học viên, đối tác đào tạo, nhà tuyển dụng Úc, RMA, COLAB, nhà đầu tư là các <b>bên ngoài</b> mà từng bộ phận tiếp xúc — không phải bộ phận vận hành.</p>
+    <div class="hero-tag">● Operating Playbook · v3.0 · Jun 2026</div>
+    <h1>ViecVui operating system — <span class="accent">7 internal functions</span><br>and the timeline to place 50 students in Australia</h1>
+    <p class="hero-lede">This is the view from <b>inside</b>: the seven functions ViecVui runs itself, what each does across the phases, and how they hand off to one another. Students, training providers, Australian employers, the migration agent, COLAB and investors are the <b>external parties</b> each function works with — they are not operating units.</p>
     <div class="hero-stats">
-      <div class="hstat"><div class="v" style="color:var(--amber)">50</div><div class="l">học viên / năm 1</div></div>
-      <div class="hstat"><div class="v">7</div><div class="l">bộ phận nội bộ</div></div>
-      <div class="hstat"><div class="v">3</div><div class="l">giai đoạn vận hành</div></div>
-      <div class="hstat"><div class="v">&lt;10</div><div class="l">tháng / 1 học viên</div></div>
+      <div class="hstat"><div class="v" style="color:var(--amber)">50</div><div class="l">students · year 1</div></div>
+      <div class="hstat"><div class="v">7</div><div class="l">internal functions</div></div>
+      <div class="hstat"><div class="v">&lt;10</div><div class="l">months / student</div></div>
+      <div class="hstat"><div class="v">$0</div><div class="l">budget · first 6 months</div></div>
     </div>
   </div>
 </header>
 
-<!-- MAP: internal vs external -->
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="sec-kicker">01 · Leadership & ownership</div>
+    <h2>Four leads own the seven functions</h2>
+    <p class="sec-intro">A small team runs everything. The seven operating functions below map onto four leads. Owners are shown on every function and lane.</p>
+    <div class="fgrid">
+      <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-ops)"></span>
+        <div class="ico">⚙️</div><div class="nm">Nam — CEO</div>
+        <div class="role">Overall leadership. Owns <b>Operations &amp; Finance</b>; investor and capital relationships.</div></div>
+      <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-tech)"></span>
+        <div class="ico">💻</div><div class="nm">Pop — CTO</div>
+        <div class="role">Owns <b>Technology</b> (CRM, dashboard, automation, BI) and is <b>part of VN Operations</b>.</div></div>
+      <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-bd)"></span>
+        <div class="ico">🤝</div><div class="nm">Simon — Chief Client Officer</div>
+        <div class="role"><b>Australian Ops</b> + <b>BD &amp; Sales</b> (with 8A): employer/client offers, partnerships, marketing &amp; admissions demand.</div></div>
+      <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-trn)"></span>
+        <div class="ico">📚</div><div class="nm">Ms. Hong — Chief Training</div>
+        <div class="role">Owns <b>Training &amp; Academic</b> (8A · Upskilled · Nam An) and <b>Documents &amp; License</b> (paperwork, COLAB).</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODEL -->
 <section id="map">
   <div class="container">
-    <div class="sec-kicker">01 · Mô hình 2 lớp</div>
-    <h2>Bên trong làm việc — Bên ngoài phối hợp</h2>
-    <p class="sec-intro">Sai lầm của khung "4 parties" cũ là gộp khách hàng (Học viên) chung với bộ phận vận hành. Tách rõ: <b>Học viên là đầu ra (bên ngoài)</b>; bên trong xử lý họ là <b>bộ phận Tuyển sinh</b>. Công nghệ và Marketing cũng là bộ phận nội bộ, không phải bên ngoài.</p>
+    <div class="sec-kicker">02 · Two-layer model</div>
+    <h2>Inside does the work — Outside is coordinated</h2>
+    <p class="sec-intro">The flaw in the old "4 parties" frame was mixing the customer (Student) with the operating team. Separated cleanly: <b>the student is the output (external)</b>; the internal unit handling them is <b>Admissions</b>. Technology and Marketing are internal functions too, not external parties.</p>
     <div class="tbl-wrap">
       <table class="grid">
-        <thead><tr><th style="width:46%">🏠 BÊN TRONG — 7 bộ phận vận hành</th><th>🌐 BÊN NGOÀI — tiếp xúc</th></tr></thead>
+        <thead><tr><th style="width:50%">🏠 INSIDE — 7 operating functions (owner)</th><th>🌐 OUTSIDE — touchpoints</th></tr></thead>
         <tbody>
-          <tr><td><b>Marketing</b> — tạo nhu cầu, lead, thương hiệu</td><td>Thị trường, trường ĐH/CĐ điều dưỡng</td></tr>
-          <tr><td><b>Tuyển sinh</b> (Sales B2C) — chốt lead → ký hợp đồng</td><td>Học viên + gia đình (khách hàng)</td></tr>
-          <tr><td><b>Phát triển đối tác</b> (Sales B2B/BD) — khoá nguồn cầu & nguồn lực</td><td>Nhà tuyển dụng Úc, Upskilled (RTO), 8A, Nam An, RMA</td></tr>
-          <tr><td><b>Đào tạo & Học vụ</b> — điều phối học, theo dõi tiến độ</td><td>8A (tiếng Anh), Upskilled (RTO – Cert III), Nam An (practicum)</td></tr>
-          <tr><td><b>Hồ sơ & Pháp chế</b> — giấy tờ, visa pipeline, tuân thủ</td><td>RMA, Home Affairs (Úc), COLAB (VN)</td></tr>
-          <tr><td><b>Vận hành & Tài chính</b> — điều phối trung tâm, dòng tiền</td><td>Nhà đầu tư / nguồn vốn</td></tr>
-          <tr><td><b>Công nghệ</b> — nền tảng, CRM, tracking, tự động hoá</td><td>Hỗ trợ chéo toàn bộ (cross-cutting)</td></tr>
+          <tr><td><b>Marketing</b> — demand, leads, brand · <i>Simon / 8A</i></td><td>Market, nursing colleges/universities</td></tr>
+          <tr><td><b>Admissions</b> (B2C Sales) — convert lead → signed contract · <i>Simon / 8A</i></td><td>Students + families (customer)</td></tr>
+          <tr><td><b>Partnerships &amp; BD</b> (B2B Sales) — lock demand &amp; resources · <i>Simon</i></td><td>Australian employers, Upskilled, 8A, Nam An, RMA</td></tr>
+          <tr><td><b>Training &amp; Academic</b> — run study, track progress · <i>Ms. Hong</i></td><td>8A (English), Upskilled (RTO – Cert III), Nam An (practicum)</td></tr>
+          <tr><td><b>Documents &amp; Compliance</b> — paperwork, visa, license · <i>Ms. Hong</i></td><td>RMA, Home Affairs (AU), COLAB (VN)</td></tr>
+          <tr><td><b>Operations &amp; Finance</b> — central coordination, cash · <i>Nam</i></td><td>Investors / capital</td></tr>
+          <tr><td><b>Technology</b> — platform, CRM, tracking, automation · <i>Pop</i></td><td>Cross-cutting support for all</td></tr>
         </tbody>
       </table>
     </div>
@@ -197,37 +212,37 @@
 <!-- FUNCTIONS -->
 <section id="functions">
   <div class="container">
-    <div class="sec-kicker">02 · 7 bộ phận</div>
-    <h2>Vai trò & "bên ngoài" mỗi bộ phận xử lý</h2>
+    <div class="sec-kicker">03 · The 7 functions</div>
+    <h2>Mandate, owner &amp; the "outside" each one handles</h2>
     <div class="fgrid">
-      <div class="fcard" style="border-left:0"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-mkt)"></span>
+      <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-mkt)"></span>
         <div class="ico">📣</div><div class="nm">Marketing</div>
-        <div class="role">Tạo nhu cầu & lead, thương hiệu, sự kiện, MOU trường. Đứng đầu phễu, chạy trước Tuyển sinh.</div>
-        <div class="tp">Output: <b>≥50 lead/tháng</b></div></div>
+        <div class="role">Demand &amp; leads, brand, events, college MOUs. Top of funnel, runs ahead of Admissions.</div>
+        <div class="tp">Output: <b>≥50 leads/month</b></div><div class="own">Owner: Simon / 8A</div></div>
       <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-adm)"></span>
-        <div class="ico">🎯</div><div class="nm">Tuyển sinh</div>
-        <div class="role">Pre-screen, assessment, tư vấn, ký hợp đồng + cọc, onboarding học viên. (Sales B2C)</div>
-        <div class="tp">Xử lý: <b>Học viên + gia đình</b></div></div>
+        <div class="ico">🎯</div><div class="nm">Admissions</div>
+        <div class="role">Pre-screen, assessment, advising, contract + deposit, student onboarding. (B2C Sales)</div>
+        <div class="tp">Handles: <b>students + families</b></div><div class="own">Owner: Simon / 8A</div></div>
       <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-bd)"></span>
-        <div class="ico">🤝</div><div class="nm">Phát triển đối tác</div>
-        <div class="role">Khoá employer (LOI), ký Upskilled + Nam An, chốt RMA, account management. (Sales B2B)</div>
-        <div class="tp">Xử lý: <b>Employer, RTO, RMA</b></div></div>
+        <div class="ico">🤝</div><div class="nm">Partnerships &amp; BD</div>
+        <div class="role">Lock employers (LOI), Upskilled + Nam An, RMA; account management. (B2B Sales)</div>
+        <div class="tp">Handles: <b>employers, providers, RMA</b></div><div class="own">Owner: Simon</div></div>
       <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-trn)"></span>
-        <div class="ico">📚</div><div class="nm">Đào tạo & Học vụ</div>
-        <div class="role">Điều phối English (8A) + Cert III theory (Upskilled online) + practical hours (Nam An), mock test, skills assessment.</div>
-        <div class="tp">Xử lý: <b>8A · Upskilled · Nam An</b></div></div>
+        <div class="ico">📚</div><div class="nm">Training &amp; Academic</div>
+        <div class="role">Run English (8A) + Cert III theory (Upskilled online) + practical hours (Nam An), mocks, skills assessment.</div>
+        <div class="tp">Handles: <b>8A · Upskilled · Nam An</b></div><div class="own">Owner: Ms. Hong</div></div>
       <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-case)"></span>
-        <div class="ico">🛂</div><div class="nm">Hồ sơ & Pháp chế</div>
-        <div class="role">Quản lý hồ sơ, visa 482 pipeline, giấy phép XKLĐ (COLAB), hợp đồng pháp lý.</div>
-        <div class="tp">Xử lý: <b>RMA, COLAB, Home Affairs</b></div></div>
+        <div class="ico">🛂</div><div class="nm">Documents &amp; Compliance</div>
+        <div class="role">Case files, 482 visa pipeline, labour-export license (COLAB), legal contracts.</div>
+        <div class="tp">Handles: <b>RMA, COLAB, Home Affairs</b></div><div class="own">Owner: Ms. Hong</div></div>
       <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-ops)"></span>
-        <div class="ico">⚙️</div><div class="nm">Vận hành & Tài chính</div>
-        <div class="role">Điều phối trung tâm, nhịp họp tuần/tháng, sở hữu Dashboard, dòng tiền & vốn.</div>
-        <div class="tp">Xử lý: <b>Nhà đầu tư</b></div></div>
+        <div class="ico">⚙️</div><div class="nm">Operations &amp; Finance</div>
+        <div class="role">Central coordination, weekly/monthly cadence, owns the Dashboard, cash &amp; capital.</div>
+        <div class="tp">Handles: <b>investors</b></div><div class="own">Owner: Nam (CEO) · Pop part-time</div></div>
       <div class="fcard"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--f-tech)"></span>
-        <div class="ico">💻</div><div class="nm">Công nghệ</div>
-        <div class="role">CRM/ATS, form thu lead, hệ thống tracking/Dashboard, cổng học viên, automation, BI.</div>
-        <div class="tp"><b>Đi trước 1 nhịp · cross-cutting</b></div></div>
+        <div class="ico">💻</div><div class="nm">Technology</div>
+        <div class="role">CRM/ATS, lead-capture forms, tracking dashboard, student portal, automation, BI.</div>
+        <div class="tp"><b>One step ahead · cross-cutting</b></div><div class="own">Owner: Pop (CTO)</div></div>
     </div>
   </div>
 </section>
@@ -235,13 +250,13 @@
 <!-- TIMELINE -->
 <section id="timeline">
   <div class="container">
-    <div class="sec-kicker">03 · Master timeline</div>
-    <h2>Swimlane — 7 bộ phận qua 3 giai đoạn vận hành</h2>
-    <p class="sec-intro"><b>Chương trình khởi động Tháng 6/2026</b> (T-3) — toàn bộ công việc bắt đầu từ đây; launch (T0) vào Tháng 9/2026. Đây là timeline xây <b>hệ thống</b> để đạt 50 (cấp tổ chức), không phải hành trình một học viên. Đọc theo hàng để thấy một bộ phận làm gì xuyên suốt; theo cột để thấy ở giai đoạn đó cả 7 bộ phận đang làm gì. Hàng ◆ là các gate.</p>
+    <div class="sec-kicker">04 · Master timeline</div>
+    <h2>Swimlane — 7 functions across 3 operating phases</h2>
+    <p class="sec-intro"><b>The program starts June 2026</b> (T-3) — all work begins here; launch (T0) is September 2026. This is the org-level timeline to build the <b>system</b> that reaches 50, not a single student's journey. Read a row for one function over time; read a column to see all seven at once. The ◆ row marks the gates.</p>
     <div class="tl-scroll">
       <table class="tl">
         <thead><tr>
-          <th class="lane-label" style="text-align:left">Bộ phận ↓ / Giai đoạn →</th>
+          <th class="lane-label" style="text-align:left">Function ↓ / Phase →</th>
           <th><span class="ph">Pre-launch</span>T-3→T0 · Jun–Aug'26</th>
           <th><span class="ph">Launch Q1</span>T0→T+3 · Sep–Nov'26</th>
           <th><span class="ph">Launch Q2</span>T+3→T+6 · Dec'26–Feb'27</th>
@@ -249,155 +264,155 @@
           <th><span class="ph">Steady → 50</span>T+9→T+12+ · Jun'27+</th>
         </tr></thead>
         <tbody>
-          <tr><td class="lane-label"><div class="ln" style="color:var(--f-mkt)">📣 Marketing</div></td>
-            <td class="cell"><div class="bar b-mkt">Brand & messaging<small>MOU trường · kế hoạch nội dung/sự kiện</small></div></td>
-            <td class="cell"><div class="bar b-mkt">Chạy campaign<small>≥50 lead/tháng · sự kiện #1</small></div></td>
-            <td class="cell"><div class="bar b-mkt">Tối ưu kênh<small>Nội dung pathway/lương · sự kiện #2</small></div></td>
-            <td class="cell"><div class="bar b-mkt">Referral engine<small>Success story cohort 1</small></div></td>
-            <td class="cell"><div class="bar b-mkt">Tối ưu CAC<small>Nuôi ~625 lead/năm</small></div></td></tr>
+          <tr><td class="lane-label"><div class="ln" style="color:var(--f-mkt)">📣 Marketing</div><div class="lw">Simon / 8A</div></td>
+            <td class="cell"><div class="bar b-mkt">Brand &amp; messaging<small>College MOUs · content/event plan</small></div></td>
+            <td class="cell"><div class="bar b-mkt">Run campaigns<small>≥50 leads/mo · event #1</small></div></td>
+            <td class="cell"><div class="bar b-mkt">Optimize channels<small>Pathway/salary content · event #2</small></div></td>
+            <td class="cell"><div class="bar b-mkt">Referral engine<small>Cohort-1 success stories</small></div></td>
+            <td class="cell"><div class="bar b-mkt">Optimize CAC<small>Sustain ~625 leads/yr</small></div></td></tr>
 
-          <tr><td class="lane-label"><div class="ln" style="color:var(--f-adm)">🎯 Tuyển sinh</div></td>
-            <td class="cell"><div class="bar b-adm">Chuẩn hoá SOP<small>Script · tiêu chí loại · HĐ mẫu</small></div></td>
-            <td class="cell"><div class="bar b-adm">Batch 1 ký HĐ<small>Screen + assess · ~12 HV</small></div></td>
-            <td class="cell"><div class="bar b-adm">Batch 2<small>Siết screening theo dữ liệu · ~13</small></div></td>
-            <td class="cell"><div class="bar b-adm">Batch 3<small>~13 HV</small></div></td>
-            <td class="cell"><div class="bar b-adm">Batch 4 → đủ chỉ tiêu<small>~12 · tổng ~58–60 HĐ</small></div></td></tr>
+          <tr><td class="lane-label"><div class="ln" style="color:var(--f-adm)">🎯 Admissions</div><div class="lw">Simon / 8A</div></td>
+            <td class="cell"><div class="bar b-adm">Standardize SOP<small>Scripts · cutoff criteria · contract</small></div></td>
+            <td class="cell"><div class="bar b-adm">Batch 1 signed<small>Screen + assess · ~12</small></div></td>
+            <td class="cell"><div class="bar b-adm">Batch 2<small>Tighten screening on data · ~13</small></div></td>
+            <td class="cell"><div class="bar b-adm">Batch 3<small>~13</small></div></td>
+            <td class="cell"><div class="bar b-adm">Batch 4 → quota<small>~12 · ~58–60 contracts total</small></div></td></tr>
 
-          <tr><td class="lane-label"><div class="ln" style="color:var(--f-bd)">🤝 Phát triển đối tác</div></td>
-            <td class="cell"><div class="bar b-bd">Khoá đối tác (GATE)<small>≥2 employer LOI · ký RTO · chốt RMA</small></div></td>
-            <td class="cell"><div class="bar b-bd">Mở rộng employer<small>Confirm ≥50–60 headcount</small></div></td>
-            <td class="cell"><div class="bar b-bd">Gửi CV batch 1<small>Account management</small></div></td>
-            <td class="cell"><div class="bar b-bd">Nomination batch 1<small>+ employment contract</small></div></td>
-            <td class="cell"><div class="bar b-bd">Forecast & referral<small>Nuôi quan hệ employer</small></div></td></tr>
+          <tr><td class="lane-label"><div class="ln" style="color:var(--f-bd)">🤝 Partnerships &amp; BD</div><div class="lw">Simon</div></td>
+            <td class="cell"><div class="bar b-bd">Lock partners (GATE)<small>≥2 employer LOI · Upskilled+Nam An · RMA</small></div></td>
+            <td class="cell"><div class="bar b-bd">Expand employers<small>Confirm ≥50–60 headcount</small></div></td>
+            <td class="cell"><div class="bar b-bd">Send batch-1 CVs<small>Account management</small></div></td>
+            <td class="cell"><div class="bar b-bd">Batch-1 nomination<small>+ employment contract</small></div></td>
+            <td class="cell"><div class="bar b-bd">Forecast &amp; referral<small>Nurture employer relations</small></div></td></tr>
 
-          <tr><td class="lane-label"><div class="ln" style="color:var(--f-trn)">📚 Đào tạo & Học vụ</div></td>
-            <td class="cell"><div class="bar b-trn">Chốt chương trình<small>Upskilled Cert III online · Nam An duyệt practicum (GATE) · lịch 8A</small></div></td>
-            <td class="cell"><div class="bar b-trn">Cohort 1 học<small>IELTS (8A) + Cert III theory (Upskilled) · mock 6 tuần</small></div></td>
-            <td class="cell"><div class="bar b-trn">C1 đạt chuẩn · C2 bắt đầu<small>IELTS 5.0+ · practical hours @ Nam An</small></div></td>
-            <td class="cell"><div class="bar b-trn">Skills assessment · C3<small>Hoàn tất cohort 1</small></div></td>
-            <td class="cell"><div class="bar b-trn">Vận hành liên tục<small>Giữ completion ≥95%</small></div></td></tr>
+          <tr><td class="lane-label"><div class="ln" style="color:var(--f-trn)">📚 Training &amp; Academic</div><div class="lw">Ms. Hong</div></td>
+            <td class="cell"><div class="bar b-trn">Lock program<small>Upskilled Cert III online · Nam An approves practicum (GATE) · 8A schedule</small></div></td>
+            <td class="cell"><div class="bar b-trn">Cohort 1 studying<small>IELTS (8A) + Cert III theory (Upskilled) · mock /6 wks</small></div></td>
+            <td class="cell"><div class="bar b-trn">C1 at target · C2 starts<small>IELTS 5.0+ · practical hours @ Nam An</small></div></td>
+            <td class="cell"><div class="bar b-trn">Skills assessment · C3<small>Complete cohort 1</small></div></td>
+            <td class="cell"><div class="bar b-trn">Run continuously<small>Keep completion ≥95%</small></div></td></tr>
 
-          <tr><td class="lane-label"><div class="ln" style="color:var(--f-case)">🛂 Hồ sơ & Pháp chế</div></td>
-            <td class="cell"><div class="bar b-case">Giấy phép XKLĐ COLAB (GATE)<small>Template HĐ · quy trình RMA</small></div></td>
-            <td class="cell"><div class="bar b-case">Mở hồ sơ C1<small>Thu giấy tờ · nộp skills assessment</small></div></td>
-            <td class="cell"><div class="bar b-case">Nộp visa 482 C1<small>Sau khi đủ điều kiện</small></div></td>
-            <td class="cell"><div class="bar b-case">Theo dõi & grant<small>Xử lý query → pre-departure</small></div></td>
-            <td class="cell"><div class="bar b-case">Pipeline liên tục<small>Các cohort gối đầu</small></div></td></tr>
+          <tr><td class="lane-label"><div class="ln" style="color:var(--f-case)">🛂 Documents &amp; Compliance</div><div class="lw">Ms. Hong</div></td>
+            <td class="cell"><div class="bar b-case">COLAB license (GATE)<small>Contract templates · RMA process</small></div></td>
+            <td class="cell"><div class="bar b-case">Open C1 files<small>Collect docs · submit skills assessment</small></div></td>
+            <td class="cell"><div class="bar b-case">Lodge 482 (C1)<small>Once eligibility met</small></div></td>
+            <td class="cell"><div class="bar b-case">Track &amp; grant<small>Handle queries → pre-departure</small></div></td>
+            <td class="cell"><div class="bar b-case">Continuous pipeline<small>Overlapping cohorts</small></div></td></tr>
 
-          <tr><td class="lane-label"><div class="ln" style="color:var(--f-ops)">⚙️ Vận hành & Tài chính</div></td>
-            <td class="cell"><div class="bar b-ops">Chốt vốn $150k (GATE)<small>TK riêng · financial controls · nhịp họp</small></div></td>
-            <td class="cell"><div class="bar b-ops">Cadence tuần/tháng<small>Theo dõi burn · drawdown</small></div></td>
-            <td class="cell"><div class="bar b-ops">Quản lý dòng tiền<small>P&L review · 40/60 commission</small></div></td>
-            <td class="cell"><div class="bar b-ops">Báo cáo nhà đầu tư<small>Quản lý commission advance</small></div></td>
-            <td class="cell"><div class="bar b-ops">Tối ưu cash cycle<small>Hướng break-even 2027</small></div></td></tr>
+          <tr><td class="lane-label"><div class="ln" style="color:var(--f-ops)">⚙️ Operations &amp; Finance</div><div class="lw">Nam</div></td>
+            <td class="cell"><div class="bar b-ops">$0 budget setup (GATE)<small>No salary draw · controls · cadence · own Dashboard</small></div></td>
+            <td class="cell"><div class="bar b-ops">Weekly/monthly cadence<small>Still $0 budget · track readiness</small></div></td>
+            <td class="cell"><div class="bar b-ops">Cash from revenue<small>Capital secured for month 7+</small></div></td>
+            <td class="cell"><div class="bar b-ops">Investor reporting<small>Manage 40/60 commission</small></div></td>
+            <td class="cell"><div class="bar b-ops">Optimize cash cycle<small>Toward break-even</small></div></td></tr>
 
-          <tr><td class="lane-label"><div class="ln" style="color:var(--f-tech)">💻 Công nghệ</div></td>
-            <td class="cell"><div class="bar b-tech">Dựng hệ thống (GATE)<small>CRM/ATS · form lead · tracking/Dashboard · thanh toán</small></div></td>
-            <td class="cell"><div class="bar b-tech">Cổng học viên<small>Automation follow-up · checklist visa số hoá</small></div></td>
-            <td class="cell"><div class="bar b-tech">Tracking học thuật<small>Nhập IELTS/Cert III · dashboard funnel</small></div></td>
-            <td class="cell"><div class="bar b-tech">Tự động hoá<small>Dashboard auto · cổng employer</small></div></td>
-            <td class="cell"><div class="bar b-tech">BI & tích hợp<small>Report dòng tiền & funnel</small></div></td></tr>
+          <tr><td class="lane-label"><div class="ln" style="color:var(--f-tech)">💻 Technology</div><div class="lw">Pop</div></td>
+            <td class="cell"><div class="bar b-tech">Build system (GATE)<small>CRM/ATS · lead form · tracking/Dashboard · payments</small></div></td>
+            <td class="cell"><div class="bar b-tech">Student portal<small>Follow-up automation · digital visa checklist</small></div></td>
+            <td class="cell"><div class="bar b-tech">Academic tracking<small>IELTS/Cert III input · funnel dashboard</small></div></td>
+            <td class="cell"><div class="bar b-tech">Automation<small>Auto dashboard · employer portal</small></div></td>
+            <td class="cell"><div class="bar b-tech">BI &amp; integrations<small>Cash &amp; funnel reporting</small></div></td></tr>
 
           <tr class="gate-row"><td class="lane-label" style="background:var(--surface)"><div class="ln" style="font-size:12px;color:var(--amber)">◆ Gate</div></td>
-            <td class="cell"><div class="mstone">◆ 5 GATE LAUNCH<br>Vốn · RTO · Employer · COLAB · Tech</div></td>
+            <td class="cell"><div class="mstone">◆ 5 LAUNCH GATES<br>$0-budget plan · RTO · Employer · COLAB · Tech</div></td>
             <td class="cell"><div class="mstone">◆ Batch 1 enrolled</div></td>
-            <td class="cell"><div class="mstone">◆ IELTS+CertIII<br>Visa C1 lodged</div></td>
-            <td class="cell"><div class="mstone">◆ Visa grant<br>Departure C1</div></td>
-            <td class="cell"><div class="mstone">◆ 50 đã bay</div></td></tr>
+            <td class="cell"><div class="mstone">◆ IELTS+CertIII<br>C1 visa lodged</div></td>
+            <td class="cell"><div class="mstone">◆ Visa grant<br>C1 departure</div></td>
+            <td class="cell"><div class="mstone">◆ 50 placed</div></td></tr>
         </tbody>
       </table>
     </div>
     <div class="legend">
       <span><i class="dot" style="background:var(--f-mkt)"></i>Marketing</span>
-      <span><i class="dot" style="background:var(--f-adm)"></i>Tuyển sinh</span>
-      <span><i class="dot" style="background:var(--f-bd)"></i>Phát triển đối tác</span>
-      <span><i class="dot" style="background:var(--f-trn)"></i>Đào tạo</span>
-      <span><i class="dot" style="background:var(--f-case)"></i>Hồ sơ & Pháp chế</span>
-      <span><i class="dot" style="background:var(--f-ops)"></i>Vận hành & TC</span>
-      <span><i class="dot" style="background:var(--f-tech)"></i>Công nghệ</span>
+      <span><i class="dot" style="background:var(--f-adm)"></i>Admissions</span>
+      <span><i class="dot" style="background:var(--f-bd)"></i>Partnerships &amp; BD</span>
+      <span><i class="dot" style="background:var(--f-trn)"></i>Training</span>
+      <span><i class="dot" style="background:var(--f-case)"></i>Documents &amp; Compliance</span>
+      <span><i class="dot" style="background:var(--f-ops)"></i>Operations &amp; Finance</span>
+      <span><i class="dot" style="background:var(--f-tech)"></i>Technology</span>
     </div>
-    <div class="callout amber"><b>Quy tắc thứ tự:</b> Công nghệ + Vận hành + Phát triển đối tác phải <i>xong phần pre-launch trước</i> (5 gate) thì Marketing & Tuyển sinh mới được bật. Không có hệ thống tracking và chưa khoá employer mà đã tuyển sinh = lặp đúng sai lầm AMPC đã ghi.</div>
+    <div class="callout amber"><b>Sequencing rule:</b> Technology + Operations + Partnerships must <i>finish their pre-launch work first</i> (the 5 gates) before Marketing &amp; Admissions switch on. Recruiting students before the tracking system exists and employers are locked repeats the exact mistake AMPC documented.</div>
 
-    <h3>Hành trình một học viên — dưới 10 tháng</h3>
-    <p class="sec-intro" style="margin-bottom:10px">Rút ngắn nhờ học <b>online (Upskilled)</b> + <b>practicum (Nam An)</b> ngay tại Việt Nam song song với tiếng Anh, và nộp visa 482 sớm theo Aged Care Industry Labour Agreement stream.</p>
+    <h3>One student's journey — under 10 months</h3>
+    <p class="sec-intro" style="margin-bottom:10px">Compressed because theory is <b>online (Upskilled)</b> and practicum (<b>Nam An</b>) runs in Vietnam in parallel with English, and the 482 visa is lodged early under the Aged Care Industry Labour Agreement stream.</p>
     <div class="ps-wrap"><div class="ps-grid">
-      <div class="ps-months"><div>Chặng / Tháng</div><div>M0</div><div>M1</div><div>M2</div><div>M3</div><div>M4</div><div>M5</div><div>M6</div><div>M7</div><div>M8</div><div>M9</div></div>
-      <div class="ps-row"><span class="ps-lbl">Tuyển sinh</span><div class="ps-bar" style="grid-column:2/3;background:var(--f-adm)">Ký + nhập học</div></div>
-      <div class="ps-row"><span class="ps-lbl">Đào tạo & Học vụ</span><div class="ps-bar" style="grid-column:2/7;background:var(--f-trn)">English (8A) + Cert III theory (Upskilled) + Practical hours (Nam An)</div></div>
-      <div class="ps-row"><span class="ps-lbl">Hồ sơ + Skills</span><div class="ps-bar" style="grid-column:5/7;background:var(--f-case)">Hồ sơ + ANMAC/ACWA + nomination</div></div>
-      <div class="ps-row"><span class="ps-lbl">Visa 482</span><div class="ps-bar" style="grid-column:6/11;background:var(--f-case);opacity:.82">Nộp (M4) → xử lý ~3–4 tháng → grant</div></div>
-      <div class="ps-row"><span class="ps-lbl">Bay & onboard</span><div class="ps-bar" style="grid-column:10/12;background:var(--f-bd)">Bay sang Úc</div></div>
+      <div class="ps-months"><div>Stream / Month</div><div>M0</div><div>M1</div><div>M2</div><div>M3</div><div>M4</div><div>M5</div><div>M6</div><div>M7</div><div>M8</div><div>M9</div></div>
+      <div class="ps-row"><span class="ps-lbl">Admissions</span><div class="ps-bar" style="grid-column:2/3;background:var(--f-adm)">Sign + enroll</div></div>
+      <div class="ps-row"><span class="ps-lbl">Training &amp; Academic</span><div class="ps-bar" style="grid-column:2/7;background:var(--f-trn)">English (8A) + Cert III theory (Upskilled) + practical hours (Nam An)</div></div>
+      <div class="ps-row"><span class="ps-lbl">Docs + Skills</span><div class="ps-bar" style="grid-column:5/7;background:var(--f-case)">Documents + ANMAC/ACWA + nomination</div></div>
+      <div class="ps-row"><span class="ps-lbl">Visa 482</span><div class="ps-bar" style="grid-column:6/11;background:var(--f-case);opacity:.82">Lodge (M4) → ~3–4 months processing → grant</div></div>
+      <div class="ps-row"><span class="ps-lbl">Fly &amp; onboard</span><div class="ps-bar" style="grid-column:10/12;background:var(--f-bd)">Depart to Australia</div></div>
     </div></div>
-    <div class="callout green" style="margin-top:12px"><b>Tổng ≈ 9 tháng.</b> Vì hành trình chỉ &lt;10 tháng, một học viên ký Q3/2026 có thể bay từ ~Q2/2027 — giúp dồn đủ 50 người bay trong năm vận hành đầu khả thi hơn nhiều so với mốc 12–18 tháng trước đây.</div>
+    <div class="callout green" style="margin-top:12px"><b>Total ≈ 9 months.</b> Because the journey is &lt;10 months, a student signed in Q3 2026 can fly from ~Q2 2027 — making 50 departures within the first operating year far more achievable than the old 12–18 month estimate.</div>
   </div>
 </section>
 
 <!-- DETAIL -->
 <section id="detail">
   <div class="container">
-    <div class="sec-kicker">04 · Chi tiết từng bộ phận</div>
-    <h2>Việc theo 3 giai đoạn · output · KPI · phụ thuộc</h2>
+    <div class="sec-kicker">05 · Function detail</div>
+    <h2>Work by phase · output · KPI · dependencies</h2>
 
     <div class="stage-block">
-      <div class="sb-head"><span class="sb-ic" style="background:rgba(244,114,182,.15)">📣</span><span class="sb-title" style="color:var(--f-mkt)">Marketing</span><span class="sb-tp">Đầu phễu</span></div>
+      <div class="sb-head"><span class="sb-ic" style="background:rgba(244,114,182,.15)">📣</span><span class="sb-title" style="color:var(--f-mkt)">Marketing</span><span class="sb-tp">Owner: Simon / 8A · top of funnel</span></div>
       <div class="sb-body">
-        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Brand & messaging, định vị "dual qualification + pathway định cư"</li><li>Ký MOU với khoa điều dưỡng các trường ĐH/CĐ</li><li>Kế hoạch nội dung + 2 sự kiện/năm; phối Công nghệ dựng landing page thu lead</li></ul><div class="phase-tags"><span class="tag dep">cần: Tech landing page</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Chạy campaign đa kênh (FB/Zalo, trường, sự kiện)</li><li>Nội dung: visa pathway, so sánh lương VN–Úc</li></ul><div class="phase-tags"><span class="tag kpi">≥50 lead/tháng</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Success story từ cohort 1, máy referral (giảm $200 phí/giới thiệu)</li><li>Tối ưu kênh theo CAC, nuôi đủ ~625 lead/năm</li></ul></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Brand &amp; messaging around "dual qualification + PR pathway"</li><li>Sign MOUs with nursing faculties at colleges/universities</li><li>Content plan + 2 events/year; with Technology, stand up the lead-capture landing page</li></ul><div class="phase-tags"><span class="tag dep">needs: Tech landing page</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Run multi-channel campaigns (FB/Zalo, campuses, events)</li><li>Content: visa pathway, VN–AU salary comparison</li></ul><div class="phase-tags"><span class="tag kpi">≥50 leads/month</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Cohort-1 success stories, referral engine ($200 off per successful referral)</li><li>Optimize channels by CAC; sustain ~625 leads/year</li></ul></div></div>
       </div>
     </div>
 
     <div class="stage-block">
-      <div class="sb-head"><span class="sb-ic" style="background:rgba(96,165,250,.15)">🎯</span><span class="sb-title" style="color:var(--f-adm)">Tuyển sinh</span><span class="sb-tp">Sales B2C · Học viên + gia đình</span></div>
+      <div class="sb-head"><span class="sb-ic" style="background:rgba(96,165,250,.15)">🎯</span><span class="sb-title" style="color:var(--f-adm)">Admissions</span><span class="sb-tp">Owner: Simon / 8A · students + families</span></div>
       <div class="sb-body">
-        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Chuẩn hoá SOP: form pre-screen, kịch bản phone, bài assessment, tiêu chí loại sớm</li><li>Hợp đồng mẫu (điều kiện hoàn tiền, nghĩa vụ học viên) — duyệt pháp chế</li></ul></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Pre-screen 24h → assessment → tư vấn timeline thật → ký HĐ + cọc $500</li><li>Onboarding 2h; bàn giao sang Đào tạo</li></ul><div class="phase-tags"><span class="tag kpi">≥30% lead→contract</span><span class="tag dep">cần: lead từ Marketing</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Siết screening theo dữ liệu cohort trước (ai dễ tụt IELTS, ai dễ bỏ)</li><li>Đủ ~58–60 HĐ để ra 50 người bay</li></ul></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Standardize SOP: pre-screen form, phone script, assessment, early-reject criteria</li><li>Contract template (refund terms, student obligations) — legal-reviewed</li></ul></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>24h pre-screen → assessment → realistic timeline advising → sign + $500 deposit</li><li>2h onboarding; hand off to Training</li></ul><div class="phase-tags"><span class="tag kpi">≥30% lead→contract</span><span class="tag dep">needs: leads from Marketing</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Tighten screening on prior-cohort data (who slips on IELTS, who drops)</li><li>Reach ~58–60 contracts to deliver 50 departures</li></ul></div></div>
       </div>
     </div>
 
     <div class="stage-block">
-      <div class="sb-head"><span class="sb-ic" style="background:rgba(245,158,11,.15)">🤝</span><span class="sb-title" style="color:var(--f-bd)">Phát triển đối tác</span><span class="sb-tp">Sales B2B · Employer/RTO/RMA</span></div>
+      <div class="sb-head"><span class="sb-ic" style="background:rgba(245,158,11,.15)">🤝</span><span class="sb-title" style="color:var(--f-bd)">Partnerships &amp; BD</span><span class="sb-tp">Owner: Simon · employers/providers/RMA</span></div>
       <div class="sb-body">
-        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Khoá ≥2 employer LOI (Labour Agreement active, lương ≥$51,222 AUD)</li><li>Ký Upskilled (RTO – Cert III online) + Nam An (practical hours site) binding; chốt RMA on retainer</li><li>Đàm phán ứng trước 40% commission khi ký LOI</li></ul><div class="phase-tags"><span class="tag gate">GATE #1, #2</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Mở rộng employer, confirm tổng ≥50–60 headcount</li><li>Gửi CV/portfolio cohort 1; weekly sync với HR employer</li></ul></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Nomination + employment contract từng cohort</li><li>Account management, check-in tháng 1/3/6/12, forecast batch sau</li></ul><div class="phase-tags"><span class="tag kpi">Satisfaction → referral</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Lock ≥2 employer LOIs (Labour Agreement active, salary ≥$51,222 AUD)</li><li>Sign Upskilled (RTO – Cert III online) + Nam An (practical hours site); retain RMA</li><li>Negotiate 40% commission advance on LOI signing</li></ul><div class="phase-tags"><span class="tag gate">GATE #1, #2</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Expand employers, confirm ≥50–60 total headcount</li><li>Send cohort-1 CVs/portfolios; weekly sync with employer HR</li></ul></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Nomination + employment contract per cohort</li><li>Account management, check-ins at month 1/3/6/12, forecast next batch</li></ul><div class="phase-tags"><span class="tag kpi">Satisfaction → referrals</span></div></div></div>
       </div>
     </div>
 
     <div class="stage-block">
-      <div class="sb-head"><span class="sb-ic" style="background:rgba(34,197,94,.15)">📚</span><span class="sb-title" style="color:var(--f-trn)">Đào tạo & Học vụ</span><span class="sb-tp">8A · Upskilled · Nam An</span></div>
+      <div class="sb-head"><span class="sb-ic" style="background:rgba(34,197,94,.15)">📚</span><span class="sb-title" style="color:var(--f-trn)">Training &amp; Academic</span><span class="sb-tp">Owner: Ms. Hong · 8A · Upskilled · Nam An</span></div>
       <div class="sb-body">
-        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Ký <a class="link" href="https://www.upskilled.edu.au/" target="_blank">Upskilled</a> (RTO No 40374) — Cert III in Individual Support (Ageing), học <b>online</b> qua MyUpskilled, rolling start hàng tháng, SLA ≤5 tháng</li><li>Chốt <a class="link" href="https://vienduonglaonaman.com/" target="_blank">Viện dưỡng lão Nam An</a> (HCMC) làm site <b>practical hours</b> sau theory; Upskilled duyệt site trước khi bắt đầu giờ thực hành</li></ul><div class="phase-tags"><span class="tag gate">GATE RTO + practicum site</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>English (8A) + Cert III theory (Upskilled online) song song; mock 6 tuần (M1→4.0, M3→4.5, M5→5.0+)</li><li>Practical hours tại Nam An <b>sau</b> phần theory; documented đúng format Upskilled; flag học viên tụt hậu sớm</li></ul><div class="phase-tags"><span class="tag kpi">80% đạt IELTS 5.0+ · 95% Cert III</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Submit skills assessment (ANMAC/ACWA) song song, không chờ</li><li>Vận hành nhiều cohort gối đầu, giữ chất lượng</li></ul></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Sign <a class="link" href="https://www.upskilled.edu.au/" target="_blank">Upskilled</a> (RTO No 40374) — Cert III in Individual Support (Ageing), delivered <b>online</b> via MyUpskilled, monthly rolling start, SLA ≤5 months</li><li>Confirm <a class="link" href="https://vienduonglaonaman.com/" target="_blank">Nam An aged care home</a> (HCMC) as the <b>practical hours</b> site after theory; Upskilled approves the site before practicum begins</li></ul><div class="phase-tags"><span class="tag gate">GATE RTO + practicum site</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>English (8A) + Cert III theory (Upskilled online) in parallel; mock test /6 weeks (M1→4.0, M3→4.5, M5→5.0+)</li><li>Practical hours at Nam An <b>after</b> theory; documented in Upskilled's format; flag laggards early</li></ul><div class="phase-tags"><span class="tag kpi">80% reach IELTS 5.0+ · 95% Cert III</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Submit skills assessment (ANMAC/ACWA) in parallel, not after</li><li>Run overlapping cohorts while holding quality</li></ul></div></div>
       </div>
     </div>
 
     <div class="stage-block">
-      <div class="sb-head"><span class="sb-ic" style="background:rgba(167,139,250,.15)">🛂</span><span class="sb-title" style="color:var(--f-case)">Hồ sơ & Pháp chế</span><span class="sb-tp">RMA · COLAB · Home Affairs</span></div>
+      <div class="sb-head"><span class="sb-ic" style="background:rgba(167,139,250,.15)">🛂</span><span class="sb-title" style="color:var(--f-case)">Documents &amp; Compliance</span><span class="sb-tp">Owner: Ms. Hong · RMA · COLAB · Home Affairs</span></div>
       <div class="sb-body">
-        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Giấy phép xuất khẩu lao động (COLAB) — gate pháp lý phía VN</li><li>Template HĐ học viên / RTO / LOI; thống nhất quy trình nộp 482 với RMA</li></ul><div class="phase-tags"><span class="tag gate">GATE giấy phép COLAB</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Mở hồ sơ từng học viên; thu passport, lý lịch tư pháp, khám SK, dịch công chứng</li><li>Nộp visa 482 khi đủ: IELTS + Cert III + skills assessment + nomination</li></ul><div class="phase-tags"><span class="tag dep">cần: Đào tạo + Đối tác</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Theo dõi & escalation (chậm 30/60 ngày), grant → pre-departure briefing</li></ul><div class="phase-tags"><span class="tag kpi">≥90% visa approval</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Labour-export license (COLAB) — the VN-side legal gate, handled by Ms. Hong</li><li>Student / RTO / LOI contract templates; agree 482 lodgement process with RMA</li></ul><div class="phase-tags"><span class="tag gate">GATE COLAB license</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Open each student's file; collect passport, police check, medical, notarized translations</li><li>Lodge 482 once eligible: IELTS + Cert III + skills assessment + nomination</li></ul><div class="phase-tags"><span class="tag dep">needs: Training + Partnerships</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Track &amp; escalate (30/60-day slips), grant → pre-departure briefing</li></ul><div class="phase-tags"><span class="tag kpi">≥90% visa approval</span></div></div></div>
       </div>
     </div>
 
     <div class="stage-block">
-      <div class="sb-head"><span class="sb-ic" style="background:rgba(45,212,191,.15)">⚙️</span><span class="sb-title" style="color:var(--f-ops)">Vận hành & Tài chính</span><span class="sb-tp">Hub điều phối · Nhà đầu tư</span></div>
+      <div class="sb-head"><span class="sb-ic" style="background:rgba(45,212,191,.15)">⚙️</span><span class="sb-title" style="color:var(--f-ops)">Operations &amp; Finance</span><span class="sb-tp">Owner: Nam (Pop part-time) · investors</span></div>
       <div class="sb-body">
-        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>Chốt $150k working capital; tài khoản riêng; drawdown schedule</li><li>Thiết lập nhịp họp tuần/tháng/quý; sở hữu Dashboard tiến độ</li></ul><div class="phase-tags"><span class="tag gate">GATE vốn $150k</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Cadence: review visa pipeline & IELTS mỗi thứ Hai; P&L cuối tháng</li><li>Theo dõi burn ($15.5k/tháng), kiểm soát spend ≤+10% budget</li></ul><div class="phase-tags"><span class="tag kpi">Runway ≥4 tháng mọi lúc</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Quản lý dòng tiền 40/60 commission; báo cáo nhà đầu tư</li><li>Tối ưu cash conversion cycle; hướng break-even ~26 HV/năm</li></ul></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li><b>$0 operating budget for the first 6 months</b> — founders/partners draw no salary; run lean</li><li>Set weekly/monthly/quarterly cadence; own the progress Dashboard; confirm capital for the revenue phase (month 7+)</li></ul><div class="phase-tags"><span class="tag gate">GATE: $0-budget plan + month-7 funding</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Cadence: review visa pipeline &amp; IELTS every Monday; P&amp;L month-end</li><li>Still $0 budget — keep spend at $0 until first revenue lands</li></ul><div class="phase-tags"><span class="tag kpi">Cash-positive operating model</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Manage 40/60 commission cash; report to investors</li><li>Optimize the cash-conversion cycle; toward break-even (~25 students/year)</li></ul></div></div>
       </div>
     </div>
 
     <div class="stage-block">
-      <div class="sb-head"><span class="sb-ic" style="background:rgba(56,189,248,.15)">💻</span><span class="sb-title" style="color:var(--f-tech)">Công nghệ</span><span class="sb-tp">Cross-cutting · đi trước 1 nhịp</span></div>
+      <div class="sb-head"><span class="sb-ic" style="background:rgba(56,189,248,.15)">💻</span><span class="sb-title" style="color:var(--f-tech)">Technology</span><span class="sb-tp">Owner: Pop · cross-cutting, one step ahead</span></div>
       <div class="sb-body">
-        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>CRM/ATS quản lý ứng viên; form thu lead trên web</li><li>Hệ thống tracking học viên (Dashboard); quản lý hồ sơ & thanh toán/cọc</li></ul><div class="phase-tags"><span class="tag gate">GATE hệ thống tracking</span></div></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Cổng học viên xem trạng thái; automation follow-up (Zalo/email)</li><li>Checklist visa số hoá; nhập tiến độ IELTS/Cert III vào dashboard funnel</li></ul></div></div>
-        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Dashboard tự cập nhật; cổng employer; BI/report dòng tiền & funnel</li><li>Tích hợp nguồn dữ liệu (Airtable/Sheet/CRM)</li></ul></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">PRE-LAUNCH</span><span class="pw-cal">Jun–Aug'26</span></div><div class="phase-main"><ul><li>CRM/ATS for applicants; web lead-capture form</li><li>Student tracking system (the Dashboard); document &amp; payment/deposit management</li></ul><div class="phase-tags"><span class="tag gate">GATE tracking system</span></div></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">LAUNCH</span><span class="pw-cal">Sep'26–Feb'27</span></div><div class="phase-main"><ul><li>Student portal for status; follow-up automation (Zalo/email)</li><li>Digital visa checklist; feed IELTS/Cert III progress into the funnel dashboard</li></ul></div></div>
+        <div class="phase"><div class="phase-when"><span class="pw-tag">SCALE</span><span class="pw-cal">Mar'27+</span></div><div class="phase-main"><ul><li>Auto-refreshing dashboard; employer portal; BI/reporting on cash &amp; funnel</li><li>Integrate data sources (Airtable/Sheets/CRM)</li></ul></div></div>
       </div>
     </div>
   </div>
@@ -406,85 +421,86 @@
 <!-- HANDOFF -->
 <section id="handoff">
   <div class="container">
-    <div class="sec-kicker">05 · Bàn giao giữa các bộ phận</div>
-    <h2>Một học viên đi qua tay những bộ phận nào</h2>
-    <p class="sec-intro">Dòng chính chạy ngang; hai bộ phận nền (Công nghệ, Vận hành) đỡ bên dưới; Phát triển đối tác chạy song song để cấp "nomination" vào đúng lúc Hồ sơ cần.</p>
+    <div class="sec-kicker">06 · Hand-offs between functions</div>
+    <h2>Which functions a student passes through</h2>
+    <p class="sec-intro">The main flow runs left to right; two foundation functions (Technology, Operations) sit underneath; Partnerships &amp; BD runs in parallel to deliver the "nomination" exactly when Documents needs it.</p>
     <div class="flow">
       <div class="node" style="border-left:3px solid var(--f-mkt)"><div class="nt">Marketing</div><div class="nd">Lead</div></div>
       <div class="arr">→</div>
-      <div class="node" style="border-left:3px solid var(--f-adm)"><div class="nt">Tuyển sinh</div><div class="nd">HĐ ký + cọc</div></div>
+      <div class="node" style="border-left:3px solid var(--f-adm)"><div class="nt">Admissions</div><div class="nd">Signed + deposit</div></div>
       <div class="arr">→</div>
-      <div class="node" style="border-left:3px solid var(--f-trn)"><div class="nt">Đào tạo</div><div class="nd">IELTS (8A) · Cert III (Upskilled) · practicum (Nam An)</div></div>
+      <div class="node" style="border-left:3px solid var(--f-trn)"><div class="nt">Training</div><div class="nd">IELTS (8A) · Cert III (Upskilled) · practicum (Nam An)</div></div>
       <div class="arr">→</div>
-      <div class="node" style="border-left:3px solid var(--f-case)"><div class="nt">Hồ sơ & Pháp chế</div><div class="nd">Visa 482 → grant</div></div>
+      <div class="node" style="border-left:3px solid var(--f-case)"><div class="nt">Documents &amp; Compliance</div><div class="nd">482 visa → grant</div></div>
       <div class="arr">→</div>
-      <div class="node" style="border-left:3px solid var(--f-bd)"><div class="nt">Đối tác</div><div class="nd">Onboard tại Úc</div></div>
+      <div class="node" style="border-left:3px solid var(--f-bd)"><div class="nt">Partnerships</div><div class="nd">Onboard in Australia</div></div>
     </div>
     <div class="flow" style="margin-top:12px">
-      <div class="node" style="border-left:3px solid var(--f-bd);flex:0 0 auto"><div class="nt">⤴ Phát triển đối tác (song song)</div><div class="nd">Cấp employer nomination + employment contract làm đầu vào cho lane Hồ sơ ở đúng thời điểm nộp visa</div></div>
+      <div class="node" style="border-left:3px solid var(--f-bd);flex:0 0 auto"><div class="nt">⤴ Partnerships &amp; BD (parallel)</div><div class="nd">Delivers employer nomination + employment contract as the input the Documents lane needs at lodgement time</div></div>
     </div>
     <div class="flow" style="margin-top:12px">
-      <div class="node" style="border-left:3px solid var(--f-tech)"><div class="nt">💻 Công nghệ (nền)</div><div class="nd">CRM + Dashboard xuyên suốt mọi bàn giao — chống thất lạc thông tin</div></div>
-      <div class="node" style="border-left:3px solid var(--f-ops)"><div class="nt">⚙️ Vận hành & Tài chính (nền)</div><div class="nd">Điều phối nhịp tuần/tháng + đảm bảo dòng tiền cho từng bước</div></div>
+      <div class="node" style="border-left:3px solid var(--f-tech)"><div class="nt">💻 Technology (foundation)</div><div class="nd">CRM + Dashboard across every hand-off — prevents lost information</div></div>
+      <div class="node" style="border-left:3px solid var(--f-ops)"><div class="nt">⚙️ Operations &amp; Finance (foundation)</div><div class="nd">Runs the weekly/monthly cadence and secures cash for each step</div></div>
     </div>
-    <div class="callout amber"><b>Điểm bàn giao dễ rơi:</b> Tuyển sinh → Đào tạo (mất hồ sơ học viên) và Đào tạo/Đối tác → Hồ sơ (visa nộp thiếu Cert III hoặc nomination). Cả hai chỗ này Công nghệ phải có checklist số hoá bắt buộc tick đủ mới cho chuyển bước.</div>
+    <div class="callout amber"><b>Fragile hand-offs:</b> Admissions → Training (lost student files) and Training/Partnerships → Documents (visa lodged missing Cert III or nomination). At both points Technology must enforce a digital checklist that has to be fully ticked before the student can advance.</div>
   </div>
 </section>
 
 <!-- GATES -->
 <section id="gates">
   <div class="container">
-    <div class="sec-kicker">06 · 5 Gate trước launch</div>
-    <h2>Không đủ 5 gate → không bật Marketing & Tuyển sinh</h2>
+    <div class="sec-kicker">07 · 5 pre-launch gates</div>
+    <h2>Without all 5 gates, Marketing &amp; Admissions do not switch on</h2>
     <div class="tbl-wrap">
       <table class="grid">
-        <thead><tr><th>Gate</th><th>Bộ phận chủ trì</th><th>Điều kiện đạt</th><th>Deadline</th></tr></thead>
+        <thead><tr><th>Gate</th><th>Owning function</th><th>Pass condition</th><th>Deadline</th></tr></thead>
         <tbody>
-          <tr><td><b>Vốn $150k</b></td><td>Vận hành & Tài chính</td><td>Working capital confirmed (founder/angel/advance commission)</td><td>31/08/2026</td></tr>
-          <tr><td><b>RTO + Practicum ký</b></td><td>Phát triển đối tác</td><td>HĐ Upskilled (Cert III online) + thoả thuận Nam An (practical hours) binding, SLA ≤5 tháng, exit clause</td><td>31/07/2026</td></tr>
-          <tr><td><b>≥2 Employer LOI</b></td><td>Phát triển đối tác</td><td>Labour Agreement active, đủ ≥50 headcount, lương xác nhận</td><td>31/08/2026</td></tr>
-          <tr><td><b>Giấy phép COLAB</b></td><td>Hồ sơ & Pháp chế</td><td>Giấy phép XKLĐ / dịch vụ việc làm hợp lệ phía VN</td><td>Trước T0 (Sep'26)</td></tr>
-          <tr><td><b>Hệ thống tracking</b></td><td>Công nghệ</td><td>CRM/ATS + Dashboard + quản lý hồ sơ/thanh toán chạy được</td><td>Trước T0 (Sep'26)</td></tr>
+          <tr><td><b>$0-budget funding plan</b></td><td>Operations &amp; Finance (Nam)</td><td>First 6 months run at $0 budget (no salary draw); capital confirmed for revenue ramp from month 7</td><td>31 Aug 2026</td></tr>
+          <tr><td><b>RTO + Practicum signed</b></td><td>Partnerships &amp; BD (Simon)</td><td>Binding Upskilled (Cert III online) + Nam An (practical hours) agreements, SLA ≤5 months, exit clause</td><td>31 Jul 2026</td></tr>
+          <tr><td><b>≥2 Employer LOIs</b></td><td>Partnerships &amp; BD (Simon)</td><td>Labour Agreement active, ≥50 headcount, salary confirmed</td><td>31 Aug 2026</td></tr>
+          <tr><td><b>COLAB license</b></td><td>Documents &amp; Compliance (Ms. Hong)</td><td>Valid VN labour-export / employment-service license</td><td>Before T0 (Sep'26)</td></tr>
+          <tr><td><b>Tracking system</b></td><td>Technology (Pop)</td><td>CRM/ATS + Dashboard + document/payment management running</td><td>Before T0 (Sep'26)</td></tr>
         </tbody>
       </table>
     </div>
+    <div class="callout green"><b>$0 budget changes the funding gate.</b> Because the first 6 months carry no operating cost, ViecVui no longer needs large working capital up front — the priority shifts to confirming capital (or commission advances) for the revenue ramp from month 7, not bankrolling an 8-month burn.</div>
   </div>
 </section>
 
 <!-- 50 -->
 <section id="fifty">
   <div class="container">
-    <div class="sec-kicker">07 · Mục tiêu 50 học viên năm 1</div>
-    <h2>4 batch gối đầu — phễu ngược để ra 50 người bay</h2>
+    <div class="sec-kicker">08 · The 50-student year-1 target</div>
+    <h2>Four overlapping batches — reverse-funnel to 50 departures</h2>
     <div class="batch-grid">
-      <div class="batch"><div class="bt">BATCH 1 · ký Q3/2026</div><div class="bn">12</div><div class="bd">Pilot, chuẩn hoá SOP. Bay ~Q2/2027.</div></div>
-      <div class="batch"><div class="bt">BATCH 2 · ký Q4/2026</div><div class="bn">13</div><div class="bd">Áp dụng bài học batch 1.</div></div>
-      <div class="batch"><div class="bt">BATCH 3 · ký Q1/2027</div><div class="bn">13</div><div class="bd">Referral batch 1 đóng góp leads.</div></div>
-      <div class="batch"><div class="bt">BATCH 4 · ký Q2/2027</div><div class="bn">12</div><div class="bd">Đủ 50, bay cuốn chiếu.</div></div>
+      <div class="batch"><div class="bt">BATCH 1 · sign Q3/2026</div><div class="bn">12</div><div class="bd">Pilot, standardize SOPs. Fly ~Q2/2027.</div></div>
+      <div class="batch"><div class="bt">BATCH 2 · sign Q4/2026</div><div class="bn">13</div><div class="bd">Apply batch-1 lessons.</div></div>
+      <div class="batch"><div class="bt">BATCH 3 · sign Q1/2027</div><div class="bn">13</div><div class="bd">Batch-1 referrals add leads.</div></div>
+      <div class="batch"><div class="bt">BATCH 4 · sign Q2/2027</div><div class="bn">12</div><div class="bd">Reach 50, rolling departures.</div></div>
     </div>
     <div class="tbl-wrap" style="margin-top:18px">
       <table class="grid">
-        <thead><tr><th>Tầng phễu</th><th>Tỷ lệ mục tiêu</th><th>Cần để ra 50 bay</th><th>Bộ phận chịu</th></tr></thead>
+        <thead><tr><th>Funnel stage</th><th>Target rate</th><th>Needed for 50 departures</th><th>Owning function</th></tr></thead>
         <tbody>
-          <tr><td>Leads</td><td>—</td><td>~625 (≥50/tháng)</td><td>Marketing</td></tr>
-          <tr><td>Pre-screen pass</td><td>40%</td><td>~250</td><td>Tuyển sinh</td></tr>
-          <tr><td>Ký hợp đồng</td><td>≥30% lead→contract</td><td>~58–60</td><td>Tuyển sinh</td></tr>
-          <tr><td>IELTS 5.0+ / Cert III</td><td>80% / 95%</td><td>~57</td><td>Đào tạo & Học vụ</td></tr>
-          <tr><td>Employer nomination</td><td>—</td><td>≥52</td><td>Phát triển đối tác</td></tr>
-          <tr><td>Visa approval</td><td>≥90%</td><td>~52</td><td>Hồ sơ & Pháp chế</td></tr>
-          <tr><td><b>Bay (vs ký)</b></td><td>85%+</td><td><b>50</b></td><td>Vận hành điều phối</td></tr>
+          <tr><td>Leads</td><td>—</td><td>~625 (≥50/month)</td><td>Marketing</td></tr>
+          <tr><td>Pre-screen pass</td><td>40%</td><td>~250</td><td>Admissions</td></tr>
+          <tr><td>Contracts signed</td><td>≥30% lead→contract</td><td>~58–60</td><td>Admissions</td></tr>
+          <tr><td>IELTS 5.0+ / Cert III</td><td>80% / 95%</td><td>~57</td><td>Training &amp; Academic</td></tr>
+          <tr><td>Employer nomination</td><td>—</td><td>≥52</td><td>Partnerships &amp; BD</td></tr>
+          <tr><td>Visa approval</td><td>≥90%</td><td>~52</td><td>Documents &amp; Compliance</td></tr>
+          <tr><td><b>Departures (vs signed)</b></td><td>85%+</td><td><b>50</b></td><td>Operations (coordination)</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="callout red"><b>Phụ thuộc xương sống:</b> mỗi tầng phễu do một bộ phận chịu — nếu Marketing không ra đủ ~625 lead, hoặc Đối tác không khoá đủ ≥52 nomination, con số 50 sụp ngay dù các bộ phận khác chạy tốt. Dashboard tiến độ theo dõi đúng các tầng này.</div>
+    <div class="callout red"><b>Backbone dependency:</b> each funnel stage is owned by one function — if Marketing fails to produce ~625 leads, or Partnerships fails to lock ≥52 nominations, the 50 collapses even if everything else runs well. The Dashboard tracks exactly these stages.</div>
   </div>
 </section>
 
 <footer>
   <div class="container">
-    ViecVui — Operating Playbook v2.0 (7 bộ phận nội bộ) · Tháng 6/2026 · thay cho bản 4-party<br>
-    Nguồn: Nursing Operation Playbook, P&L Unit Economics, AMPC migrant model, Aged Care Industry Labour Agreement, SOP nội bộ ViecVui.
-    <div style="margin-top:16px" class="no-print"><a class="cta" href="dashboard.html">→ Mở Dashboard theo dõi tiến độ</a></div>
+    ViecVui — Operating Playbook v3.0 (7 internal functions) · June 2026 · supersedes the 4-party version<br>
+    Sources: Nursing Operation Playbook, P&amp;L unit economics, AMPC migrant employment model, Aged Care Industry Labour Agreement, ViecVui internal SOPs.
+    <div style="margin-top:16px" class="no-print"><a class="cta" href="dashboard.html">→ Open the Progress &amp; P&amp;L Dashboard</a></div>
   </div>
 </footer>
 </body>
